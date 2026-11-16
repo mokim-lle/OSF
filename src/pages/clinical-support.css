@@ -1,0 +1,454 @@
+/* ============================================================
+   臨床技術支持 (Clinical Technical Support) — 1440px 桌面版
+   ============================================================ */
+
+.clinical-page {
+  min-height: 100vh;
+  background: var(--color-bg-light);
+  padding-bottom: 100px;
+  padding-top: var(--header-height);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 消除 page-content-offset 的 margin-top */
+.page-content:has(.clinical-page) {
+  background: var(--color-bg-light);
+  margin-top: 0 !important;
+}
+
+/* 背景裝飾弧形（同聯絡我們，弧頂落在標題後方） */
+.clinical-bg-dome-wrapper {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  width: 100%;
+  max-width: 1440px;
+  min-width: 1200px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.clinical-bg-dome {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 頁面標題區 (Hero) */
+.clinical-hero {
+  text-align: center;
+  padding: 40px 40px 36px;
+  position: relative;
+  z-index: 1;
+}
+
+.clinical-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.clinical-subtitle {
+  font-size: 0.92rem;
+  color: var(--color-text-dark-muted);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+/* 分類按鈕 Filter Tabs */
+.clinical-filter-tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.clinical-filter-btn {
+  padding: 10px 24px;
+  background: #235d97;
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.clinical-filter-btn:hover {
+  background: #1a4f82;
+}
+
+.clinical-filter-btn.active {
+  background: var(--color-blue-btn, #1875c7);
+  box-shadow: 0 4px 12px rgba(24, 117, 199, 0.25);
+}
+
+/* 文件清單卡片外層包裝 */
+.clinical-list-wrapper {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  z-index: 2;
+  min-height: 480px;
+}
+
+/* 文件清單卡片容器 */
+.clinical-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 漸層毛玻璃遮罩（從第一筆開始全面模糊，保留卡片輪廓與質感） */
+.clinical-gradient-blur {
+  position: absolute;
+  top: 0;
+  left: 40px;
+  right: 40px;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 5;
+  border-radius: 4px;
+
+  /* 極輕微磨砂效果：字型清澈可見，僅保留薄霧通透質感 */
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+
+  /* 極清透背景：極低白霧感，確保所有文字一目了然 */
+  background: linear-gradient(
+    to bottom,
+    rgba(247, 249, 252, 0.03) 0%,
+    rgba(247, 249, 252, 0.08) 40%,
+    rgba(247, 249, 252, 0.15) 100%
+  );
+}
+
+/* 登入引導卡片外層包裝 — 位於遮罩之上 */
+.clinical-login-prompt-wrapper {
+  position: absolute;
+  top: 0;
+  left: 40px;
+  right: 40px;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 60px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* 中央登入提示卡片 — 處於視窗可視範圍，純白實體乾淨俐落 */
+.clinical-login-card {
+  position: sticky;
+  top: calc(var(--header-height) + 40px);
+  background: #ffffff;
+  border: 1px solid var(--color-border-light, #e2e8f0);
+  padding: 44px 40px 36px;
+  text-align: center;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.clinical-login-text {
+  font-size: 0.95rem;
+  color: #334155;
+  line-height: 1.85;
+  margin-bottom: 24px;
+}
+
+.clinical-login-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-blue-btn, #1875c7);
+  color: #ffffff;
+  padding: 12px 32px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.clinical-login-btn:hover {
+  background: #145fa3;
+}
+
+.clinical-login-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* 單張文獻卡片 */
+.clinical-card {
+  background: #ffffff;
+  border: 1px solid var(--color-border-light, #e2e8f0);
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.clinical-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  border-color: #cbd5e1;
+}
+
+.clinical-card-main {
+  flex: 1;
+  padding-right: 24px;
+}
+
+/* 標籤群組 */
+.card-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  border-radius: 3px;
+  letter-spacing: 0.02em;
+}
+
+.tag-badge.tag-source,
+.tag-badge.tag-year {
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  background: #ffffff;
+  font-family: var(--font-mono);
+}
+
+.tag-badge.tag-category {
+  background: #e0f2fe;
+  color: #0284c7;
+  border: 1px solid #bae6fd;
+  font-weight: 600;
+}
+
+.tag-badge.tag-format {
+  border: 1px solid #cbd5e1;
+  color: #64748b;
+  background: #ffffff;
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+/* 文獻標題 */
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.5;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+/* 作者資訊 */
+.card-meta {
+  font-size: 0.82rem;
+  color: #64748b;
+  line-height: 1.5;
+  font-family: var(--font-body);
+}
+
+/* 下載按鈕 */
+.card-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  color: #1e6bb8;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background var(--transition-fast), color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.card-download-btn:hover {
+  background: #f1f5f9;
+  color: #0f5298;
+}
+
+.download-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* 分頁區 Pagination */
+.clinical-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.pagination-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all var(--transition-fast);
+}
+
+.pagination-btn:hover:not(.active):not(.disabled) {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.pagination-btn.active {
+  background: #e0f2fe;
+  color: #0284c7;
+  font-weight: 700;
+  cursor: default;
+}
+
+.pagination-btn.arrow-btn {
+  font-size: 1.1rem;
+  color: #475569;
+}
+
+.pagination-btn.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination-ellipsis {
+  width: 24px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+/* ============================================================
+   RWD — Pad 768px ~ 1024px
+   ============================================================ */
+@media (max-width: 1024px) {
+  .clinical-hero {
+    padding: 32px 24px 28px;
+  }
+
+  .clinical-title {
+    font-size: 2rem;
+  }
+
+  .clinical-list-wrapper {
+    padding: 0 24px;
+    max-width: 100%;
+  }
+
+  .clinical-list-container {
+    padding: 0;
+  }
+
+  .clinical-gradient-blur,
+  .clinical-login-prompt-wrapper {
+    left: 24px;
+    right: 24px;
+  }
+
+  .clinical-card {
+    padding: 20px 24px;
+  }
+}
+
+/* ============================================================
+   RWD — Mobile 375px
+   ============================================================ */
+@media (max-width: 768px) {
+  .clinical-hero {
+    padding: 24px 20px 24px;
+  }
+
+  .clinical-title {
+    font-size: 1.75rem;
+  }
+
+  .clinical-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .clinical-list-wrapper {
+    padding: 0 16px;
+    min-height: 420px;
+  }
+
+  .clinical-list-container {
+    padding: 0;
+  }
+
+  .clinical-gradient-blur,
+  .clinical-login-prompt-wrapper {
+    left: 16px;
+    right: 16px;
+  }
+
+  .clinical-login-prompt-wrapper {
+    padding-top: 40px;
+  }
+
+  .clinical-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 18px 20px;
+  }
+
+  .clinical-card-main {
+    padding-right: 0;
+  }
+
+  .card-title {
+    font-size: 0.95rem;
+  }
+
+  .card-download-btn {
+    width: 100%;
+    justify-content: center;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+  }
+}

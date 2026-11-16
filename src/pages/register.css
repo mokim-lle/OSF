@@ -1,0 +1,610 @@
+/* ============================================================
+   加入會員 (Register Page) — 依據 1440px 桌面端設計稿
+   ============================================================ */
+
+.register-page {
+  min-height: 100vh;
+  background: var(--color-bg-light);
+  padding-bottom: 100px;
+  padding-top: var(--header-height);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 消除 page-content-offset 的 margin-top */
+.page-content:has(.register-page) {
+  background: var(--color-bg-light);
+  margin-top: 0 !important;
+}
+
+/* 頂部背景裝飾弧形（同聯絡我們與臨床支持） */
+.register-bg-dome-wrapper {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  width: 100%;
+  max-width: 1440px;
+  min-width: 1200px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.register-bg-dome {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 麵包屑 Breadcrumb */
+.register-breadcrumb {
+  padding: 20px 40px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  position: relative;
+  z-index: 1;
+}
+
+.register-breadcrumb .breadcrumb-link {
+  color: #2B6EB0;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color var(--transition-fast);
+}
+
+.register-breadcrumb .breadcrumb-link:hover {
+  color: var(--color-text-dark);
+}
+
+.register-breadcrumb .breadcrumb-sep {
+  margin: 0 6px;
+  color: #b0bbc8;
+}
+
+.register-breadcrumb .breadcrumb-current {
+  color: var(--color-text-dark-muted);
+  text-transform: uppercase;
+}
+
+/* 頁面標題區 (Hero) */
+.register-hero {
+  text-align: center;
+  padding: 24px 40px 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.register-title {
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.register-subtitle {
+  font-size: 0.92rem;
+  color: var(--color-text-dark-muted);
+  line-height: 1.7;
+}
+
+/* 步驟指示器 Step Indicator */
+.register-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.step-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-family: var(--font-body);
+  background: #eef2f6;
+  color: #64748b;
+  transition: all var(--transition-fast);
+}
+
+.step-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #94a3b8;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  transition: color var(--transition-fast);
+}
+
+.step-separator {
+  color: #cbd5e1;
+  font-size: 0.85rem;
+  margin-bottom: 18px; /* 對齊圓圈高度 */
+  user-select: none;
+}
+
+/* 步驟：當前進行中 (Active) */
+.step-item.step-active .step-circle {
+  background: #1875c7;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(24, 117, 199, 0.25);
+}
+
+.step-item.step-active .step-name {
+  color: #1875c7;
+  font-weight: 700;
+}
+
+/* 步驟：已完成 (Completed) */
+.step-item.step-completed .step-circle {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.step-item.step-completed .step-circle svg {
+  width: 14px;
+  height: 14px;
+  stroke: #0284c7;
+  stroke-width: 2.8;
+}
+
+.step-item.step-completed .step-name {
+  color: #0284c7;
+}
+
+/* 卡片外層包裝 */
+.register-card-wrapper {
+  max-width: 540px;
+  width: 90%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* 卡片本體 */
+.register-card {
+  background: #ffffff;
+  border: 1px solid var(--color-border-light, #e2e8f0);
+  border-radius: 2px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
+  padding: 44px 44px 36px;
+  position: relative;
+}
+
+/* 表單群組 */
+.reg-form-group {
+  margin-bottom: 22px;
+}
+
+.reg-label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.req-star {
+  color: #e11d48;
+  margin-left: 2px;
+}
+
+/* 輸入框 */
+.reg-input {
+  width: 100%;
+  height: 44px;
+  padding: 10px 14px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 2px;
+  font-size: 0.92rem;
+  color: #1e293b;
+  font-family: var(--font-body);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.reg-input::placeholder {
+  color: #94a3b8;
+}
+
+.reg-input:focus {
+  border-color: #1875c7;
+  box-shadow: 0 0 0 3px rgba(24, 117, 199, 0.12);
+}
+
+.reg-input.input-error {
+  border-color: #e11d48;
+  background: #fff5f5;
+}
+
+/* 下拉選單 Select */
+.reg-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.reg-select {
+  width: 100%;
+  height: 44px;
+  padding: 10px 36px 10px 14px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 2px;
+  font-size: 0.92rem;
+  color: #1e293b;
+  font-family: var(--font-body);
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.reg-select:focus {
+  border-color: #1875c7;
+  box-shadow: 0 0 0 3px rgba(24, 117, 199, 0.12);
+}
+
+.reg-select-arrow {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #64748b;
+}
+
+/* 說明輔助字 */
+.reg-helper-text {
+  font-size: 0.78rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin-top: 6px;
+}
+
+/* 單選 Radio 群組 */
+.reg-radio-group {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-top: 10px;
+}
+
+.reg-radio-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #334155;
+  cursor: pointer;
+  user-select: none;
+}
+
+.reg-radio-label input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #1875c7;
+  cursor: pointer;
+  margin: 0;
+}
+
+/* 條款核取方塊 Checkbox */
+.reg-checkbox-group {
+  margin: 24px 0 28px;
+}
+
+.reg-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.86rem;
+  color: #334155;
+  cursor: pointer;
+  user-select: none;
+}
+
+.reg-checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #1875c7;
+  cursor: pointer;
+  margin: 0;
+}
+
+.reg-link {
+  color: #1875c7;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.reg-link:hover {
+  text-decoration: underline;
+  color: #145fa3;
+}
+
+/* 主按鈕 */
+.reg-primary-btn {
+  width: 100%;
+  height: 46px;
+  background: var(--color-blue-btn, #1875c7);
+  color: #ffffff;
+  border: none;
+  border-radius: 2px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.reg-primary-btn:hover {
+  background: #145fa3;
+}
+
+.reg-primary-btn:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* 底部跳轉文字 */
+.reg-footer-tip {
+  text-align: center;
+  font-size: 0.86rem;
+  color: #64748b;
+  margin-top: 24px;
+}
+
+.reg-footer-tip a {
+  color: #1875c7;
+  text-decoration: underline;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.reg-footer-tip a:hover {
+  color: #145fa3;
+}
+
+/* ============================================================
+   狀態 1-B：已發送驗證信畫面 (Step 1-B)
+   ============================================================ */
+.verify-view {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.verify-icon-wrapper {
+  margin: 8px auto 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.verify-icon {
+  width: 68px;
+  height: 60px;
+  display: block;
+}
+
+.verify-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.verify-subtitle {
+  font-size: 0.88rem;
+  color: #64748b;
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.verify-input-group {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.verify-input-group .reg-input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+}
+
+.verify-resend-btn {
+  height: 44px;
+  padding: 0 16px;
+  background: #94a3b8;
+  color: #ffffff;
+  border: 1px solid #94a3b8;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  font-size: 0.85rem;
+  font-family: var(--font-body);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.verify-resend-btn:not(:disabled):hover {
+  background: #64748b;
+}
+
+.verify-resend-btn:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  opacity: 0.9;
+}
+
+/* ============================================================
+   狀態 2：填寫資料 (Step 2)
+   ============================================================ */
+.step2-notice-box {
+  border-left: 2px solid #cbd5e1;
+  padding: 4px 0 4px 16px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+
+.step2-notice-text {
+  font-size: 0.82rem;
+  color: #64748b;
+  line-height: 1.75;
+}
+
+/* ============================================================
+   狀態 3：送出審核完成畫面 (Step 3)
+   ============================================================ */
+.success-view {
+  text-align: center;
+  padding: 24px 0 12px;
+}
+
+.success-icon-wrapper {
+  margin: 0 auto 24px;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #e0f2fe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.success-icon-wrapper svg {
+  width: 36px;
+  height: 36px;
+  stroke: #0284c7;
+  stroke-width: 2.5;
+}
+
+.success-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 12px;
+}
+
+.success-desc {
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.8;
+  margin-bottom: 32px;
+}
+
+/* 欄位錯誤提示 */
+.field-error-msg {
+  color: #e11d48;
+  font-size: 0.78rem;
+  margin-top: 4px;
+  display: none;
+}
+
+.field-error-msg.show {
+  display: block;
+}
+
+/* ============================================================
+   RWD — 平板端 Pad 768px ~ 1024px
+   ============================================================ */
+@media (max-width: 1024px) {
+  .register-card-wrapper {
+    max-width: 520px;
+  }
+
+  .register-card {
+    padding: 36px 36px 30px;
+  }
+}
+
+/* ============================================================
+   RWD — 手機端 Mobile 375px
+   ============================================================ */
+@media (max-width: 768px) {
+  .register-breadcrumb {
+    padding: 16px 20px;
+  }
+
+  .register-hero {
+    padding: 16px 20px 24px;
+  }
+
+  .register-title {
+    font-size: 1.8rem;
+  }
+
+  .register-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .register-steps {
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .step-circle {
+    width: 26px;
+    height: 26px;
+    font-size: 0.78rem;
+  }
+
+  .step-name {
+    font-size: 0.75rem;
+  }
+
+  .step-separator {
+    font-size: 0.75rem;
+    margin-bottom: 16px;
+  }
+
+  .register-card-wrapper {
+    width: 92%;
+    padding: 0;
+  }
+
+  .register-card {
+    padding: 28px 22px 24px;
+  }
+
+  .reg-radio-group {
+    gap: 20px;
+  }
+
+  .verify-input-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .verify-input-group .reg-input {
+    border-radius: 2px;
+    border-right: 1px solid #cbd5e1;
+  }
+
+  .verify-resend-btn {
+    width: 100%;
+    border-radius: 2px;
+  }
+}

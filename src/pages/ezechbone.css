@@ -1,0 +1,1232 @@
+/* ============================================================
+   Ezechbone 產品頁樣式 — 目前僅為區塊骨架佔位樣式
+   各區細節待設計稿截圖後再補上
+   ============================================================ */
+
+/* 消除 page-content-offset 的 margin-top 並替換全域深黑底色，讓滿版 Hero 頂格延伸至視窗最頂部、滑動時無黑色背景與分離感 */
+html:has(.ezb-page),
+body:has(.ezb-page),
+#app:has(.ezb-page),
+.page-content:has(.ezb-page) {
+  background: #E3E8FC !important;
+}
+
+.page-content:has(.ezb-page) {
+  margin-top: 0 !important;
+}
+
+/* ------------------------------------------------------------
+   Ezechbone 專屬色票（僅作用於本頁 .ezb-page，不影響全站）
+   ------------------------------------------------------------ */
+.ezb-page {
+  /* Blue Marguerite — 內容層級、資訊架構（主品牌色） */
+  --ezb-purple-50: #F0F3FD;
+  --ezb-purple-100: #E3E8FC;
+  --ezb-purple-200: #CDD5F8;
+  --ezb-purple-300: #AEB9F3;
+  --ezb-purple-400: #8E96EB;
+  --ezb-purple-500: #7273E2;
+  --ezb-purple-600: #665ED6;
+  --ezb-purple-700: #5147BB;
+  --ezb-purple-800: #432C97;
+  --ezb-purple-900: #3A3778;
+  --ezb-purple-950: #232046;
+
+  /* Jordy Blue — 輔助色 */
+  --ezb-blue-50: #EFF4FF;
+  --ezb-blue-100: #DAE5FF;
+  --ezb-blue-200: #BED3FF;
+  --ezb-blue-300: #99BDFF;
+  --ezb-blue-400: #5D92FD;
+  --ezb-blue-500: #376AFA;
+  --ezb-blue-600: #2149EF;
+  --ezb-blue-700: #1935DC;
+  --ezb-blue-800: #1B2CB2;
+  --ezb-blue-900: #1C2C8C;
+  --ezb-blue-950: #161D55;
+
+  /* Gray — 內容層級、資訊架構 */
+  --ezb-gray-50: #F2F2F7;
+  --ezb-gray-100: #E3E4E8;
+  --ezb-gray-200: #CECFD4;
+  --ezb-gray-300: #ACAEB3;
+  --ezb-gray-400: #8A8D92;
+  --ezb-gray-500: #686C71;
+  --ezb-gray-600: #464B50;
+  --ezb-gray-700: #323539;
+  --ezb-gray-800: #1E1F22;
+  --ezb-gray-900: #090A0B;
+  --ezb-gray-950: #0D1B2A;
+
+  /* Green — 狀態達成、數據增長 */
+  --ezb-green-50: #EFFAF3;
+  --ezb-green-100: #D7F4E0;
+  --ezb-green-200: #B3E7C6;
+  --ezb-green-300: #81D4A4;
+  --ezb-green-400: #4BBA7E;
+  --ezb-green-500: #1B804F;
+  --ezb-green-600: #1B804F;
+  --ezb-green-700: #166641;
+  --ezb-green-800: #11432D;
+  --ezb-green-900: #06261A;
+  --ezb-green-950: #2D313E;
+
+  /* Yellow — 風險提示、中間狀態 */
+  --ezb-yellow-50: #FFFCEA;
+  --ezb-yellow-100: #FFF5C5;
+  --ezb-yellow-200: #FFEB85;
+  --ezb-yellow-300: #FFDA46;
+  --ezb-yellow-400: #FFC71B;
+  --ezb-yellow-500: #FFA900;
+  --ezb-yellow-600: #E28100;
+  --ezb-yellow-700: #BB5820;
+  --ezb-yellow-800: #984408;
+  --ezb-yellow-900: #7C380B;
+  --ezb-yellow-950: #481C00;
+
+  /* Red — 關鍵警示、破壞性動作 */
+  --ezb-red-50: #FDF3F3;
+  --ezb-red-100: #F5CACA;
+  --ezb-red-200: #EBA5A5;
+  --ezb-red-300: #D47070;
+  --ezb-red-400: #B73A3A;
+  --ezb-red-500: #A80000;
+  --ezb-red-600: #8A0000;
+  --ezb-red-700: #6E0000;
+  --ezb-red-800: #520000;
+  --ezb-red-900: #360000;
+  --ezb-red-950: #1A0000;
+
+  /* 語意化 Token（依色票標註） */
+  --ezb-brand-primary: var(--ezb-purple-600);   /* 預設狀態 */
+  --ezb-brand-hover: var(--ezb-purple-700);
+  --ezb-brand-active: var(--ezb-purple-800);    /* 背景/選中狀態 */
+  --ezb-bg-dark: var(--ezb-purple-950);         /* 深底色 */
+
+  --ezb-highlight: var(--ezb-blue-400);         /* 強調色 */
+  --ezb-sec: var(--ezb-blue-700);               /* 輔助色預設 */
+  --ezb-sec-hover: var(--ezb-blue-800);
+  --ezb-sec-active: var(--ezb-blue-900);
+
+  --ezb-bg-light: var(--ezb-gray-50);           /* 淺底色 */
+  --ezb-border-light: var(--ezb-gray-100);      /* 淺邊框 */
+  --ezb-border: var(--ezb-gray-300);            /* 邊框 */
+  --ezb-text-300: var(--ezb-gray-400);          /* 補充說明 */
+  --ezb-text-200: var(--ezb-gray-600);          /* 內文 */
+  --ezb-text-100: var(--ezb-gray-800);          /* 標題/重點 */
+
+  --ezb-success-bg: var(--ezb-green-200);
+  --ezb-success: var(--ezb-green-600);
+  --ezb-success-hover: var(--ezb-green-800);
+  --ezb-success-active: var(--ezb-green-900);
+
+  --ezb-warning-bg: var(--ezb-yellow-200);
+  --ezb-warning: var(--ezb-yellow-500);
+  --ezb-warning-hover: var(--ezb-yellow-600);
+  --ezb-warning-active: var(--ezb-yellow-800);
+
+  --ezb-error-bg: var(--ezb-red-100);
+  --ezb-error: var(--ezb-red-500);
+  --ezb-error-hover: var(--ezb-red-600);
+  --ezb-error-active: var(--ezb-red-700);
+
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* 防孤字：段落最後一行不得只剩一個字（搭配 utils/text.ts noOrphan） */
+.ezb-page :is(h1, h2, h3, h4, p, li) {
+  text-wrap: pretty;
+}
+
+.ezb-container {
+  width: 100%;
+  max-width: calc(1200px + 48px); /* 設計稿 1440 內容寬 1200px */
+  margin: 0 auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+/* 暫時佔位框：刻畫各區後移除 */
+.ezb-placeholder {
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--color-text-dark-muted);
+  color: var(--color-text-dark-muted);
+  font-size: 0.9rem;
+}
+
+/* 共用：區塊小標（OVERVIEW | EZECHBONE） */
+.ezb-eyebrow {
+  margin: 0;
+  font-family: var(--font-mono, Inter, sans-serif);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: var(--ezb-highlight);
+  text-transform: uppercase;
+}
+
+.ezb-eyebrow-sep {
+  margin: 0 0.6em;
+}
+
+/* 1. HERO 主視覺 — 滿版 Banner（頂格延伸至視窗最頂部，與 Header 無縫銜接無分離感） */
+.ezb-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 640px;
+  padding-top: var(--header-height);
+  box-sizing: border-box;
+  overflow: hidden;
+  background: var(--ezb-purple-100); /* 圖片未放入前的底色，避免破版 */
+}
+
+.ezb-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.ezb-hero-bg picture,
+.ezb-hero-bg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ezb-hero-bg img {
+  object-fit: cover;
+  object-position: center;
+}
+
+/* 壓一層漸層背景色遮罩，提升文字易讀性與視覺層次 */
+.ezb-hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(107, 102, 222, 0) 0%, rgba(58, 55, 120, 0.5) 100%);
+  pointer-events: none;
+}
+
+.ezb-hero-inner {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 80px;
+}
+
+.ezb-hero-title {
+  margin: 0;
+  font-size: 3rem;          /* 48px */
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  word-break: break-word;
+}
+
+.ezb-hero-title-en {
+  font-family: Inter, var(--font-heading, 'Noto Sans TC'), sans-serif;
+}
+
+.ezb-hero-title sup {
+  font-size: 0.5em;
+  vertical-align: super;
+  line-height: 0;
+}
+
+.ezb-hero-br-mobile {
+  display: none;
+}
+
+.ezb-hero-space {
+  display: inline;
+}
+
+.ezb-hero-subtitle {
+  margin: 18px 0 0;
+  font-size: 1.125rem;       /* 18px */
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* 麵包屑 — 左上方 HOME / EZECHBONE（全斷點依設計稿精準呈現） */
+.ezb-hero-crumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 40px;
+  margin-bottom: auto;   /* 置於 Banner 頂部，標題維持沉底 */
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.92);
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.ezb-hero-crumb a {
+  color: rgba(255, 255, 255, 0.72);
+  text-decoration: none;
+  transition: color var(--transition-fast, 160ms ease);
+}
+
+.ezb-hero-crumb a:hover {
+  color: #ffffff;
+}
+
+.ezb-hero-crumb-sep {
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 400;
+}
+
+.ezb-hero-crumb span:last-child {
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 0.12em;
+}
+
+@media (max-width: 1024px) {
+  /* Tablet 768：對照設計稿 768×1024 比例（3:4），文字壓在產品盒下緣、靠近底部 */
+  .ezb-hero {
+    height: min(100dvh, calc(100vw * 4 / 3));
+    min-height: 560px;
+  }
+  .ezb-hero-bg img {
+    object-position: center bottom;
+  }
+  .ezb-hero-inner {
+    padding-bottom: 88px;
+  }
+  .ezb-hero-crumb {
+    gap: 8px;
+    margin-top: 36px;
+    font-size: 0.8125rem;
+  }
+  .ezb-hero-title {
+    font-size: clamp(2.5rem, 6.4vw, 3rem);  /* 768 → 48px */
+    line-height: 1.45;
+  }
+  .ezb-hero-subtitle {
+    margin-top: 28px;
+    font-size: 1.125rem;   /* 18px */
+    letter-spacing: 0.04em;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Mobile 375：滿版直式 Banner，三行大標（Ezechbone® / CBS-400 / 全合成多效設計） */
+  .ezb-hero {
+    height: 100svh;
+    height: 100dvh;
+    min-height: 620px;
+  }
+  .ezb-hero-bg img {
+    object-position: center 45%;
+  }
+  .ezb-hero-inner {
+    padding-bottom: clamp(68px, 9.5dvh, 92px);
+  }
+  .ezb-hero-crumb {
+    margin-top: 36px;
+    font-size: 0.8125rem;
+  }
+  .ezb-hero-title {
+    font-size: clamp(1.875rem, 8vw, 2.375rem);  /* 375 → 32px, 430 → 34px, 577 → 38px */
+    line-height: 1.25;
+    letter-spacing: 0.015em;
+  }
+  .ezb-hero-br-mobile { display: inline; }
+  .ezb-hero-space { display: none; }
+  .ezb-hero-subtitle {
+    margin-top: clamp(18px, 2.6dvh, 24px);
+    margin-bottom: 0;
+    font-size: clamp(0.9375rem, 3.8vw, 1.0625rem);       /* 15px ~ 16px */
+    line-height: 1.45;
+    letter-spacing: 0.04em;
+  }
+}
+
+@media (max-width: 360px) {
+  .ezb-container {
+    padding-left: max(14px, env(safe-area-inset-left));
+    padding-right: max(14px, env(safe-area-inset-right));
+  }
+}
+
+/* 2. 產品介紹 */
+.ezb-intro {
+  position: relative;
+  padding: 136px 0 128px;
+  background:
+    radial-gradient(ellipse 60% 70% at 50% 75%, var(--ezb-purple-100) 0%, rgba(227, 232, 252, 0) 70%),
+    linear-gradient(180deg, #ffffff 0%, var(--ezb-purple-50) 100%);
+}
+
+.ezb-intro-title {
+  margin: 56px 0 56px;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--ezb-text-100);
+}
+
+.ezb-intro-title-en {
+  font-family: Inter, var(--font-heading, 'Noto Sans TC'), sans-serif;
+}
+
+.ezb-intro-title sup {
+  font-size: 0.55em;
+  vertical-align: super;
+  line-height: 0;
+}
+
+.ezb-intro-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.ezb-intro-card {
+  padding: 32px;
+  min-height: 168px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-sizing: border-box;
+}
+
+.ezb-intro-card h3 {
+  margin: 0 0 4px;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--ezb-text-100);
+}
+
+.ezb-intro-card p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ezb-text-200);
+}
+
+/* Pad：卡片改單欄、標題維持 36px */
+@media (max-width: 1024px) {
+  .ezb-container { padding: 0 40px; }
+  .ezb-eyebrow { text-transform: none; }
+  .ezb-intro { padding: 88px 0 80px; }
+  .ezb-intro-title { margin: 56px 0; line-height: 1.6; }
+  .ezb-intro-cards { grid-template-columns: 1fr; gap: 24px; }
+  .ezb-intro-card { min-height: 0; padding: 32px 36px; }
+}
+
+/* Mobile：標題 24px、卡片單欄 */
+@media (max-width: 768px) {
+  .ezb-container { padding: 0 24px; }
+  .ezb-intro { padding: 64px 0; }
+  .ezb-intro-title { margin: 40px 0 36px; font-size: 1.5rem; line-height: 1.5; }
+  .ezb-intro-cards { gap: 24px; }
+  .ezb-intro-card { padding: 28px 24px; }
+}
+
+/* 3. 材料結構 */
+.ezb-structure {
+  position: relative;
+  padding: 128px 0;
+  text-align: center;
+  background:
+    /* 底部淡紫染色（拱形內外皆有） */
+    linear-gradient(180deg, rgba(227, 232, 252, 0) 50%, rgba(227, 232, 252, 0.7) 100%),
+    /* 拱形白色主體（Dome） */
+    radial-gradient(ellipse 53.5% 99% at 50% 100%,
+      #FFFFFF 0%,
+      #FCFCFF 85%,
+      #F7F8FE 98.5%,
+      #FFFFFF 99.3%,
+      rgba(255, 255, 255, 0) 100%),
+    /* 拱形外圍深色暈染（左右兩側最深） */
+    radial-gradient(ellipse 72% 135% at 50% 100%,
+      var(--ezb-purple-200) 0%,
+      var(--ezb-purple-200) 74%,
+      rgba(205, 213, 248, 0.55) 86%,
+      rgba(205, 213, 248, 0) 100%),
+    var(--ezb-purple-50);
+}
+
+.ezb-structure-title {
+  margin: 0;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.55;
+  color: var(--ezb-gray-950);
+}
+
+.ezb-structure-desc {
+  margin: 32px auto 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--ezb-text-200);
+}
+
+/* 三段說明各自獨立成行（設計稿指定換行） */
+.ezb-structure-line {
+  display: block;
+}
+
+.ezb-structure-desc sup,
+.ezb-intro-card sup {
+  font-size: 0.6em;
+  line-height: 0;
+}
+
+.ezb-features {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 88px;
+}
+
+.ezb-feature {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 24px;
+}
+
+/* 欄間漸層分隔線（上下淡出） */
+.ezb-feature + .ezb-feature::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: linear-gradient(180deg,
+    rgba(174, 185, 243, 0) 0%,
+    var(--ezb-purple-300) 50%,
+    rgba(174, 185, 243, 0) 100%);
+}
+
+.ezb-feature-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 32px;
+}
+
+.ezb-feature-icon img,
+.ezb-feature-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 內建 SVG 僅在圖檔載入失敗時顯示 */
+.ezb-feature-icon-fallback {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+.ezb-feature h3 {
+  margin: 0 0 4px;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--ezb-text-100);
+}
+
+.ezb-feature p {
+  margin: 0 auto;
+  max-width: 15.5em; /* 依設計稿換行位置：「…專案核准治療 / 關節內…」 */
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--ezb-text-200);
+}
+
+/* Pad：2 × 2，僅左右欄之間有分隔線 */
+@media (max-width: 1024px) {
+  .ezb-structure {
+    padding: 88px 0 80px;
+    background:
+      /* 上方淡白弧形光暈（越靠弧線越亮） */
+      radial-gradient(ellipse 73% 100% at 50% 100%,
+        rgba(255, 255, 255, 0) 63%,
+        rgba(255, 255, 255, 0.32) 88%,
+        rgba(255, 255, 255, 0.5) 93%,
+        rgba(255, 255, 255, 0.75) 99%,
+        rgba(255, 255, 255, 0) 100%),
+      /* 主體：淺藍 → 藍（Jordy Blue 50 → 200），依截圖取色 */
+      linear-gradient(180deg,
+        var(--ezb-blue-50) 0%,
+        #EBF2FF 19%,
+        #E8EEFE 37%,
+        #DBE6FF 55%,
+        #CBDCFF 72%,
+        #C3D6FF 90%,
+        var(--ezb-blue-200) 100%);
+  }
+  .ezb-structure-title { line-height: 1.45; }
+  .ezb-features {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 40px;
+    margin-top: 80px;
+  }
+  .ezb-feature { padding: 0 32px; }
+  .ezb-feature + .ezb-feature::before { display: none; }
+  .ezb-feature:nth-child(even)::before { display: block; }
+  .ezb-feature p { max-width: 17.5em; } /* 「…治療關節 / 內、周圍…」 */
+}
+
+/* Mobile：單欄、無分隔線 */
+@media (max-width: 768px) {
+  .ezb-structure {
+    padding: 96px 0 72px;
+    background:
+      radial-gradient(ellipse 125% 100% at 50% 100%,
+        rgba(255, 255, 255, 0) 88%,
+        rgba(255, 255, 255, 0.4) 97%,
+        rgba(255, 255, 255, 0.75) 99.5%,
+        rgba(255, 255, 255, 0) 100%),
+      linear-gradient(180deg,
+        var(--ezb-blue-50) 0%,
+        #ECF0FD 12%,
+        #E1E9FE 25%,
+        #D7E4FF 50%,
+        #CBDBFF 75%,
+        var(--ezb-blue-200) 100%);
+  }
+  .ezb-structure-title { font-size: 1.5rem; line-height: 1.35; }
+  .ezb-structure-desc { margin-top: 24px; line-height: 1.2; }
+  .ezb-features {
+    grid-template-columns: 1fr;
+    row-gap: 32px;
+    margin-top: 64px;
+  }
+  .ezb-feature { padding: 0; }
+  .ezb-feature:nth-child(even)::before { display: none; }
+  .ezb-feature-icon { width: 44px; height: 44px; margin-bottom: 28px; }
+  .ezb-feature h3 { font-size: 1rem; }
+  .ezb-feature p { font-size: 0.875rem; }
+}
+
+/* ============================================================
+   4. 比較表 — CBS-400 與自異體補骨材料臨床特性全解析
+   ============================================================ */
+.ezb-compare {
+  position: relative;
+  padding: 120px 0 140px;
+  background: #ffffff;
+}
+
+.ezb-compare-eyebrow {
+  text-align: center;
+  color: var(--ezb-blue-400);
+  margin-bottom: 24px;
+}
+
+.ezb-compare-title {
+  margin: 0 0 56px;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--ezb-gray-950);
+  text-align: center;
+}
+
+.ezb-compare-title-br {
+  display: none;
+}
+
+.ezb-compare-br-desktop {
+  display: inline;
+}
+
+.ezb-compare-table {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+/* 桌面端欄位標頭 (Desktop only) */
+.ezb-compare-head {
+  display: grid;
+  grid-template-columns: 240px 1fr 1fr;
+  align-items: center;
+  padding-bottom: 16px;
+}
+
+.ezb-compare-head-col {
+  display: flex;
+  align-items: center;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  gap: 8px;
+}
+
+.ezb-compare-head-adv {
+  padding-left: 36px;
+  color: var(--ezb-purple-800);
+}
+
+.ezb-compare-head-lim {
+  padding-left: 36px;
+  color: var(--ezb-blue-600);
+}
+
+.ezb-compare-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.ezb-compare-icon-adv {
+  color: var(--ezb-purple-600);
+}
+
+.ezb-compare-icon-lim {
+  color: var(--ezb-blue-500);
+}
+
+.ezb-compare-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* 表格主體 Rows */
+.ezb-compare-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.ezb-compare-row {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  align-items: stretch;
+  position: relative;
+}
+
+/* 左側名稱欄 */
+.ezb-compare-name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px;
+  background: var(--ezb-purple-950);
+  color: #ffffff;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.ezb-compare-name h3 {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.45;
+  color: #ffffff;
+}
+
+.ezb-compare-name sup {
+  font-size: 0.6em;
+  vertical-align: super;
+  line-height: 0;
+}
+
+/* Featured (CBS-400) */
+.ezb-compare-row-featured {
+  z-index: 2;
+}
+
+.ezb-compare-row-featured .ezb-compare-name {
+  background: var(--ezb-purple-900);
+}
+
+/* 右側內容區 */
+.ezb-compare-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 28px 36px;
+  box-sizing: border-box;
+}
+
+.ezb-compare-row-featured .ezb-compare-content {
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(58, 55, 120, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  color: var(--ezb-purple-700);
+}
+
+/* 一般列內容背景交錯（灰、白、灰） */
+.ezb-compare-row:nth-child(2) .ezb-compare-content {
+  background: var(--ezb-gray-50);
+}
+
+.ezb-compare-row:nth-child(3) .ezb-compare-content {
+  background: #ffffff;
+}
+
+.ezb-compare-row:nth-child(4) .ezb-compare-content {
+  background: var(--ezb-gray-50);
+}
+
+/* 桌面端隱藏卡片內部小標頭 */
+.ezb-compare-subhead {
+  display: none;
+}
+
+/* 內容欄位 */
+.ezb-compare-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.ezb-compare-adv {
+  padding-right: 24px;
+}
+
+.ezb-compare-lim {
+  padding-left: 12px;
+}
+
+/* 清單與自定義圓點 */
+.ezb-compare-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ezb-compare-list li {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 8px;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--ezb-gray-600);
+}
+
+.ezb-compare-list li:last-child {
+  margin-bottom: 0;
+}
+
+.ezb-compare-list li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 0.65em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.ezb-compare-row-featured .ezb-compare-list li {
+  color: var(--ezb-purple-700);
+}
+
+/* （ 無限制 ） */
+.ezb-compare-unlimited {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ezb-purple-700);
+  padding-left: 16px;
+}
+
+/* Pad 平板版：768px ~ 1024px */
+@media (max-width: 1024px) {
+  .ezb-compare {
+    padding: 88px 0 96px;
+  }
+
+  .ezb-compare-title {
+    margin-bottom: 48px;
+    font-size: 2rem;
+    line-height: 1.35;
+  }
+
+  .ezb-compare-title-br {
+    display: inline;
+  }
+
+  .ezb-compare-br-desktop {
+    display: none;
+  }
+
+  .ezb-compare-head {
+    display: none;
+  }
+
+  .ezb-compare-body {
+    gap: 24px;
+  }
+
+  .ezb-compare-row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ezb-compare-name {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 24px;
+  }
+
+  .ezb-compare-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding: 28px 32px;
+  }
+
+  .ezb-compare-adv {
+    padding-right: 0;
+  }
+
+  .ezb-compare-lim {
+    padding-left: 0;
+  }
+
+  .ezb-compare-subhead {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    font-size: 0.9375rem;
+    font-weight: 700;
+  }
+
+  .ezb-compare-subhead-adv {
+    color: var(--ezb-purple-800);
+  }
+
+  .ezb-compare-subhead-lim {
+    color: var(--ezb-blue-600);
+  }
+
+  .ezb-compare-unlimited {
+    height: auto;
+    padding-left: 0;
+    margin-top: 4px;
+  }
+}
+
+/* Mobile 手機版：≤ 768px */
+@media (max-width: 768px) {
+  .ezb-compare {
+    padding: 64px 0 80px;
+  }
+
+  .ezb-compare-title {
+    margin-bottom: 36px;
+    font-size: 1.5rem;
+    line-height: 1.4;
+  }
+
+  .ezb-compare-body {
+    gap: 20px;
+  }
+
+  .ezb-compare-name {
+    min-height: 44px;
+    padding: 10px 16px;
+  }
+
+  .ezb-compare-name h3 {
+    font-size: 0.9375rem;
+  }
+
+  .ezb-compare-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px 20px;
+  }
+
+  .ezb-compare-subhead {
+    margin-bottom: 10px;
+    font-size: 0.875rem;
+  }
+
+  .ezb-compare-list li {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .ezb-compare-unlimited {
+    font-size: 0.875rem;
+  }
+}
+
+/* 5. 標語橫幅 */
+.ezb-slogan {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.ezb-slogan-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 預設漸層底圖：僅在尚未貼入 SVG（容器為空）時顯示，貼入後即消失 */
+.ezb-slogan-bg:empty {
+  background:
+    radial-gradient(ellipse 40% 90% at 55% 15%, #ffd3f3 0%, rgba(255, 211, 243, 0) 70%),
+    radial-gradient(ellipse 35% 80% at 12% 95%, #8e96eb 0%, rgba(142, 150, 235, 0) 70%),
+    radial-gradient(ellipse 30% 80% at 95% 90%, #9dbcff 0%, rgba(157, 188, 255, 0) 70%),
+    linear-gradient(90deg, #d6e4ff 0%, #e6dcf8 50%, #b9c4f5 100%);
+}
+
+.ezb-slogan-bg svg {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+}
+
+.ezb-slogan-text {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0 24px;
+  text-align: center;
+  font-size: 2.125rem;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  text-shadow: 0 2px 12px rgba(67, 44, 151, 0.2);
+}
+
+/* Desktop：同一行；高度對應 SVG 1440×310 */
+.ezb-slogan { min-height: 310px; }
+
+/* Tablet：≤ 1024px（兩行：完美整合引導止血與溫和控炎 / 啟動高效骨再生新未來） */
+@media (max-width: 1024px) {
+  .ezb-slogan { min-height: 270px; }
+  .ezb-slogan-text { font-size: 2.5rem; }
+  .ezb-slogan-c { display: block; }
+}
+
+/* Mobile：≤ 768px（三行：完美整合 / 引導止血與溫和控炎 / 啟動高效骨再生新未來） */
+@media (max-width: 768px) {
+  .ezb-slogan { min-height: 220px; }
+  .ezb-slogan-text { font-size: 1.125rem; }
+  .ezb-slogan-a,
+  .ezb-slogan-b,
+  .ezb-slogan-c { display: block; }
+}
+
+/* 6. 會員 CTA */
+.ezb-member-cta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  max-width: 100%;
+  min-height: 560px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.ezb-member-cta-media {
+  position: relative;
+  min-height: 100%;
+  overflow: hidden;
+  /* 圖片缺失時的底色 */
+  background: linear-gradient(135deg, var(--ezb-purple-300) 0%, var(--ezb-purple-700) 100%);
+}
+
+.ezb-member-cta-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.ezb-image-credit {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  z-index: 4;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.ezb-image-credit:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.ezb-member-cta-body {
+  display: flex;
+  align-items: center;
+  padding: 64px 24px 64px 80px;
+  box-sizing: border-box;
+}
+
+.ezb-member-cta-inner {
+  width: 100%;
+  max-width: 560px;
+}
+
+.ezb-member-cta-title {
+  margin: 28px 0 24px;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--ezb-text-100);
+}
+
+.ezb-member-cta-desc {
+  margin: 0 0 40px;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--ezb-text-200);
+}
+
+.ezb-member-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ezb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 24px;
+  box-sizing: border-box;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  border: 1px solid var(--ezb-brand-primary);
+  transition: background-color 320ms cubic-bezier(0.65, 0, 0.35, 1),
+              color 320ms cubic-bezier(0.65, 0, 0.35, 1),
+              transform 320ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.ezb-btn-primary {
+  background: var(--ezb-brand-primary);
+  color: #ffffff;
+}
+
+.ezb-btn-primary:hover {
+  background: var(--ezb-brand-hover);
+  border-color: var(--ezb-brand-hover);
+  transform: translateY(-2px);
+}
+
+.ezb-btn-outline {
+  background: transparent;
+  color: var(--ezb-purple-700);
+}
+
+.ezb-btn-outline:hover {
+  background: var(--ezb-purple-50);
+  transform: translateY(-2px);
+}
+
+/* Tablet：≤ 1024px */
+@media (max-width: 1024px) {
+  .ezb-member-cta { min-height: 440px; }
+  .ezb-member-cta-body { padding: 48px 24px 48px 48px; }
+  .ezb-member-cta-title { font-size: 1.75rem; }
+}
+
+/* Mobile：≤ 768px（圖上文下，按鈕全寬） */
+@media (max-width: 768px) {
+  .ezb-member-cta { grid-template-columns: 1fr; min-height: 0; }
+  .ezb-member-cta-media { height: 240px; min-height: 240px; }
+  .ezb-member-cta-body { padding: 40px 24px 56px; }
+  .ezb-member-cta-title { margin: 20px 0 16px; font-size: 1.5rem; }
+  .ezb-member-cta-desc { margin-bottom: 28px; }
+  .ezb-member-cta-actions { flex-direction: column; }
+  .ezb-btn { width: 100%; }
+}
+
+/* 7. 注意事項 / 法規聲明 */
+.ezb-notice {
+  width: 100%;
+  max-width: 100%;
+  padding: 56px 0 64px;
+  overflow: hidden;
+  background: var(--ezb-purple-900);
+  color: #ffffff;
+}
+
+.ezb-notice-group + .ezb-notice-group {
+  margin-top: 28px;
+}
+
+.ezb-notice-label {
+  margin: 0 0 12px;
+  font-size: 0.6875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.ezb-notice-license {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: 0.1em;
+}
+
+.ezb-notice-text {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: 0.04em;
+}
+
+.ezb-notice-line {
+  display: block;
+}
+
+/* Tablet：≤ 1024px */
+@media (max-width: 1024px) {
+  .ezb-notice { padding: 48px 0 56px; }
+}
+
+/* Mobile：≤ 768px */
+@media (max-width: 768px) {
+  .ezb-notice { padding: 40px 0 48px; }
+  .ezb-notice-group + .ezb-notice-group { margin-top: 24px; }
+  .ezb-notice-line + .ezb-notice-line { margin-top: 4px; }
+}

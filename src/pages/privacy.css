@@ -1,0 +1,213 @@
+/* ============================================================
+   隱私條款 (Privacy Policy Page) — 對照 1440px 設計稿
+   ============================================================ */
+
+.privacy-page {
+  min-height: 100vh;
+  background: var(--color-bg-light);
+  padding-bottom: 120px;
+  padding-top: var(--header-height);
+  position: relative;
+}
+
+/* 消除 page-content-offset 的 margin-top */
+.page-content:has(.privacy-page) {
+  background: var(--color-bg-light);
+  margin-top: 0 !important;
+}
+
+/* Breadcrumb 與返回按鈕容器 */
+.privacy-breadcrumb-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 40px;
+}
+
+.privacy-breadcrumb {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+.privacy-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1875c7;
+  text-decoration: none;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 6px 14px;
+  border-radius: 2px;
+  transition: all var(--transition-fast);
+}
+
+.privacy-back-btn:hover {
+  background: #f1f5f9;
+  border-color: #1875c7;
+  color: #145fa3;
+}
+
+.privacy-breadcrumb .breadcrumb-link {
+  color: #2B6EB0;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color var(--transition-fast);
+}
+
+.privacy-breadcrumb .breadcrumb-link:hover {
+  color: #1a4f82;
+}
+
+.privacy-breadcrumb .breadcrumb-sep {
+  margin: 0 6px;
+  color: #b0bbc8;
+}
+
+.privacy-breadcrumb .breadcrumb-current {
+  color: var(--color-text-dark-muted);
+  text-transform: uppercase;
+}
+
+/* 頁面標題區 */
+.privacy-hero {
+  text-align: center;
+  padding: 32px 40px 32px;
+}
+
+.privacy-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  letter-spacing: -0.01em;
+}
+
+/* 橫向分隔線 */
+.privacy-divider {
+  max-width: 960px;
+  height: 1px;
+  background: #e2e8f0;
+  margin: 0 auto 48px;
+}
+
+/* 內容容器 */
+.privacy-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.privacy-intro {
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: #334155;
+  margin-bottom: 32px;
+}
+
+.privacy-section {
+  margin-bottom: 32px;
+}
+
+.privacy-section-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+.privacy-section-text {
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+/* 條款有序列表 (ol / li)：修正編號 1 與其他數字不等寬導致視覺歪斜問題 */
+.privacy-container ol,
+.privacy-content-modal ol {
+  padding-left: 2.5rem;
+  margin: 8px 0 16px;
+  list-style-type: decimal;
+}
+
+.privacy-container ol li,
+.privacy-content-modal ol li {
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: #334155;
+  margin-bottom: 6px;
+  padding-left: 0.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.privacy-container ol li::marker,
+.privacy-content-modal ol li::marker {
+  font-family: Consolas, "Courier New", var(--font-mono), monospace;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  color: #334155;
+}
+
+/* ============================================================
+   RWD — Pad 768px
+   ============================================================ */
+@media (max-width: 1024px) {
+  .privacy-breadcrumb {
+    padding: 16px 24px;
+  }
+
+  .privacy-hero {
+    padding: 28px 24px 24px;
+  }
+
+  .privacy-title {
+    font-size: 2rem;
+  }
+
+  .privacy-divider {
+    max-width: 100%;
+    margin: 0 24px 36px;
+  }
+
+  .privacy-container {
+    padding: 0 24px;
+    max-width: 100%;
+  }
+}
+
+/* ============================================================
+   RWD — Mobile 375px
+   ============================================================ */
+@media (max-width: 768px) {
+  .privacy-breadcrumb {
+    padding: 14px 20px;
+  }
+
+  .privacy-hero {
+    padding: 20px 20px 20px;
+  }
+
+  .privacy-title {
+    font-size: 1.75rem;
+  }
+
+  .privacy-divider {
+    margin: 0 20px 28px;
+  }
+
+  .privacy-container {
+    padding: 0 20px;
+  }
+
+  .privacy-intro,
+  .privacy-section-title,
+  .privacy-section-text {
+    font-size: 0.9rem;
+    line-height: 1.8;
+  }
+}

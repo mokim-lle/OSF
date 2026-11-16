@@ -1,0 +1,313 @@
+/* ============================================================
+   會員登入 (Login Page) — 依據 1440px 桌面端設計稿
+   ============================================================ */
+
+.login-page {
+  min-height: 100vh;
+  background: var(--color-bg-light);
+  padding-bottom: 100px;
+  padding-top: var(--header-height);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 消除 page-content-offset 的 margin-top */
+.page-content:has(.login-page) {
+  background: var(--color-bg-light);
+  margin-top: 0 !important;
+}
+
+/* 頂部背景裝飾弧形 */
+.login-bg-dome-wrapper {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  width: 100%;
+  max-width: 1440px;
+  min-width: 1200px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.login-bg-dome {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 麵包屑 Breadcrumb */
+.login-breadcrumb {
+  padding: 20px 40px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  position: relative;
+  z-index: 1;
+}
+
+.login-breadcrumb .breadcrumb-link {
+  color: #2B6EB0;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color var(--transition-fast);
+}
+
+.login-breadcrumb .breadcrumb-link:hover {
+  color: var(--color-text-dark);
+}
+
+.login-breadcrumb .breadcrumb-sep {
+  margin: 0 6px;
+  color: #b0bbc8;
+}
+
+.login-breadcrumb .breadcrumb-current {
+  color: var(--color-text-dark-muted);
+  text-transform: uppercase;
+}
+
+/* 頁面標題區 (Hero) */
+.login-hero {
+  text-align: center;
+  padding: 24px 40px 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.login-title {
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.login-subtitle {
+  font-size: 0.92rem;
+  color: var(--color-text-dark-muted);
+  line-height: 1.7;
+}
+
+/* 卡片外層包裝 */
+.login-card-wrapper {
+  max-width: 540px;
+  width: 90%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* 卡片本體 */
+.login-card {
+  background: #ffffff;
+  border: 1px solid var(--color-border-light, #e2e8f0);
+  border-radius: 2px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
+  padding: 44px 44px 36px;
+  position: relative;
+}
+
+/* 表單群組 */
+.login-form-group {
+  margin-bottom: 22px;
+}
+
+.login-label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.login-req-star {
+  color: #e11d48;
+  margin-left: 2px;
+}
+
+/* 輸入框 */
+.login-input {
+  width: 100%;
+  height: 44px;
+  padding: 10px 14px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 2px;
+  font-size: 0.92rem;
+  color: #1e293b;
+  font-family: var(--font-body);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.login-input::placeholder {
+  color: #94a3b8;
+}
+
+.login-input:focus {
+  border-color: #1875c7;
+  box-shadow: 0 0 0 3px rgba(24, 117, 199, 0.12);
+}
+
+.login-input.input-error {
+  border-color: #e11d48;
+  background: #fff5f5;
+}
+
+/* 忘記密碼連結區塊 */
+.login-forgot-wrap {
+  text-align: right;
+  margin-top: 10px;
+}
+
+.login-forgot-link {
+  color: #1875c7;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  transition: color var(--transition-fast);
+}
+
+.login-forgot-link:hover {
+  color: #145fa3;
+}
+
+/* 主按鈕 */
+.login-primary-btn {
+  width: 100%;
+  height: 46px;
+  margin-top: 24px;
+  background: var(--color-blue-btn, #1875c7);
+  color: #ffffff;
+  border: none;
+  border-radius: 2px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.login-primary-btn:hover {
+  background: #145fa3;
+}
+
+/* 底部註冊導引文字 */
+.login-footer-tip {
+  text-align: center;
+  font-size: 0.86rem;
+  color: #64748b;
+  margin-top: 24px;
+}
+
+.login-footer-tip a {
+  color: #1875c7;
+  text-decoration: underline;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.login-footer-tip a:hover {
+  color: #145fa3;
+}
+
+/* 欄位錯誤提示 */
+.login-error-msg {
+  color: #e11d48;
+  font-size: 0.78rem;
+  margin-top: 4px;
+  display: none;
+}
+
+.login-error-msg.show {
+  display: block;
+}
+
+/* 全域錯誤提示（表單頂部） */
+.login-global-error {
+  display: none;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 2px;
+  color: #dc2626;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.login-global-error.show {
+  display: block;
+}
+
+/* 按鈕 Loading 狀態 */
+.login-primary-btn.loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.login-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: login-spin 0.6s linear infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+@keyframes login-spin {
+  to { transform: rotate(360deg); }
+}
+/* ============================================================
+   RWD — 平板端 Pad 768px ~ 1024px
+   ============================================================ */
+@media (max-width: 1024px) {
+  .login-card-wrapper {
+    max-width: 520px;
+  }
+
+  .login-card {
+    padding: 36px 36px 30px;
+  }
+}
+
+/* ============================================================
+   RWD — 手機端 Mobile 375px
+   ============================================================ */
+@media (max-width: 768px) {
+  .login-breadcrumb {
+    padding: 16px 20px;
+  }
+
+  .login-hero {
+    padding: 16px 20px 24px;
+  }
+
+  .login-title {
+    font-size: 1.8rem;
+  }
+
+  .login-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .login-card-wrapper {
+    width: 92%;
+    padding: 0;
+  }
+
+  .login-card {
+    padding: 28px 22px 24px;
+  }
+}

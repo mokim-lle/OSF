@@ -1,0 +1,650 @@
+/* ============================================================
+   聯絡我們 (Contact Page) — 對照 1440px 設計稿
+   ============================================================ */
+
+.contact-page {
+  min-height: 100vh;
+  background: var(--color-bg-light);
+  padding-bottom: 80px;
+  padding-top: var(--header-height);
+  position: relative;        /* 弧形 SVG 的定位參照 */
+  overflow: hidden;
+}
+
+/* 背景裝飾弧形（弧頂 Y=100 正好落在 contact-hero 標題後方） */
+.contact-bg-dome-wrapper {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  width: 100%;
+  max-width: 1440px;
+  min-width: 1200px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.contact-bg-dome {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 確保內容在弧形上方 */
+.contact-hero,
+.contact-card-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+/* 消除 page-content-offset 的 margin-top */
+.page-content:has(.contact-page) {
+  background: var(--color-bg-light);
+  margin-top: 0 !important;
+}
+
+/* Breadcrumb */
+.contact-breadcrumb {
+  padding: 20px 40px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--color-text-dark-muted);
+}
+
+.breadcrumb-link {
+  color: #2B6EB0;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color var(--transition-fast);
+}
+
+.breadcrumb-link:hover {
+  color: var(--color-text-dark);
+}
+
+.breadcrumb-sep {
+  margin: 0 6px;
+  color: #b0bbc8;
+}
+
+.breadcrumb-current {
+  color: var(--color-text-dark-muted);
+  text-transform: uppercase;
+}
+
+/* 頁面標題區 */
+.contact-hero {
+  text-align: center;
+  padding: 32px 40px 40px;
+}
+
+.contact-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.contact-subtitle {
+  font-size: 0.92rem;
+  color: var(--color-text-dark-muted);
+  line-height: 1.7;
+}
+
+/* 卡片外層 */
+.contact-card-wrapper {
+  max-width: 60%;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 40px 40px;
+}
+
+/* 卡片本體 */
+.contact-card {
+  background: #ffffff;
+  border: 1px solid var(--color-border-light);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* Tab 切換 */
+.contact-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.contact-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* 文字置中 */
+  justify-content: center;
+  gap: 2px;
+  padding: 16px 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.contact-tab:hover {
+  background: #f7f9fc;
+}
+
+.contact-tab.active {
+  border-bottom: 2px solid var(--color-blue-btn);
+  background: #ffffff;
+}
+
+.tab-label-en {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.contact-tab.active .tab-label-en {
+  color: var(--color-text-dark-muted);
+}
+
+.tab-label-zh {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #b0bbc8;
+  line-height: 1.3;
+}
+
+.contact-tab.active .tab-label-zh {
+  color: var(--color-blue-btn);
+}
+
+/* 表單 */
+.contact-form {
+  padding: 5% 10%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  line-height: 1.4;
+}
+
+.required-mark {
+  color: #e53935;
+  margin-left: 2px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--color-border-light);
+  background: #ffffff;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--color-text-dark);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  border-radius: 0;
+}
+
+.form-input::placeholder {
+  color: #b8c4d0;
+}
+
+.form-input:focus {
+  border-color: var(--color-blue-btn);
+  box-shadow: 0 0 0 3px rgba(24, 117, 199, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+/* Radio Group */
+.radio-group {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.radio-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--color-text-dark);
+  cursor: pointer;
+  user-select: none;
+}
+
+.radio-item input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #c8d4e0;
+  border-radius: 50%;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+  position: relative;
+}
+
+.radio-item input[type="radio"]:checked {
+  border-color: var(--color-blue-btn);
+}
+
+.radio-item input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: var(--color-blue-btn);
+  border-radius: 50%;
+}
+
+/* Checkbox Group */
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+}
+
+.checkbox-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--color-text-dark);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-item input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #c8d4e0;
+  border-radius: 50%;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+  position: relative;
+}
+
+.checkbox-item input[type="checkbox"]:checked {
+  background: var(--color-blue-btn);
+  border-color: var(--color-blue-btn);
+}
+
+.checkbox-item input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  background: #ffffff;
+  border-radius: 50%;
+}
+
+/* 隱私條款 */
+.form-privacy {
+  margin-top: -8px;
+}
+
+.privacy-check {
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: var(--color-text-dark-muted);
+}
+
+.privacy-link {
+  color: var(--color-blue-btn);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  margin: 0 2px;
+}
+
+.privacy-link:hover {
+  color: var(--color-blue-btn-hover);
+}
+
+/* 欄位錯誤提示 */
+.form-input.input-error {
+  border-color: #e53935 !important;
+  background-color: #fff5f5 !important;
+}
+
+.checkbox-group.input-error {
+  border: 1px solid #e53935;
+  background-color: #fff5f5;
+  padding: 10px 14px;
+  border-radius: 2px;
+}
+
+.field-error-msg {
+  color: #e53935;
+  font-size: 0.78rem;
+  margin-top: 2px;
+  display: none;
+  font-weight: 500;
+}
+
+.field-error-msg.show {
+  display: block;
+}
+
+/* 送出按鈕 */
+.contact-submit-btn {
+  width: 100%;
+  padding: 15px 0;
+  background: var(--color-blue-btn);
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  margin-top: 4px;
+}
+
+.contact-submit-btn:hover:not(:disabled) {
+  background: var(--color-blue-btn-hover);
+  transform: translateY(-1px);
+}
+
+.contact-submit-btn.submitted {
+  background: #4caf7d;
+  cursor: default;
+  transform: none;
+}
+
+.contact-submit-btn:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Note 文字 */
+.contact-note {
+  font-size: 0.82rem;
+  color: var(--color-text-dark-muted);
+  text-align: center;
+  line-height: 1.6;
+  margin-top: -8px;
+}
+
+/* 送出成功畫面 */
+.contact-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px 72px;
+  text-align: center;
+}
+
+.success-icon {
+  margin-bottom: 24px;
+}
+
+.success-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 12px;
+}
+
+.success-desc {
+  font-size: 0.9rem;
+  color: var(--color-text-dark-muted);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+.success-home-btn {
+  display: inline-block;
+  padding: 10px 28px;
+  border: 1px solid var(--color-border-light);
+  color: var(--color-text-dark);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.success-home-btn:hover {
+  background: #f0f3f7;
+  border-color: #c8d4e0;
+}
+
+/* ============================================================
+   RWD — Pad 768px
+   ============================================================ */
+@media (max-width: 1024px) {
+  .contact-breadcrumb {
+    padding: 16px 24px;
+  }
+
+  .contact-hero {
+    padding: 24px 24px 32px;
+  }
+
+  .contact-title {
+    font-size: 2rem;
+  }
+
+  .contact-card-wrapper {
+    padding: 0 24px 40px;
+    max-width: 100%;
+  }
+}
+
+/* ============================================================
+   RWD — Mobile 375px
+   ============================================================ */
+@media (max-width: 768px) {
+  .contact-breadcrumb {
+    padding: 14px 20px;
+  }
+
+  .contact-hero {
+    padding: 20px 20px 28px;
+  }
+
+  .contact-title {
+    font-size: 1.75rem;
+  }
+
+  .contact-subtitle {
+    font-size: 0.86rem;
+  }
+
+  .contact-card-wrapper {
+    padding: 0 16px 32px;
+  }
+
+  .contact-tab {
+    padding: 14px 20px;
+  }
+
+  .tab-label-zh {
+    font-size: 1rem;
+  }
+
+  .contact-form {
+    padding: 24px 20px 28px;
+    gap: 20px;
+  }
+
+  .checkbox-group {
+    gap: 10px 16px;
+  }
+
+  .radio-group {
+    gap: 16px;
+  }
+
+  .contact-submit-btn {
+    padding: 14px 0;
+    font-size: 0.9rem;
+  }
+}
+
+/* ============================================================
+   隱私條款彈跳視窗 (Privacy Policy Modal)
+   ============================================================ */
+.contact-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 32, 53, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: modalFadeIn 0.25s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.contact-modal-card {
+  background: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 680px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalSlideUp 0.25s ease-out;
+}
+
+@keyframes modalSlideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.contact-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.contact-modal-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.contact-modal-close {
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+  transition: color var(--transition-fast);
+}
+
+.contact-modal-close:hover {
+  color: #0f172a;
+}
+
+.contact-modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: #334155;
+}
+
+.contact-modal-body h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 18px 0 8px;
+}
+
+.contact-modal-body h4:first-child {
+  margin-top: 0;
+}
+
+.contact-modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.modal-agree-btn {
+  background: var(--color-blue-btn);
+  color: #ffffff;
+  border: none;
+  padding: 9px 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background var(--transition-fast);
+}
+
+.modal-agree-btn:hover {
+  background: var(--color-blue-btn-hover);
+}
+
+.modal-cancel-btn {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  padding: 9px 18px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all var(--transition-fast);
+}
+
+.modal-cancel-btn:hover {
+  background: #f1f5f9;
+}

@@ -1,0 +1,5076 @@
+/* 消除 page-content-offset 的 margin-top，讓滿版 Hero 頂格延伸至視窗最頂部，並以 overflow-x: clip 避免破壞 sticky 吸頂 */
+#app:has(.osf-hero),
+.page-content:has(.osf-hero) {
+  overflow-x: clip;
+}
+
+.page-content:has(.osf-hero) {
+  margin-top: 0 !important;
+}
+
+/* --- Hero Section (滿版 Banner) --- */
+.osf-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 640px;
+  overflow: hidden;
+}
+
+.osf-hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.osf-hero-bg picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.osf-hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* 底部漸層遮罩，讓左下文字清晰可讀 */
+.osf-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to top,
+    rgba(7, 19, 34, 0.6) 0%,
+    rgba(7, 19, 34, 0.3) 35%,
+    rgba(7, 19, 34, 0.05) 65%,
+    transparent 100%
+  );
+  z-index: 1;
+}
+
+.osf-hero-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  padding: 0 100px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* 麵包屑 — 左上方，與下方標題垂直對齊 */
+.osf-breadcrumb {
+  position: absolute;
+  top: calc(var(--header-height, 74px) + 24px);
+  left: 100px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.osf-breadcrumb a {
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.osf-breadcrumb a:hover {
+  color: #ffffff;
+}
+
+.osf-breadcrumb .breadcrumb-sep {
+  margin: 0 8px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.osf-breadcrumb .breadcrumb-current {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Hero 文字 — 左下方 */
+.osf-hero-content {
+  max-width: 800px;
+}
+
+.osf-hero-content h1 {
+  font-family: 'Noto Sans CJK TC', 'Noto Sans TC', var(--font-heading), -apple-system, sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.5;       /* 150% */
+  letter-spacing: 0.02em; /* 2% */
+  margin-bottom: 24px;    /* 標題與副標題垂直間距 */
+  color: #ffffff;
+}
+
+.osf-hero-subtitle {
+  font-family: 'Noto Sans CJK TC', 'Noto Sans TC', var(--font-body), -apple-system, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.5;       /* 150% */
+  letter-spacing: 0.02em; /* 2% */
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* --- Tab Navigation (方案 A：全程 Sticky 吸頂) --- */
+.osf-tab-nav-wrap {
+  position: relative;
+  width: 100%;
+  z-index: 950;
+}
+
+.osf-tab-nav {
+  background: #ffffff;
+  border-bottom: 1px solid var(--color-border-light);
+  position: sticky;
+  top: var(--header-height);
+  z-index: 950;
+  width: 100%;
+  transition: box-shadow var(--transition-fast);
+}
+
+.osf-tab-nav.is-pinned {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 950;
+  box-shadow: 0 4px 16px rgba(7, 19, 34, 0.08);
+}
+
+.osf-tab-nav-inner {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.osf-tab-nav-inner::-webkit-scrollbar {
+  display: none;
+}
+
+.osf-tab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--color-text-dark-muted);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 18px 28px;
+  cursor: pointer;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+  white-space: nowrap;
+  text-align: center;
+}
+
+.osf-tab-btn:hover {
+  color: var(--color-text-dark);
+}
+
+.osf-tab-btn.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* 手機端專用下拉選單（Desktop / Pad 隱藏） */
+.osf-tab-mobile-dropdown {
+  display: none;
+  position: relative;
+  width: 100%;
+}
+
+.osf-tab-mobile-trigger {
+  position: relative;
+  width: 100%;
+  height: 55px;
+  background: #ffffff;
+  border: none;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.osf-tab-mobile-trigger::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: radial-gradient(
+    50% 100% at 50% 50%,
+    #1B7AC2 0%,
+    rgba(27, 122, 194, 0.35) 60%,
+    rgba(27, 122, 194, 0) 100%
+  );
+  pointer-events: none;
+}
+
+.osf-tab-mobile-label {
+  font-family: 'Noto Sans CJK TC', 'Noto Sans TC', var(--font-body), -apple-system, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #154265;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+
+.osf-tab-mobile-caret {
+  position: absolute;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform var(--transition-fast);
+  pointer-events: none;
+}
+
+.osf-tab-mobile-dropdown.is-open .osf-tab-mobile-caret {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.osf-tab-mobile-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(7, 19, 34, 0.16);
+  border-top: 1px solid #E2E8F0;
+  z-index: 120;
+  flex-direction: column;
+}
+
+.osf-tab-mobile-dropdown.is-open .osf-tab-mobile-menu {
+  display: flex;
+}
+
+.osf-tab-mobile-item {
+  width: 100%;
+  background: #ffffff;
+  border: none;
+  border-bottom: 1px solid #EEF2F7;
+  padding: 15px 24px;
+  font-family: 'Noto Sans CJK TC', 'Noto Sans TC', var(--font-body), -apple-system, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #4E5865;
+  letter-spacing: 0.04em;
+  text-align: center;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.osf-tab-mobile-item:last-child {
+  border-bottom: none;
+}
+
+.osf-tab-mobile-item:hover,
+.osf-tab-mobile-item.active {
+  background: #F4F8FC;
+  color: #154265;
+  font-weight: 700;
+}
+
+/* --- Section: Overview 產品介紹 (Light — 寬高比與樣式 100% 依設計稿還原) --- */
+.osf-overview-section {
+  background: radial-gradient(
+    circle at 50% 54%,
+    #E0E7F2 0%,
+    #E4EAF3 25%,
+    #E8EDF5 50%,
+    #EDEFF6 75%,
+    #F2F2F7 100%
+  );
+  padding: 128px 0 128px;
+  min-height: 704px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.osf-section-inner {
+  width: 100%;
+  max-width: 1296px;
+  margin: 0 auto;
+  padding: 0 48px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
+/* Section Tag: OVERVIEW | 描述 */
+.osf-overview-tag {
+  margin-bottom: 52px;
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+}
+
+.osf-overview-tag .tag-label {
+  color: #4EA2D8;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.osf-overview-tag .tag-sep {
+  color: #4EA2D8;
+  margin: 0 6px;
+}
+
+.osf-overview-tag .tag-text {
+  color: #4EA2D8;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+/* Overview Header */
+.osf-overview-header {
+  margin-bottom: 48px;
+}
+
+.osf-overview-header h2 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1F262E;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  margin-bottom: 28px;
+}
+
+.osf-overview-desc {
+  font-size: 16px;
+  font-weight: 400;
+  color: #3E4852;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  max-width: 100%;
+  margin: 0;
+}
+
+/* Feature Cards — 三欄 (1-Drill / 1-Platform / 1-Kit) */
+.osf-feature-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.osf-feature-card {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0.76) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 0;
+  padding: 34px 34px;
+  min-height: 178px;
+  box-sizing: border-box;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.osf-feature-card:hover {
+  box-shadow: 0 8px 24px rgba(18, 29, 40, 0.05);
+  transform: translateY(-2px);
+}
+
+.feature-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: #2A6C9D;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.osf-feature-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1F262E;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+
+.osf-feature-card p {
+  font-size: 14px;
+  font-weight: 400;
+  color: #4E5865;
+  line-height: 1.65;
+  letter-spacing: 0.03em;
+  margin: 0;
+  max-width: 280px;
+}
+
+/* --- Video Section (一套系統，迅速完成植牙 — 背景單一半圓穹頂 Dome) --- */
+.osf-video-section {
+  background: #ffffff;
+  padding: 68px 0 96px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 半圓形穹頂背景容器 — 寬度與比例嚴格貼合設計稿 */
+.osf-video-dome-wrapper {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1440px;
+  height: calc(100% - 20px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.osf-video-dome-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.osf-video-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.osf-video-title {
+  text-align: center;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #121D28;
+  margin-bottom: 40px;
+  letter-spacing: -0.01em;
+}
+
+.osf-video-wrap {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #d8e1eb;
+  box-shadow: 0 16px 40px rgba(18, 29, 40, 0.08);
+}
+
+.osf-video-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.osf-tech-video-box.osf-video-wrap {
+  max-width: 100%;
+  margin: 0;
+  box-shadow: 0 8px 24px rgba(18, 29, 40, 0.06);
+}
+
+/* --- System Section (Light — 10步 vs 2步對比) --- */
+/* --- System Section (Light — 10步 vs 2步對比，依設計截圖 100% 還原) --- */
+.osf-system-section {
+  background: linear-gradient(180deg, #E6EDF5 0%, #F4F7FB 32%, #F8F9FB 100%);
+  padding: 72px 0 80px;
+  overflow: hidden;
+}
+
+.osf-system-header {
+  margin-bottom: 40px;
+}
+
+.osf-system-header h2 {
+  font-size: 2.125rem;
+  font-weight: 700;
+  color: #121D28;
+  line-height: 1.35;
+  margin-bottom: 24px;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+.osf-system-header h2 .highlight {
+  color: #125B92;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.osf-system-desc {
+  font-size: 0.88rem;
+  color: #556271;
+  line-height: 1.8;
+  margin-bottom: 16px;
+  max-width: 980px;
+  text-wrap: pretty;
+}
+
+.osf-system-desc:last-child {
+  margin-bottom: 0;
+}
+
+/* 雙欄對比 Grid（align-items: stretch 確保左右兩欄完全等高） */
+.osf-compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.28fr;
+  gap: 40px;
+  align-items: stretch;
+  margin-top: 40px;
+}
+
+/* 欄位小標 */
+.compare-col-title {
+  font-family: var(--font-mono, Inter, sans-serif);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9EA8B5;
+  margin-bottom: 16px;
+}
+
+.compare-col-highlight {
+  color: #3094D3;
+}
+
+/* 左欄：TRADITION 時間軸（上下內距與右欄白色卡片嚴格對齊，且內部等高垂直分佈） */
+.osf-tradition-col {
+  padding-top: 24px;
+  padding-bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.tradition-steps-wrap {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tradition-timeline-line {
+  position: absolute;
+  left: 36px;
+  top: 14px;
+  bottom: 14px;
+  width: 1.5px;
+  background: #D9DFE6;
+  z-index: 1;
+}
+
+.tradition-steps {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  gap: 10px;
+  position: relative;
+  z-index: 2;
+}
+
+.tradition-step {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.tradition-badge-box {
+  width: 72px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.tradition-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 28px;
+  background: #E1E6EB;
+  border-radius: 999px;
+  font-family: var(--font-mono, Inter, sans-serif);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #7E8996;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.tradition-badge.tradition-badge-range {
+  flex-direction: column;
+  height: 52px;
+  border-radius: 14px;
+  padding: 4px 0;
+  gap: 1px;
+  line-height: 1.1;
+}
+
+.badge-dots {
+  font-size: 0.65rem;
+  color: #8C98A6;
+  line-height: 1;
+  margin: -1px 0;
+}
+
+.tradition-step p {
+  margin: 0;
+  font-size: 0.86rem;
+  color: #556271;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+/* 右欄：WITH OSSEOFUSE 白色卡片（height: 100% 確保與左欄時間軸嚴格等高） */
+.osf-modern-col {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(7, 19, 34, 0.04);
+  padding: 24px 28px 22px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.modern-steps-wrap {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.modern-timeline-line {
+  position: absolute;
+  left: 41px;
+  top: 14px;
+  bottom: 14px;
+  width: 2px;
+  background: #125B92;
+  z-index: 1;
+}
+
+.modern-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.modern-step {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.modern-badge-box {
+  width: 82px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.modern-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 82px;
+  height: 28px;
+  background: #125B92;
+  border-radius: 999px;
+  font-family: var(--font-mono, Inter, sans-serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.modern-step p {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #121D28;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.modern-diagram-wrap {
+  flex: 1;
+  background: #F1F8FE;
+  border-radius: 8px;
+  padding: 16px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 180px;
+}
+
+.modern-diagram-wrap .osf-img-slot {
+  width: 100%;
+  height: 100%;
+  min-height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modern-diagram-wrap img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 270px;
+  object-fit: contain;
+  display: block;
+}
+
+/* --- Comparison Table Section (Light — 三種術式比較，依設計截圖 100% 還原) --- */
+.osf-compare-section {
+  background: linear-gradient(180deg, #F8FAFD 0%, #FFFFFF 100%);
+  padding: 88px 0 96px;
+}
+
+.osf-compare-title {
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #121D28;
+  margin-bottom: 48px;
+  letter-spacing: -0.01em;
+}
+
+/* 桌面/平板 表格包裹 */
+.osf-compare-table-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.osf-compare-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0 auto;
+}
+
+/* 表頭 */
+.osf-compare-table thead th {
+  padding: 16px 20px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: #ffffff;
+  background: #154265;
+}
+
+.osf-compare-table thead th.col-category {
+  background: transparent;
+  color: transparent;
+  width: 110px;
+}
+
+.osf-compare-table thead th.col-traditional {
+  border-top-left-radius: 8px;
+  width: 28%;
+}
+
+.osf-compare-table thead th.col-osseofuse {
+  background: #125B92;
+  font-size: 1.02rem;
+  width: 32%;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 -2px 12px rgba(18, 91, 146, 0.15);
+}
+
+.osf-compare-table thead th.col-allon4 {
+  border-top-right-radius: 8px;
+  width: 28%;
+}
+
+/* 表格內容（三種術式比較 Comparison of 3 Implant Modalities：內容文字中英雙語全面置中） */
+.osf-compare-table tbody td {
+  padding: 14px 18px;
+  font-size: 0.88rem;
+  text-align: center;
+  line-height: 1.5;
+  color: #556271;
+  background: #FFFFFF;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+.osf-compare-table tbody tr.row-alt td {
+  background: #EBF1F6;
+}
+
+.osf-compare-table tbody td.col-category {
+  text-align: right;
+  padding-right: 24px;
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: #7A8796;
+  background: transparent !important;
+}
+
+.osf-compare-table tbody td.col-osseofuse {
+  background: #FFFFFF !important;
+  color: #125B92;
+  font-weight: 700;
+  font-size: 0.92rem;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 4px 20px rgba(7, 19, 34, 0.08);
+}
+
+.osf-compare-table tbody tr:last-child td.col-traditional {
+  border-bottom-left-radius: 8px;
+}
+
+.osf-compare-table tbody tr:last-child td.col-osseofuse {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.osf-compare-table tbody tr:last-child td.col-allon4 {
+  border-bottom-right-radius: 8px;
+}
+
+/* 手機卡片列表（在 Desktop/Tablet 隱藏） */
+.osf-compare-mobile-cards {
+  display: none;
+}
+
+/* --- Certificate Section (Dark) --- */
+/* --- Section 7: 醫療器材許可證字號 (Dark Navy — 依設計截圖 100% 還原) --- */
+.osf-cert-section {
+  background: #154265;
+  color: #ffffff;
+  padding: 80px 0 88px;
+  overflow: hidden;
+}
+
+.osf-cert-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.osf-cert-tag {
+  margin-bottom: 12px;
+}
+
+.osf-cert-tag .tag-label {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #3094D3;
+}
+
+.osf-cert-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 24px;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.osf-cert-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 36px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.osf-cert-list li {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: 0.02em;
+}
+
+.osf-cert-disclaimer {
+  font-size: 0.8rem;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.62);
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+.osf-cert-disclaimer-desktop {
+  display: block;
+}
+
+.osf-cert-disclaimer-mobile {
+  display: none;
+}
+
+.osf-cert-image {
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  background: #ffffff;
+}
+
+.osf-cert-image img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* --- Section 8: 加入會員 CTA (左情境照右內容 — 依設計截圖 100% 還原) --- */
+.osf-member-cta-section {
+  background: #ffffff;
+  padding: 0;
+  border: none;
+  margin-top: -1px; /* 消除與上方深藍區塊相鄰時的 1px 亞像素留白縫隙 */
+  overflow: hidden;
+}
+
+.osf-member-cta-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  max-width: 100%;
+  min-height: 560px; /* 對齊 Ezechbone 產品頁（560px）與首頁圖片大小規格 */
+  align-items: stretch;
+}
+
+.osf-member-cta-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  background: #154265; /* 與上方認證區底色一致，避免裁切邊緣泛白 */
+}
+
+.osf-member-cta-image img,
+.osf-member-cta-image .osf-img-slot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover !important;
+  object-position: center;
+  display: block;
+}
+
+.osf-member-cta-image .osf-img-slot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.osf-image-credit {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  z-index: 4;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.osf-image-credit:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.osf-member-cta-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 64px 32px 64px 80px;
+  box-sizing: border-box;
+  max-width: 600px;
+}
+
+.osf-member-cta-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #3094D3;
+  margin-bottom: 14px;
+}
+
+.osf-member-cta-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #121D28;
+  line-height: 1.4;
+  margin-bottom: 18px;
+  letter-spacing: -0.01em;
+}
+
+.osf-member-cta-desc {
+  font-size: 0.92rem;
+  color: #556271;
+  line-height: 1.7;
+  margin-bottom: 32px;
+  letter-spacing: 0.01em;
+}
+
+.osf-member-cta-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.osf-cta-btn-primary {
+  background: #154265;
+  color: #ffffff;
+  padding: 12px 28px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  border-radius: 4px;
+  border: 1px solid #154265;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.osf-cta-btn-primary:hover {
+  background: #125B92;
+  border-color: #125B92;
+}
+
+.osf-cta-btn-outline {
+  background: transparent;
+  color: #154265;
+  border: 1px solid #154265;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  border-radius: 4px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--transition-fast);
+}
+
+.osf-cta-btn-outline:hover {
+  background: rgba(21, 66, 101, 0.05);
+}
+
+/* --- 圖片預留插槽樣式 (當未放置圖片時，直接於頁面顯示完整路徑) --- */
+.osf-img-slot {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.osf-img-slot img,
+.osf-img-slot video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.osf-img-slot.is-loaded .osf-img-placeholder-box {
+  display: none !important;
+}
+
+.osf-img-placeholder-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  padding: 32px 20px;
+  box-sizing: border-box;
+  background: rgba(240, 244, 248, 0.85);
+  border: 2px dashed #B8CADB;
+  border-radius: 8px;
+  color: #556271;
+  transition: all var(--transition-fast);
+}
+
+/* 深色區塊（如第 7 區許可證）的佔位框 */
+.osf-cert-image .osf-img-placeholder-box {
+  background: rgba(255, 255, 255, 0.06);
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.osf-cert-image .placeholder-path {
+  background: rgba(0, 0, 0, 0.35) !important;
+  color: #A3D3FF !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.placeholder-icon {
+  color: #3094D3;
+  opacity: 0.85;
+}
+
+.placeholder-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  opacity: 0.8;
+}
+
+.placeholder-path {
+  display: inline-block;
+  padding: 6px 14px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #154265;
+  background: #ffffff;
+  border: 1px solid #D2DFEE;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+  word-break: break-all;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.osf-section-tag-center {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.osf-section-tag-center .tag-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--color-blue-btn);
+}
+
+/* --- RWD: Tablet --- */
+@media (max-width: 1024px) {
+  .osf-hero {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 540px;
+  }
+
+  .osf-hero-inner {
+    padding: 0 48px 64px;
+  }
+
+  .osf-breadcrumb {
+    top: calc(var(--header-height, 74px) + 16px);
+    left: 48px;
+  }
+
+  .osf-hero-content h1 {
+    font-size: 40px;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    margin-bottom: 20px;
+  }
+
+  .osf-hero-subtitle {
+    font-size: 18px;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+  }
+
+  .osf-section-inner,
+  .osf-cta-inner {
+    padding: 0 32px;
+  }
+
+  .osf-tab-nav-inner {
+    padding: 0 32px;
+  }
+
+  .osf-overview-section {
+    padding: 88px 0 88px;
+    min-height: 500px;
+  }
+
+  .osf-overview-tag {
+    margin-bottom: 36px;
+  }
+
+  .osf-overview-header {
+    margin-bottom: 36px;
+  }
+
+  .osf-overview-header h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  .osf-feature-cards {
+    gap: 18px;
+  }
+
+  .osf-feature-card {
+    padding: 26px 24px;
+    min-height: 150px;
+  }
+
+  .osf-compare-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .osf-video-section {
+    padding: 52px 0 76px;
+  }
+
+  .osf-video-dome-wrapper {
+    top: 16px;
+    width: 125%;
+    max-width: none;
+    height: calc(100% - 16px);
+  }
+
+  .osf-video-title {
+    font-size: 1.45rem;
+    margin-bottom: 32px;
+  }
+
+  .osf-video-wrap {
+    max-width: 720px;
+  }
+
+  .osf-cert-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .osf-cert-disclaimer-desktop {
+    display: none;
+  }
+
+  .osf-cert-disclaimer-mobile {
+    display: block;
+    margin-top: 12px;
+  }
+
+  .osf-member-cta-inner {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 0;
+  }
+
+  .osf-member-cta-content {
+    order: 1;
+    padding: 48px 36px 36px;
+    max-width: 100%;
+  }
+
+  .osf-member-cta-image {
+    order: 2;
+    min-height: 320px;
+    height: 360px;
+    width: 100%;
+  }
+}
+
+/* --- RWD: Mobile --- */
+@media (max-width: 768px) {
+  .osf-hero {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 500px;
+  }
+
+  .osf-hero-inner {
+    padding: 0 28px 48px;
+  }
+
+  .osf-breadcrumb {
+    top: calc(var(--header-height, 64px) + 14px);
+    left: 28px;
+    font-size: 0.68rem;
+  }
+
+  .osf-hero-content h1 {
+    font-size: 36px;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    margin-bottom: 16px;
+  }
+
+  .osf-hero-subtitle {
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+  }
+
+  .osf-section-inner,
+  .osf-cta-inner {
+    padding: 0 24px;
+  }
+
+  .osf-tab-nav-inner {
+    display: none;
+  }
+
+  .osf-tab-mobile-dropdown {
+    display: block;
+  }
+
+  .osf-overview-section {
+    padding: 56px 0 64px;
+    min-height: auto;
+  }
+
+  .osf-overview-tag {
+    margin-bottom: 24px;
+    font-size: 12px;
+  }
+
+  .osf-overview-header {
+    margin-bottom: 28px;
+  }
+
+  .osf-overview-header h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  .osf-overview-desc {
+    font-size: 14px;
+  }
+
+  .osf-video-section,
+  .osf-compare-section,
+  .osf-system-section,
+  .osf-cta-section {
+    padding: 56px 0;
+  }
+
+  .osf-feature-cards {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .osf-feature-card {
+    padding: 24px 22px;
+    min-height: auto;
+  }
+
+  .osf-feature-card p {
+    max-width: 100%;
+  }
+
+  .osf-video-section {
+    padding: 40px 0 56px;
+  }
+
+  .osf-video-dome-wrapper {
+    top: 12px;
+    width: 160%;
+    max-width: none;
+    height: calc(100% - 12px);
+  }
+
+  .osf-video-title {
+    font-size: 1.25rem;
+    margin-bottom: 24px;
+  }
+
+  .osf-video-wrap {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 6px;
+  }
+
+  .osf-compare-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .osf-tradition-col {
+    padding-top: 0;
+    padding-bottom: 0;
+    height: auto;
+  }
+
+  .tradition-steps-wrap {
+    flex: none;
+  }
+
+  .tradition-steps {
+    justify-content: flex-start;
+    gap: 16px;
+    height: auto;
+  }
+
+  .osf-modern-col {
+    height: auto;
+  }
+
+  .modern-diagram-wrap {
+    flex: none;
+    min-height: 220px;
+  }
+
+  .osf-system-header h2 {
+    font-size: 1.5rem;
+    line-height: 1.35;
+  }
+
+  .osf-system-desc {
+    font-size: 0.84rem;
+    line-height: 1.7;
+  }
+
+  .tradition-step {
+    gap: 12px;
+  }
+
+  .tradition-badge-box {
+    width: 66px;
+  }
+
+  .tradition-badge {
+    width: 66px;
+    height: 26px;
+    font-size: 0.62rem;
+  }
+
+  .tradition-badge.tradition-badge-range {
+    height: 48px;
+  }
+
+  .tradition-timeline-line {
+    left: 33px;
+  }
+
+  .tradition-step p {
+    font-size: 0.82rem;
+  }
+
+  .osf-modern-col {
+    padding: 24px 20px 20px;
+  }
+
+  .modern-step {
+    gap: 12px;
+  }
+
+  .modern-badge-box {
+    width: 76px;
+  }
+
+  .modern-badge {
+    width: 76px;
+    height: 26px;
+    font-size: 0.68rem;
+  }
+
+  .modern-timeline-line {
+    left: 38px;
+  }
+
+  .modern-step p {
+    font-size: 0.88rem;
+  }
+
+  .modern-diagram-wrap {
+    padding: 16px 12px;
+  }
+
+  .modern-diagram-wrap img {
+    max-width: 100%;
+    max-height: 420px;
+  }
+
+  /* 手機端：隱藏橫向表格，展示垂直對比卡片組 */
+  .osf-compare-section {
+    padding: 56px 0;
+  }
+
+  .osf-compare-title {
+    font-size: 1.4rem;
+    margin-bottom: 32px;
+  }
+
+  .osf-compare-table-wrap {
+    display: none;
+  }
+
+  .osf-compare-mobile-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 440px;
+    margin: 0 auto;
+    padding: 0 4px;
+  }
+
+  .osf-compare-m-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .osf-compare-m-title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #7A8796;
+    margin-bottom: 8px;
+    padding-left: 2px;
+  }
+
+  .osf-compare-m-rows {
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #EBF1F6;
+  }
+
+  .osf-compare-m-row {
+    display: flex;
+    align-items: stretch;
+    min-height: 44px;
+  }
+
+  .osf-compare-m-badge {
+    width: 105px;
+    flex-shrink: 0;
+    background: #154265;
+    color: #FFFFFF;
+    font-size: 0.74rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 8px;
+    text-align: center;
+    line-height: 1.25;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .osf-compare-m-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    color: #556271;
+    text-align: center;
+    background: #EBF1F6;
+    word-break: normal;
+    overflow-wrap: break-word;
+    min-width: 0;
+  }
+
+  .osf-compare-m-row.osf-compare-m-highlight {
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 4px 14px rgba(7, 19, 34, 0.08);
+  }
+
+  .osf-compare-m-row.osf-compare-m-highlight .osf-compare-m-badge {
+    background: #125B92;
+    font-weight: 700;
+  }
+
+  .osf-compare-m-row.osf-compare-m-highlight .osf-compare-m-content {
+    background: #FFFFFF;
+    color: #125B92;
+    font-weight: 700;
+  }
+
+  .osf-cert-section {
+    padding: 56px 0;
+  }
+
+  .osf-cert-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .osf-member-cta-inner {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 0;
+    gap: 0;
+  }
+
+  .osf-member-cta-content {
+    padding: 40px 20px 28px;
+    max-width: 100%;
+  }
+
+  .osf-member-cta-title {
+    font-size: 1.5rem;
+    margin-bottom: 14px;
+  }
+
+  .osf-member-cta-desc {
+    font-size: 0.85rem;
+    margin-bottom: 24px;
+  }
+
+  .osf-member-cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .osf-cta-btn-primary,
+  .osf-cta-btn-outline {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .osf-member-cta-image {
+    min-height: 220px;
+    height: 240px;
+  }
+
+  .osf-cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .osf-cta-buttons .btn {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 480px) {
+  .osf-hero {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 480px;
+  }
+
+  .osf-hero-inner {
+    padding: 0 20px 40px;
+  }
+
+  .osf-breadcrumb {
+    top: calc(var(--header-height, 64px) + 12px);
+    left: 20px;
+  }
+
+  .osf-hero-content h1 {
+    font-size: 28px;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+    margin-bottom: 12px;
+  }
+
+  .osf-hero-subtitle {
+    font-size: 15px;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+  }
+
+  .osf-section-inner,
+  .osf-cta-inner {
+    padding: 0 16px;
+  }
+
+  .osf-tab-nav-inner {
+    padding: 0 8px;
+  }
+
+  .osf-tab-btn {
+    padding: 12px 12px;
+    font-size: 0.76rem;
+  }
+}
+
+/* ============================================================
+   【TAB: 核心技術】骨架樣式 (Core Technology Styles)
+   ============================================================ */
+.osf-tab-panel {
+  width: 100%;
+}
+
+/* 1. 核心技術深藍概覽橫幅 (寬高比與半圓背景圖 100% 依設計稿還原) */
+.osf-tech-hero-section {
+  background: linear-gradient(180deg, #154265 0%, #143D5D 100%);
+  color: #ffffff;
+  padding: 128px 0 128px;
+  min-height: 650px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.osf-tech-dome-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* 半圓形背景圖 (使用者放入 /images/osseofuse/tech-hero-dome.png 後自動呈現) */
+.osf-tech-dome-bg-img {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  min-width: 1024px;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+/* 當實際半圓圖片載入成功時，隱藏 CSS 繪製的半圓穹頂 fallback */
+.osf-tech-dome-wrapper.has-dome-img .osf-tech-dome-arc {
+  display: none;
+}
+
+/* 100% 擬真還原設計稿半圓形背景圖 (CSS Fallback：頂點貼齊 top: 0、內部深海藍 50% 疊加 + 邊緣柔光暈染) */
+.osf-tech-dome-arc {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  min-width: 1024px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(14, 42, 68, 0.5) 0%,
+    rgba(14, 42, 68, 0.5) 95.5%,
+    rgba(30, 120, 175, 0.45) 98.5%,
+    rgba(30, 120, 175, 0) 100%
+  );
+  box-shadow:
+    inset 0 6px 18px rgba(42, 152, 218, 0.38),
+    0 -2px 24px rgba(30, 120, 175, 0.28);
+  filter: blur(2px);
+  /* 遮罩保留上半圓弧並向下平滑消融，防止高區塊（如手機版）露出下半圈變成一整圈 */
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    #000000 0%,
+    #000000 20%,
+    rgba(0, 0, 0, 0.45) 35%,
+    rgba(0, 0, 0, 0) 48%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    #000000 0%,
+    #000000 20%,
+    rgba(0, 0, 0, 0.45) 35%,
+    rgba(0, 0, 0, 0) 48%
+  );
+  pointer-events: none;
+}
+
+.osf-tech-hero-inner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.osf-tech-hero-subtag {
+  font-size: 14px;
+  color: rgba(168, 204, 232, 0.72);
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+  margin: 0 0 52px;
+  font-weight: 400;
+}
+
+.osf-tech-hero-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 28px;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+
+.osf-tech-hero-desc {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 100%;
+  margin: 0 auto 48px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+}
+
+.osf-tech-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 100%;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+.osf-tech-card {
+  background: linear-gradient(
+    180deg,
+    #174970 0%,
+    #194D76 50%,
+    #1B537F 100%
+  );
+  border: 1px solid;
+  border-image-source: linear-gradient(
+    180deg,
+    rgba(127, 176, 224, 0.2) 0%,
+    #3D668A 30%,
+    rgba(127, 176, 224, 0.2) 100%
+  );
+  border-image-slice: 1;
+  border-radius: 0;
+  padding: 34px 34px;
+  min-height: 178px;
+  box-sizing: border-box;
+  text-align: left;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  cursor: default;
+}
+
+.osf-tech-card .feature-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: #63B3ED;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.osf-tech-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 10px;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+}
+
+.osf-tech-card p {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.65;
+  letter-spacing: 0.03em;
+  margin: 0;
+}
+
+.osf-card-break {
+  display: block;
+}
+
+/* 2. 核心 4 項技術優勢分區 (依設計稿還原) */
+.osf-tech-features-section {
+  background: var(--color-bg-light, #F7F9FC);
+  padding: 88px 0 110px;
+}
+
+.osf-tech-advantages-header {
+  margin-bottom: 64px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid #E2E8F0;
+  text-align: left;
+}
+
+.osf-tech-advantages-tag {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #228DD0;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.osf-tech-advantages-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #121D28;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.osf-tech-advantages-title .highlight {
+  color: #228DD0;
+}
+
+/* 特色項目大列 (01 ~ 04) */
+.osf-tech-feature-row {
+  margin-bottom: 72px;
+  padding-bottom: 72px;
+  border-bottom: 1px solid #E2E8F0;
+  text-align: left;
+}
+
+.osf-tech-feature-row:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.osf-tech-feature-header {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  margin-bottom: 40px;
+}
+
+.osf-tech-feature-header .feat-num {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--main-bg-0, #FFFFFF);
+  font-size: 24px;
+  font-weight: 700;
+  color: #228DD0;
+  font-family: var(--font-mono);
+  line-height: 1;
+}
+
+.osf-tech-feature-header .feat-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #125B92;
+  margin: 0;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+}
+
+.osf-tech-feature-body {
+  padding-left: 88px;
+}
+
+.osf-tech-sub-block {
+  margin-bottom: 44px;
+}
+
+.osf-tech-sub-block:last-child {
+  margin-bottom: 0;
+}
+
+.osf-tech-sub-block .sub-block-title,
+.osf-tech-text-item .sub-block-title,
+.osf-tech-clinical-point .sub-block-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1F262E;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+  margin: 0 0 12px 0;
+}
+
+.osf-tech-sub-block .sub-block-desc,
+.osf-tech-text-item .sub-block-desc,
+.osf-tech-clinical-point .sub-block-desc {
+  font-size: 15px;
+  color: #4E5865;
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+  margin: 0 0 24px 0;
+  max-width: 100%;
+}
+
+.osf-tech-text-item .sub-block-desc {
+  margin-bottom: 0;
+}
+
+/* 雙欄圖片網格 */
+.osf-tech-grid-2cols {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 24px;
+  align-items: start;
+}
+
+.osf-tech-grid-2cols.text-only {
+  gap: 48px;
+}
+
+.osf-tech-media-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* 圖片包裝盒子 (淺藍灰底色 rgba(20, 78, 118, 0.09)，維持圖片比例不變形且尺寸適中) */
+.osf-tech-img-box {
+  background: rgba(20, 78, 118, 0.09);
+  border-radius: 0;
+  overflow: hidden;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 440px;
+  min-height: 440px;
+  box-sizing: border-box;
+}
+
+.osf-tech-img-box.full-width {
+  width: 100%;
+  height: 440px;
+  min-height: 440px;
+}
+
+.osf-tech-img-box .osf-img-slot {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.osf-tech-img-box .osf-img-slot img,
+.osf-tech-img-box .osf-img-slot video {
+  width: 86%;
+  height: 100%;
+  max-width: 86%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.osf-tech-img-caption {
+  font-size: 14px;
+  color: #7A8694;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  margin: 12px 0 0 0;
+  text-align: left;
+}
+
+/* 左文右圖佈局 (與上方雙欄網格 1:1 垂直對齊) */
+.osf-tech-split-2cols {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  align-items: center;
+  margin-top: 36px;
+}
+
+.osf-tech-split-text {
+  padding-right: 16px;
+}
+
+.osf-tech-text-item:not(:last-child) {
+  margin-bottom: 32px;
+}
+
+/* 02 頂部導言與階梯鎖定補充條列 */
+.osf-tech-feature-lead {
+  font-size: 15px;
+  color: #4E5865;
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+  margin: -20px 0 36px 0;
+}
+
+.osf-m-break {
+  display: inline;
+}
+
+.osf-d-break {
+  display: block;
+}
+
+.osf-tech-locking-notes {
+  margin: 0 0 24px 0;
+}
+
+.osf-tech-locking-notes p {
+  font-size: 14px;
+  color: #7A8694;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* 三欄圖片網格 (02 Step-Inner-Locking 1~3) */
+.osf-tech-grid-3cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.osf-tech-img-box.osf-tech-locking-box {
+  height: 274px;
+  min-height: 274px;
+}
+
+/* 獨家「側切刀面」結構 — 2x2 左側邊線列表 (02) */
+.osf-tech-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 28px;
+  column-gap: 48px;
+  margin: 24px 0 0 0;
+}
+
+.osf-tech-metric-card {
+  background: transparent;
+  border-radius: 0;
+  padding: 2px 0 2px 16px;
+  border-top: none;
+  border-left: 1px solid #C8D6E5;
+}
+
+.osf-tech-metric-card h5 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1F262E;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+  margin: 0 0 8px 0;
+}
+
+.osf-tech-metric-card p {
+  font-size: 14px;
+  color: #7A8694;
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* 02 即拔即植滿寬大图 */
+.osf-tech-img-box.osf-tech-jaw-box {
+  height: 620px;
+  min-height: 620px;
+}
+
+.osf-tech-clinical-point {
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  border-left: none;
+}
+
+/* 3. 核心技術解析 (獨立白底區塊 — 依設計稿三端還原) */
+.osf-tech-analysis-section {
+  background: #ffffff;
+  padding: 120px 0 120px;
+  text-align: center;
+}
+
+.osf-tech-analysis-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.osf-tech-analysis-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #123654;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  margin: 0 0 20px 0;
+}
+
+.osf-tech-analysis-desc {
+  font-size: 16px;
+  font-weight: 400;
+  color: #3E4852;
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+  margin: 0 auto 48px;
+  max-width: 100%;
+}
+
+.osf-m-line {
+  display: inline;
+}
+
+.osf-tech-analysis-video-box {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  aspect-ratio: 371 / 251;
+  background: rgba(20, 78, 118, 0.09);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.osf-tech-analysis-video-box .osf-img-slot {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  background: transparent;
+}
+
+.osf-tech-analysis-video-box .osf-img-slot img {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.osf-tech-video-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.osf-tech-video-badge {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.14em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+.osf-tech-video-play-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  background: rgba(0, 0, 0, 0.18);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 3px;
+  cursor: pointer;
+  pointer-events: auto;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+
+.osf-tech-video-play-btn:hover {
+  transform: scale(1.06);
+  background: rgba(34, 141, 208, 0.45);
+}
+
+/* 4. 需要完整規格與學術文獻？ CTA Bar (依設計稿三端還原) */
+.osf-tech-cta-bar {
+  background: #F2F2F7;
+  padding: 120px 0;
+  min-height: 375px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.osf-tech-cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+}
+
+.osf-tech-cta-text {
+  text-align: left;
+}
+
+.osf-tech-cta-text h3 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1F262E;
+  line-height: 1.4;
+  letter-spacing: 0.03em;
+  margin: 0 0 20px 0;
+}
+
+.osf-tech-cta-text p {
+  font-size: 15px;
+  font-weight: 400;
+  color: #4E5865;
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* 桌面端：右側雙按鈕上下垂直堆疊 (280x50px 直角按鈕) */
+.osf-tech-cta-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.osf-tech-cta-btn {
+  width: 280px;
+  height: 50px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border-radius: 0;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.osf-tech-cta-btn .btn-arrow {
+  font-size: 14px;
+  line-height: 1;
+  transition: transform var(--transition-fast);
+}
+
+.osf-tech-cta-btn:hover .btn-arrow {
+  transform: translateX(3px);
+}
+
+.osf-tech-cta-btn-solid {
+  background: #125B92;
+  color: #ffffff;
+  border: 1px solid #125B92;
+}
+
+.osf-tech-cta-btn-solid:hover {
+  background: #166DAE;
+  border-color: #166DAE;
+}
+
+.osf-tech-cta-btn-outline {
+  background: transparent;
+  color: #125B92;
+  border: 1px solid rgba(18, 91, 146, 0.55);
+}
+
+.osf-tech-cta-btn-outline:hover {
+  background: rgba(18, 91, 146, 0.06);
+  border-color: #125B92;
+}
+
+/* 5. 醫療器材許可證字號 & 免責聲明 (依三端設計稿 100% 還原) */
+.osf-tech-notice {
+  background: #154265;
+  color: #ffffff;
+  padding: 56px 0 64px;
+  box-sizing: border-box;
+}
+
+.osf-tech-notice-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.osf-notice-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.osf-notice-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+
+/* 桌面端：前三筆並排於第一列，第四筆折至第二列左起對齊 */
+.osf-notice-licenses {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  column-gap: 28px;
+  row-gap: 6px;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.65;
+}
+
+.osf-notice-text {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* 核心技術 RWD */
+@media (max-width: 1024px) {
+  .osf-tech-hero-section {
+    padding: 82px 0 80px;
+    min-height: 913px;
+  }
+
+  .osf-tech-hero-section .osf-tech-hero-inner {
+    padding: 0 40px;
+  }
+
+  .osf-tech-dome-arc {
+    width: 131vw;
+    min-width: 1006px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    top: 0;
+  }
+
+  .osf-tech-dome-bg-img {
+    width: 131vw;
+    min-width: 1006px;
+  }
+
+  .osf-tech-hero-subtag {
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    margin-bottom: 52px;
+  }
+
+  .osf-tech-hero-title {
+    font-size: 36px;
+    line-height: 1.4;
+    margin-bottom: 28px;
+  }
+
+  .osf-tech-hero-desc {
+    font-size: 16px;
+    max-width: 672px;
+    margin-bottom: 48px;
+    line-height: 1.65;
+  }
+
+  .osf-tech-cards-grid {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+    gap: 24px;
+  }
+
+  .osf-tech-card {
+    padding: 34px 34px;
+    min-height: 155px;
+  }
+
+  .osf-card-break {
+    display: inline;
+  }
+
+  .osf-tech-advantages-title {
+    font-size: 2rem;
+  }
+
+  .osf-tech-feature-header {
+    gap: 28px;
+    margin-bottom: 32px;
+  }
+
+  .osf-tech-feature-header .feat-num {
+    width: 52px;
+    height: 52px;
+    font-size: 22px;
+  }
+
+  .osf-tech-feature-header .feat-title {
+    font-size: 22px;
+  }
+
+  .osf-tech-feature-body {
+    padding-left: 80px;
+  }
+
+  .osf-tech-grid-2cols {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .osf-tech-grid-2cols.text-only,
+  .osf-tech-split-2cols {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .osf-tech-split-text {
+    padding-right: 0;
+  }
+
+  .osf-tech-img-box,
+  .osf-tech-img-box.full-width {
+    height: 360px;
+    min-height: 360px;
+  }
+
+  .osf-tech-grid-3cols {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .osf-tech-img-box.osf-tech-locking-box {
+    height: 180px;
+    min-height: 180px;
+  }
+
+  .osf-tech-img-box.osf-tech-jaw-box {
+    height: 440px;
+    min-height: 440px;
+  }
+
+  .osf-d-break {
+    display: inline;
+  }
+
+  .osf-tech-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 24px;
+    column-gap: 32px;
+  }
+
+  .osf-tech-analysis-section {
+    padding: 88px 0 88px;
+  }
+
+  .osf-tech-analysis-title {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  .osf-tech-analysis-desc {
+    font-size: 15px;
+    margin-bottom: 36px;
+  }
+
+  .osf-pad-line-end::after {
+    content: "\A";
+    white-space: pre;
+  }
+
+  .osf-tech-analysis-video-box {
+    aspect-ratio: 213 / 163;
+  }
+
+  /* Pad 端：文字在上、雙按鈕在下方左右並排 */
+  .osf-tech-cta-bar {
+    padding: 88px 0;
+    min-height: 360px;
+  }
+
+  .osf-tech-cta-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 36px;
+  }
+
+  .osf-tech-cta-text h3 {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  .osf-tech-cta-btns {
+    flex-direction: row;
+    gap: 16px;
+  }
+
+  .osf-tech-cta-btn {
+    width: 196px;
+    height: 48px;
+  }
+
+  /* Pad 端：許可證字號改為單欄垂直排列 (一行一筆) */
+  .osf-tech-notice {
+    padding: 48px 0 56px;
+  }
+
+  .osf-notice-licenses {
+    grid-template-columns: 1fr;
+    row-gap: 6px;
+  }
+}
+
+@media (max-width: 768px) {
+  .osf-tech-hero-section {
+    padding: 60px 0 60px;
+    min-height: 744px;
+  }
+
+  .osf-tech-hero-section .osf-tech-hero-inner {
+    padding: 0 22px;
+  }
+
+  .osf-tech-dome-arc {
+    width: 134vw;
+    min-width: 502px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    top: 0;
+  }
+
+  .osf-tech-dome-bg-img {
+    width: 134vw;
+    min-width: 502px;
+  }
+
+  .osf-tech-hero-subtag {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    margin-bottom: 36px;
+  }
+
+  .osf-tech-hero-title {
+    font-size: 23px;
+    line-height: 1.4;
+    margin-bottom: 24px;
+  }
+
+  .osf-tech-hero-desc {
+    font-size: 15px;
+    line-height: 1.65;
+    max-width: 326px;
+    margin: 0 auto 32px;
+    padding: 0;
+  }
+
+  .osf-tech-advantages-title {
+    font-size: 1.65rem;
+  }
+
+  .osf-tech-feature-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .osf-tech-feature-header .feat-num {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+
+  .osf-tech-feature-header .feat-title {
+    font-size: 20px;
+  }
+
+  .osf-tech-feature-body {
+    padding-left: 0;
+  }
+
+  .osf-tech-grid-2cols,
+  .osf-tech-grid-2cols.text-only,
+  .osf-tech-split-2cols,
+  .osf-tech-grid-3cols {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .osf-tech-feature-lead {
+    margin: -8px 0 28px 0;
+  }
+
+  .osf-m-break {
+    display: block;
+  }
+
+  .osf-d-break {
+    display: inline;
+  }
+
+  .osf-tech-metrics-grid {
+    grid-template-columns: 1fr;
+    row-gap: 20px;
+  }
+
+  .osf-tech-img-box,
+  .osf-tech-img-box.full-width,
+  .osf-tech-img-box.osf-tech-locking-box,
+  .osf-tech-img-box.osf-tech-jaw-box {
+    padding: 0;
+    height: 280px;
+    min-height: 260px;
+  }
+
+  .osf-tech-analysis-section {
+    padding: 64px 0 64px;
+  }
+
+  .osf-tech-analysis-title {
+    font-size: 24px;
+    margin-bottom: 14px;
+  }
+
+  .osf-tech-analysis-desc {
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+
+  .osf-m-line {
+    display: block;
+  }
+
+  .osf-pad-line-end::after {
+    content: none;
+  }
+
+  .osf-tech-analysis-video-box {
+    aspect-ratio: 111 / 100;
+  }
+
+  .osf-tech-video-badge {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+  }
+
+  .osf-tech-video-play-btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .osf-tech-cards-grid {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+    gap: 16px;
+  }
+
+  .osf-tech-card {
+    padding: 24px 24px;
+    min-height: 124px;
+  }
+
+  .osf-tech-card .feature-tag {
+    font-size: 12px;
+    margin-bottom: 14px;
+  }
+
+  .osf-tech-card h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .osf-tech-card p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .osf-card-break {
+    display: block;
+  }
+
+  .osf-tech-item-block {
+    padding: 24px 20px;
+  }
+
+  .osf-tech-item-title {
+    font-size: 1.25rem;
+  }
+
+  /* Mobile 端：文字靠左、雙按鈕滿寬上下垂直堆疊 */
+  .osf-tech-cta-bar {
+    padding: 64px 0;
+    min-height: auto;
+  }
+
+  .osf-tech-cta-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 28px;
+  }
+
+  .osf-tech-cta-text h3 {
+    font-size: 22px;
+    margin-bottom: 14px;
+  }
+
+  .osf-tech-cta-text p {
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .osf-tech-cta-btns {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .osf-tech-cta-btn {
+    width: 100%;
+    height: 46px;
+  }
+
+  /* Mobile 端：許可證字號單欄垂直排列 + 適配間距 */
+  .osf-tech-notice {
+    padding: 40px 0 48px;
+  }
+
+  .osf-tech-notice-inner {
+    gap: 24px;
+  }
+
+  .osf-notice-licenses {
+    grid-template-columns: 1fr;
+    row-gap: 6px;
+    font-size: 12px;
+  }
+
+  .osf-notice-text {
+    font-size: 12px;
+    line-height: 1.7;
+  }
+}
+
+/* ============================================================
+   【TAB 3: 產品規格】樣式 (Product Specifications Styles)
+   ============================================================ */
+
+/* 1. 三系列植體規格深藍圓頂橫幅 (依 Desktop 1440px / Pad 768px / Mobile 375px 三端設計稿 100% 還原) */
+.osf-spec-hero-section {
+  background: linear-gradient(180deg, #154265 0%, #143D5D 100%);
+  color: #ffffff;
+  padding: 112px 0 112px;
+  min-height: 424px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.osf-spec-dome-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.osf-spec-dome-bg-img {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  min-width: 1024px;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.osf-spec-dome-wrapper.has-dome-img .osf-spec-dome-arc {
+  display: none;
+}
+
+/* 100% 擬真還原設計稿半圓形圓頂光暈 (Desktop 弦寬約 82.4% 視窗寬，頂點貼近 top: 4px) */
+.osf-spec-dome-arc {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 87.5vw;
+  min-width: 900px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(13, 39, 64, 0.52) 0%,
+    rgba(13, 39, 64, 0.52) 95.5%,
+    rgba(36, 134, 196, 0.48) 98.5%,
+    rgba(36, 134, 196, 0) 100%
+  );
+  box-shadow:
+    inset 0 6px 20px rgba(48, 160, 228, 0.42),
+    0 -2px 24px rgba(30, 120, 175, 0.3);
+  filter: blur(2px);
+  /* 遮罩保留上半圓弧並向下平滑消融，防止高區塊（如手機版）露出下半圈變成一整圈 */
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    #000000 0%,
+    #000000 20%,
+    rgba(0, 0, 0, 0.45) 35%,
+    rgba(0, 0, 0, 0) 48%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    #000000 0%,
+    #000000 20%,
+    rgba(0, 0, 0, 0.45) 35%,
+    rgba(0, 0, 0, 0) 48%
+  );
+  pointer-events: none;
+}
+
+.osf-spec-hero-inner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.osf-spec-hero-subtag {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(168, 204, 232, 0.78);
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+  margin: 0 0 44px;
+}
+
+.osf-spec-hero-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  margin: 0 0 24px;
+}
+
+.osf-spec-hero-desc {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.03em;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.osf-spec-desc-part1,
+.osf-spec-desc-part2 {
+  display: inline;
+}
+
+/* 2~4. 三系列植體規格區塊 (SERIES 01 ~ 03) */
+.osf-spec-series-section {
+  padding: 112px 0;
+  box-sizing: border-box;
+}
+
+/* 解除 .osf-section-inner 的 z-index 堆疊上下文，讓內部品牌圖片的 mix-blend-mode: multiply 能直接與 section 背景融合而不露白框；並放寬容器讓左欄文字區達 1024px */
+.osf-spec-series-section > .osf-section-inner {
+  z-index: auto;
+  max-width: 1336px;
+}
+
+.osf-spec-bg-muted {
+  background: #F2F2F7;
+}
+
+.osf-spec-bg-white {
+  background: #FFFFFF;
+}
+
+/* Desktop: 左文 (head + points, 1024px) 右植體圖 (implant) */
+.osf-spec-series-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1024px) 180px;
+  grid-template-areas:
+    "head implant"
+    "points implant";
+  column-gap: 36px;
+  row-gap: 52px;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.osf-spec-series-head {
+  grid-area: head;
+  text-align: left;
+}
+
+.osf-spec-series-implant {
+  grid-area: implant;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.osf-spec-series-points {
+  grid-area: points;
+  display: flex;
+  flex-direction: column;
+  gap: 54px;
+  text-align: left;
+}
+
+.osf-spec-series-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: #218CCF;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  margin-bottom: 64px;
+}
+
+.osf-spec-title-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-bottom: 36px;
+}
+
+.osf-spec-series-title {
+  font-size: 40px;
+  font-weight: 700;
+  color: #1D1E22;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.osf-spec-title-prefix,
+.osf-spec-title-name {
+  display: inline;
+}
+
+.osf-spec-brand-logo {
+  display: inline-block;
+  width: auto;
+  object-fit: contain;
+  vertical-align: middle;
+  /* 讓 JPG 白色背景與邊緣壓縮噪點在淺灰藍底 (#F2F2F7) 上完全透明融合、不露白框 */
+  mix-blend-mode: multiply;
+  filter: brightness(1.03) contrast(1.05);
+  user-select: none;
+  flex-shrink: 0;
+}
+
+/* SinusFuse.png 原圖為 89x20px，適度縮小顯示尺寸並套用 SVG 卷積 + Alpha 曲線銳化濾鏡；桌機版同行垂直置中對齊 .osf-spec-title-name 字高 */
+.osf-spec-brand-logo.logo-sinusfuse {
+  height: 26px;
+  margin: 0;
+  mix-blend-mode: normal;
+  filter: url(#osf-sinusfuse-sharpen);
+}
+
+.osf-spec-brand-logo.logo-hexaplus {
+  height: 30px;
+  margin: 0;
+}
+
+.osf-spec-brand-logo.logo-onebody {
+  height: 38px;
+  /* 補償 OneBody.jpg 畫布內部字體主體略偏下 2px，使視覺中心與 .osf-spec-title-name 字高完全置中對齊 */
+  margin: -2px 0 0 0;
+}
+
+.osf-spec-series-subtitle {
+  font-size: 20px;
+  font-weight: 400;
+  color: #454A50;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* 植體 3D 立體圖容器（進場 1.5 秒自然微幅 3D 轉動定位後靜止） */
+.osf-spec-implant-box {
+  position: relative;
+  width: 100%;
+  max-width: 240px;
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  perspective: 900px;
+}
+
+.osf-spec-implant-box .osf-img-slot {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  background: transparent;
+  transform-style: preserve-3d;
+}
+
+.osf-spec-implant-box .osf-img-slot img {
+  width: auto;
+  height: 240px;
+  max-width: 100%;
+  max-height: 240px;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 18px rgba(15, 38, 64, 0.14));
+  opacity: 0;
+  transform: translate3d(0, 16px, -16px) rotateY(-22deg) rotateX(4deg) scale(0.95);
+  will-change: transform, opacity;
+}
+
+/* 滑入視窗時觸發一次 1.5 秒自然 3D 微旋定位，結束後保持靜止 */
+.osf-spec-implant-box.is-inview .osf-img-slot img {
+  animation: osfImplantNaturalEnter3D 1.5s cubic-bezier(0.22, 1, 0.36, 1) 1 forwards;
+}
+
+@keyframes osfImplantNaturalEnter3D {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 16px, -16px) rotateY(-22deg) rotateX(4deg) scale(0.95);
+  }
+  65% {
+    opacity: 1;
+    transform: translate3d(0, -2px, 6px) rotateY(5deg) rotateX(-1deg) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotateY(0deg) rotateX(0deg) scale(1);
+  }
+}
+
+/* HexaPLUS 原圖為 70x156px，縮小至接近原圖 1:1 尺寸避免放大模糊，並強化對比銳利度 */
+.osf-spec-implant-box .slot-spec-hexa-implant img {
+  height: 164px;
+  max-height: 164px;
+  filter: contrast(1.06) drop-shadow(0 14px 20px rgba(15, 38, 64, 0.18));
+}
+
+/* OneBody 原圖為 3001x1688 寬畫布（左右含大量透明留白），改以固定高度展開並裁除左右透明區，使其與前兩款植體視覺比例一致 */
+.osf-spec-implant-box .slot-spec-onebody-implant img {
+  width: auto;
+  max-width: none;
+  height: 296px;
+  max-height: 296px;
+}
+
+/* 01 / 02 / 03 特點項目 */
+.osf-spec-point-block {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.osf-spec-point-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.osf-spec-point-num {
+  width: 31px;
+  height: 25px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 78, 118, 0.10);
+  color: #125A92;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.osf-spec-point-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #15283F;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.osf-spec-point-body {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+.osf-spec-point-body p {
+  font-size: 18px;
+  font-weight: 400;
+  color: #454A50;
+  line-height: 1.56;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.osf-spec-point-body p strong {
+  color: #454A50;
+  font-weight: 700;
+}
+
+/* SERIES 01 下方滿寬視覺示意圖框 */
+.osf-spec-series-media {
+  margin-top: 56px;
+  width: 100%;
+}
+
+.osf-spec-media-box {
+  width: 100%;
+  aspect-ratio: 1200 / 560;
+  background: linear-gradient(135deg, #CADAE6 0%, #E7EFF5 52%, #CEDCE7 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.osf-spec-media-box .osf-img-slot {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  background: transparent;
+}
+
+.osf-spec-media-box .osf-img-slot img,
+.osf-spec-media-box .osf-img-slot video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.osf-spec-media-caption {
+  font-size: 13px;
+  color: #7A8694;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  margin: 12px 0 0 0;
+  text-align: left;
+}
+
+/* 產品規格底部 CTA Bar 為純白底（與上方 SERIES 03 淺灰藍底區隔） */
+.osf-spec-cta-bar {
+  background: #FFFFFF;
+}
+
+/* --- 產品規格 RWD: Pad (<= 1024px) --- */
+@media (max-width: 1024px) {
+  .osf-spec-hero-section {
+    padding: 82px 0 82px;
+    min-height: 328px;
+  }
+
+  .osf-spec-dome-arc {
+    top: 4px;
+    width: 112.5vw;
+    min-width: 780px;
+  }
+
+  .osf-spec-dome-bg-img {
+    width: 112.5vw;
+    min-width: 780px;
+  }
+
+  .osf-spec-hero-subtag {
+    font-size: 13px;
+    margin-bottom: 34px;
+  }
+
+  .osf-spec-hero-title {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+
+  .osf-spec-hero-desc {
+    font-size: 15px;
+  }
+
+  /* Pad 端：上方為左標題導言 + 右植體圖，下方特點列表滿寬 */
+  .osf-spec-series-section {
+    padding: 80px 0;
+  }
+
+  .osf-spec-series-top {
+    grid-template-columns: 1fr 200px;
+    grid-template-areas:
+      "head implant"
+      "points points";
+    column-gap: 32px;
+    row-gap: 32px;
+  }
+
+  .osf-spec-series-tag {
+    margin-bottom: 36px;
+  }
+
+  .osf-spec-title-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .osf-spec-series-title {
+    font-size: 32px;
+  }
+
+  .osf-spec-brand-logo.logo-sinusfuse {
+    height: 23px;
+    margin-bottom: 0;
+  }
+
+  .osf-spec-brand-logo.logo-hexaplus {
+    height: 26px;
+    margin-bottom: 0;
+  }
+
+  .osf-spec-brand-logo.logo-onebody {
+    height: 34px;
+    margin-bottom: -3px;
+  }
+
+  .osf-spec-series-subtitle {
+    font-size: 17px;
+  }
+
+  .osf-spec-series-points {
+    gap: 40px;
+  }
+
+  .osf-spec-point-title {
+    font-size: 18px;
+  }
+
+  .osf-spec-point-body p {
+    font-size: 16px;
+  }
+
+  .osf-spec-title-prefix,
+  .osf-spec-title-name {
+    display: block;
+  }
+
+  .osf-spec-series-media {
+    margin-top: 40px;
+  }
+
+  .osf-spec-implant-box .osf-img-slot img {
+    height: 200px;
+    max-height: 200px;
+  }
+
+  .osf-spec-implant-box .slot-spec-hexa-implant img {
+    height: 146px;
+    max-height: 146px;
+  }
+
+  .osf-spec-implant-box .slot-spec-onebody-implant img {
+    height: 246px;
+    max-height: 246px;
+  }
+}
+
+/* --- 產品規格 RWD: Mobile (<= 768px) --- */
+@media (max-width: 768px) {
+  .osf-spec-hero-section {
+    padding: 56px 0 56px;
+    min-height: 266px;
+  }
+
+  .osf-spec-dome-arc {
+    top: 5px;
+    width: 109.5vw;
+    min-width: 410px;
+  }
+
+  .osf-spec-dome-bg-img {
+    width: 109.5vw;
+    min-width: 410px;
+  }
+
+  .osf-spec-hero-subtag {
+    font-size: 12px;
+    margin-bottom: 28px;
+  }
+
+  .osf-spec-hero-title {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  .osf-spec-hero-desc {
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* 手機端依設計稿分為上下兩行 */
+  .osf-spec-desc-part1,
+  .osf-spec-desc-part2 {
+    display: block;
+  }
+
+  /* Mobile 端：標題導言 -> 白底植體圖卡片 -> 特點列表 -> 下方滿寬圖 */
+  .osf-spec-series-section {
+    padding: 56px 0;
+  }
+
+  .osf-spec-series-top {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "head"
+      "implant"
+      "points";
+    row-gap: 24px;
+  }
+
+  .osf-spec-series-tag {
+    margin-bottom: 24px;
+  }
+
+  .osf-spec-title-wrap {
+    margin-bottom: 18px;
+  }
+
+  .osf-spec-series-title {
+    font-size: 26px;
+  }
+
+  .osf-spec-brand-logo.logo-sinusfuse {
+    height: 20px;
+    margin-bottom: 0;
+  }
+
+  .osf-spec-brand-logo.logo-hexaplus {
+    height: 23px;
+    margin-bottom: 0;
+  }
+
+  .osf-spec-brand-logo.logo-onebody {
+    height: 30px;
+    margin-bottom: -2px;
+  }
+
+  .osf-spec-series-subtitle {
+    font-size: 15px;
+  }
+
+  .osf-spec-series-points {
+    gap: 32px;
+  }
+
+  .osf-spec-point-block {
+    gap: 16px;
+  }
+
+  .osf-spec-point-title {
+    font-size: 17px;
+  }
+
+  .osf-spec-point-body {
+    gap: 12px;
+  }
+
+  .osf-spec-point-body p {
+    font-size: 15px;
+  }
+
+  .osf-spec-implant-box {
+    max-width: 100%;
+    background: #FFFFFF;
+    padding: 28px 20px;
+    box-sizing: border-box;
+  }
+
+  .osf-spec-implant-box .osf-img-slot img {
+    height: 190px;
+    max-height: 190px;
+  }
+
+  .osf-spec-implant-box .slot-spec-hexa-implant img {
+    height: 140px;
+    max-height: 140px;
+  }
+
+  .osf-spec-implant-box .slot-spec-onebody-implant img {
+    height: 234px;
+    max-height: 234px;
+  }
+
+  .osf-spec-bg-white .osf-spec-implant-box {
+    background: #F7F9FC;
+  }
+
+  .osf-spec-series-media {
+    margin-top: 28px;
+  }
+
+  .osf-spec-media-box {
+    aspect-ratio: 16 / 10;
+  }
+}
+
+/* ============================================================
+   全機型與摺疊機（iPhone Fold / Duo / Galaxy Z Fold / Z Flip）自適應強化
+   ============================================================ */
+
+/* 1. 摺疊機展開態（Unfolded Inner Screen / Duo：540px ~ 768px 近方螢幕） */
+@media (min-width: 540px) and (max-width: 768px) {
+  .osf-section-inner,
+  .osf-tech-hero-section .osf-tech-hero-inner {
+    padding-left: max(32px, env(safe-area-inset-left));
+    padding-right: max(32px, env(safe-area-inset-right));
+  }
+
+  .osf-spec-series-top {
+    grid-template-columns: 1fr 180px;
+    grid-template-areas:
+      "head implant"
+      "points points";
+    column-gap: 24px;
+    row-gap: 28px;
+  }
+
+  .osf-spec-implant-box {
+    background: transparent !important;
+    padding: 0;
+    min-height: 200px;
+  }
+
+  .osf-tech-cta-btns {
+    flex-direction: row;
+    gap: 14px;
+  }
+
+  .osf-tech-cta-btn {
+    flex: 1;
+  }
+}
+
+/* 2. 摺疊機展開態或橫向矮螢幕（防止 Hero 標題與頂部麵包屑/Header 重疊） */
+@media (max-width: 920px) and (max-height: 680px) {
+  .osf-hero {
+    min-height: 440px;
+  }
+
+  .osf-hero-inner {
+    padding-bottom: 32px;
+  }
+
+  .osf-hero-content h1 {
+    font-size: clamp(24px, 4.2vw, 34px);
+    margin-bottom: 10px;
+  }
+}
+
+/* 3. 摺疊機窄外螢幕與極小螢幕手機（Cover Screen <= 360px，最低支援至 280px） */
+@media (max-width: 360px) {
+  .osf-section-inner,
+  .osf-cta-inner,
+  .osf-tech-hero-section .osf-tech-hero-inner {
+    padding-left: max(14px, env(safe-area-inset-left));
+    padding-right: max(14px, env(safe-area-inset-right));
+  }
+
+  .osf-hero-inner {
+    padding: 0 16px 32px;
+  }
+
+  .osf-breadcrumb {
+    left: 16px;
+    font-size: 0.64rem;
+  }
+
+  .osf-hero-content h1 {
+    font-size: clamp(22px, 7vw, 26px);
+  }
+
+  .osf-hero-subtitle {
+    font-size: 14px;
+  }
+
+  .osf-tab-mobile-trigger {
+    padding: 0 18px;
+    height: 50px;
+  }
+
+  .osf-tab-mobile-caret {
+    right: 18px;
+  }
+
+  .osf-spec-hero-title,
+  .osf-spec-series-title,
+  .osf-tech-analysis-title,
+  .osf-tech-cta-text h3 {
+    font-size: clamp(20px, 6.2vw, 23px);
+  }
+
+  .osf-spec-hero-desc {
+    font-size: 13.5px;
+  }
+
+  .osf-compare-m-badge {
+    width: clamp(82px, 30%, 100px);
+    font-size: 0.7rem;
+    padding: 6px 6px;
+  }
+
+  .osf-compare-m-content {
+    font-size: 0.78rem;
+    padding: 6px 10px;
+  }
+}
+
+/* 4. 雙螢幕摺疊設備（Surface Duo / iPhone Duo 鉸鏈跨屏避讓） */
+@media (horizontal-viewport-segments: 2) {
+  .osf-section-inner {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+/* ============================================================
+   【TAB 4: 專利認證】樣式 (Patents & Certificates Styles)
+   ============================================================ */
+
+/* Hero 橫幅直接共用 .osf-spec-hero-section，微調標題內分隔線與描述字重 */
+.osf-cert-hero-sep {
+  display: inline-block;
+  margin: 0 8px;
+  opacity: 0.65;
+  font-weight: 300;
+}
+
+.osf-cert-title-p1,
+.osf-cert-title-p2 {
+  display: inline;
+}
+
+.osf-cert-hero-desc {
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.osf-cert-desc-p1,
+.osf-cert-desc-p2 {
+  display: inline;
+}
+
+/* 2. 專利證書展示區（淺灰藍漸層背景 #F2F2F7 -> #F1F6FC） */
+.osf-patent-gallery-section {
+  background: linear-gradient(180deg, #F2F2F7 0%, #F1F6FC 100%);
+  padding: 88px 0 112px;
+  box-sizing: border-box;
+}
+
+/* 國家分類切換按鈕列（台灣 / 美國 / 中國） */
+.osf-patent-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 48px;
+}
+
+.osf-patent-filter-btn {
+  min-width: 68px;
+  height: 44px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 0;
+  background: #D5E0EC;
+  color: #154265;
+  font-family: 'Noto Sans CJK TC', 'Noto Sans TC', var(--font-body), -apple-system, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+}
+
+.osf-patent-filter-btn:hover {
+  background: #C4D4E5;
+  color: #123654;
+}
+
+.osf-patent-filter-btn.active {
+  background: #125A90;
+  color: #FFFFFF;
+}
+
+/* 4x2 橫式專利證書網格 */
+.osf-patent-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  width: 100%;
+}
+
+.osf-patent-card {
+  position: relative;
+  background: #FFFFFF;
+  padding: 10px;
+  box-sizing: border-box;
+  box-shadow: 0 6px 20px rgba(15, 38, 64, 0.07);
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.osf-patent-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 32px rgba(15, 38, 64, 0.14);
+}
+
+.osf-patent-card .osf-img-slot img {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.osf-patent-card:hover .osf-img-slot img {
+  transform: scale(1.03);
+}
+
+/* 右下角常駐微毛玻璃圓標（精緻不遮擋證書，Hover 時淡出交棒給中央精品膠囊） */
+.osf-patent-corner-pill {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(18, 90, 144, 0.18);
+  box-shadow: 0 4px 12px rgba(15, 38, 64, 0.12);
+  color: #125A90;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.osf-patent-card:hover .osf-patent-corner-pill {
+  opacity: 0;
+  transform: scale(0.85);
+}
+
+/* Hover 居中精品毛玻璃放大檢視膠囊 + 柔光漸層遮罩 */
+.osf-patent-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(12, 34, 56, 0.26) 0%, rgba(12, 34, 56, 0.42) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.26s ease;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.osf-patent-card:hover .osf-patent-hover-overlay,
+.osf-patent-card:focus-visible .osf-patent-hover-overlay {
+  opacity: 1;
+}
+
+.osf-patent-hover-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: rgba(15, 38, 64, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  box-shadow: 0 8px 24px rgba(7, 19, 34, 0.28);
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  transform: translateY(6px) scale(0.96);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.osf-patent-card:hover .osf-patent-hover-pill,
+.osf-patent-card:focus-visible .osf-patent-hover-pill {
+  transform: translateY(0) scale(1);
+}
+
+/* 專利證書放大讀取燈箱 (Patent Certificate Lightbox Modal — 固定於 Header 下方正中央，上下對稱留白) */
+.osf-patent-lightbox {
+  position: fixed;
+  top: var(--header-height, 74px);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(100vh - var(--header-height, 74px));
+  height: calc(100dvh - var(--header-height, 74px));
+  z-index: 9990;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 84px;
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.osf-patent-lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.osf-patent-lb-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(9, 22, 38, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* 正中央對話框容器（頂部控制列 + 證書舞台） */
+.osf-patent-lb-dialog {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: min(84vw, 1060px);
+  max-height: 100%;
+  width: 100%;
+  gap: 14px;
+}
+
+/* 證書正上方控制列：左側「← 返回證書列表」+ 編號，右側縮放與關閉 */
+.osf-patent-lb-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.osf-patent-lb-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* 明顯的「← 返回證書列表」膠囊按鈕 */
+.osf-patent-lb-back {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  color: #FFFFFF;
+  font-family: 'Noto Sans CJK TC', 'Noto Sans TC', var(--font-body), -apple-system, sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.osf-patent-lb-back:hover {
+  background: #1B7AC2;
+  border-color: #63B3ED;
+  transform: translateX(-2px);
+}
+
+.osf-patent-lb-divider {
+  width: 1px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.osf-patent-lb-counter {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.osf-patent-lb-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.osf-patent-lb-zoom-group {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  padding: 2px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.osf-patent-lb-toolbtn {
+  height: 32px;
+  min-width: 34px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.osf-patent-lb-toolbtn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.osf-patent-lb-zoom-label {
+  min-width: 52px;
+}
+
+.osf-patent-lb-close {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.osf-patent-lb-close:hover {
+  background: #DF483B;
+  border-color: #FF8075;
+  transform: rotate(90deg);
+}
+
+.osf-patent-lb-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.osf-patent-lb-nav:hover {
+  background: #1B7AC2;
+  border-color: #63B3ED;
+  transform: translateY(-50%) scale(1.06);
+}
+
+.osf-patent-lb-prev {
+  left: 24px;
+}
+
+.osf-patent-lb-next {
+  right: 24px;
+}
+
+/* 證書舞台區：使用 margin: auto 置中，放大後四向皆可完整自由滑動捲動，絕不裁切左上角 */
+.osf-patent-lb-stage {
+  position: relative;
+  width: 100%;
+  max-height: calc(100dvh - var(--header-height, 74px) - 116px);
+  display: flex;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-x pan-y pinch-zoom;
+  border-radius: 4px;
+}
+
+.osf-patent-lb-canvas {
+  background: #FFFFFF;
+  padding: 14px;
+  border-radius: 2px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.52);
+  margin: auto;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.2s ease;
+  cursor: zoom-in;
+}
+
+.osf-patent-lb-canvas.is-zoomed {
+  cursor: zoom-out;
+}
+
+.osf-patent-lb-img {
+  max-width: min(80vw, 1020px);
+  max-height: calc(100dvh - var(--header-height, 74px) - 148px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  transition: width 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.osf-patent-lb-placeholder {
+  width: min(78vw, 760px);
+  aspect-ratio: 4 / 3;
+  background: #F7FAFE;
+  border: 1.5px dashed #B8CBE0;
+  color: #3E566E;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.osf-patent-lb-placeholder .lb-placeholder-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #154265;
+}
+
+.osf-patent-lb-placeholder .lb-placeholder-path {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: #218CCF;
+  background: rgba(33, 140, 207, 0.1);
+  padding: 6px 12px;
+}
+
+.osf-patent-card .osf-img-slot {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  background: #FAFCFF;
+}
+
+.osf-patent-card .osf-img-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* --- 專利認證 RWD: Pad (<= 1024px) --- */
+@media (max-width: 1024px) {
+  .osf-patent-gallery-section {
+    padding: 72px 0 88px;
+  }
+
+  .osf-patent-filter-bar {
+    margin-bottom: 36px;
+  }
+
+  .osf-patent-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+/* --- 專利認證 RWD: Mobile (<= 768px) --- */
+@media (max-width: 768px) {
+  /* 手機端依設計稿將專利認證圓頂標題與描述各自分為上下兩行 */
+  .osf-cert-title-p1,
+  .osf-cert-title-p2,
+  .osf-cert-desc-p1,
+  .osf-cert-desc-p2 {
+    display: block;
+  }
+
+  .osf-cert-hero-sep {
+    margin: 0 0 0 6px;
+  }
+
+  .osf-patent-gallery-section {
+    padding: 52px 0 68px;
+  }
+
+  .osf-patent-filter-bar {
+    margin-bottom: 28px;
+  }
+
+  .osf-patent-filter-btn {
+    min-width: 62px;
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+  }
+
+  .osf-patent-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .osf-patent-lightbox {
+    padding: 16px 16px;
+  }
+
+  .osf-patent-lb-dialog {
+    max-width: 100%;
+    gap: 10px;
+  }
+
+  .osf-patent-lb-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .osf-patent-lb-back {
+    height: 34px;
+    padding: 0 12px;
+    font-size: 12.5px;
+  }
+
+  .osf-patent-lb-counter {
+    font-size: 12.5px;
+  }
+
+  .osf-patent-lb-nav {
+    width: 38px;
+    height: 38px;
+  }
+
+  .osf-patent-lb-prev {
+    left: 10px;
+  }
+
+  .osf-patent-lb-next {
+    right: 10px;
+  }
+
+  .osf-patent-lb-stage {
+    max-height: calc(100dvh - var(--header-height, 64px) - 110px);
+  }
+
+  .osf-patent-lb-img {
+    max-width: 92vw;
+    max-height: calc(100dvh - var(--header-height, 64px) - 136px);
+  }
+
+  .osf-patent-lb-canvas {
+    padding: 8px;
+  }
+}
+
+/* 摺疊機展開態（540px ~ 768px）維持雙欄證書網格 */
+@media (min-width: 540px) and (max-width: 768px) {
+  .osf-patent-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+/* ============================================================
+   【TAB 5: 醫師分享】樣式 (Doctor Testimonials Styles)
+   ============================================================ */
+
+/* 1. 深藍圓頂橫幅內雙數據指標（100,000 & 15） */
+.osf-doctor-hero-inner {
+  display: flex;
+  justify-content: center;
+}
+
+.osf-doctor-stats-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.osf-doctor-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12px 32px;
+}
+
+.osf-doctor-stat-tag {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(168, 204, 232, 0.72);
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+  margin-bottom: 28px;
+}
+
+.osf-doctor-stat-num {
+  display: inline-block;
+  font-family: var(--font-heading, Inter, sans-serif);
+  font-variant-numeric: tabular-nums;
+  font-size: 56px;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  margin-bottom: 18px;
+  will-change: transform, text-shadow;
+  transition: text-shadow 0.25s ease;
+}
+
+.osf-doctor-stat-num.is-counting {
+  text-shadow: 0 0 26px rgba(99, 179, 237, 0.55);
+  animation: osfStatCountPulse 0.28s ease-in-out infinite alternate;
+}
+
+.osf-doctor-stat-num.is-landed {
+  animation: osfStatPopLand 0.52s cubic-bezier(0.22, 1, 0.36, 1) 1 forwards;
+}
+
+@keyframes osfStatCountPulse {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    transform: translateY(-2px) scale(1.03);
+  }
+}
+
+@keyframes osfStatPopLand {
+  0% {
+    transform: scale(1.09);
+    text-shadow: 0 0 34px rgba(99, 179, 237, 0.78);
+  }
+  55% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+    text-shadow: 0 4px 18px rgba(7, 19, 34, 0.25);
+  }
+}
+
+.osf-doctor-stat-unit {
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+
+.osf-doctor-stat-divider {
+  width: 1px;
+  height: 154px;
+  background: linear-gradient(
+    180deg,
+    rgba(99, 179, 237, 0) 0%,
+    rgba(99, 179, 237, 0.48) 50%,
+    rgba(99, 179, 237, 0) 100%
+  );
+}
+
+/* 2. 臨床現場的真實回饋（淺灰藍底 #F2F2F7） */
+.osf-doctor-feedback-section {
+  background: #F2F2F7;
+  padding: 104px 0 116px;
+  box-sizing: border-box;
+}
+
+.osf-doctor-section-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1D1E22;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  text-align: center;
+  margin: 0 0 56px 0;
+}
+
+/* Desktop: 雙欄平衡瀑布流（左欄：張醫師 + 邱醫師；右欄：黃醫師 + 許醫師） */
+.osf-doctor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.osf-doctor-col {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.osf-doctor-card {
+  background: #FFFFFF;
+  padding: 40px 40px;
+  box-sizing: border-box;
+  text-align: left;
+  box-shadow: 0 4px 20px rgba(15, 38, 64, 0.03);
+}
+
+.osf-doctor-meta {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.osf-doctor-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #125A90;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+
+.osf-doctor-sep {
+  font-size: 13px;
+  color: #CBD5E1;
+  user-select: none;
+}
+
+.osf-doctor-role {
+  font-size: 13.5px;
+  font-weight: 400;
+  color: #7A8694;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+
+.osf-doctor-quote-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #15283F;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+  margin: 0 0 22px 0;
+}
+
+.osf-doctor-quote-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.osf-doctor-quote-body p {
+  font-size: 15px;
+  font-weight: 400;
+  color: #454A50;
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* --- 醫師分享 RWD: Pad (<= 1024px) --- */
+@media (max-width: 1024px) {
+  .osf-doctor-stat-num {
+    font-size: 46px;
+  }
+
+  .osf-doctor-stat-divider {
+    height: 130px;
+  }
+
+  .osf-doctor-feedback-section {
+    padding: 80px 0 92px;
+  }
+
+  .osf-doctor-section-title {
+    font-size: 32px;
+    margin-bottom: 44px;
+  }
+
+  /* Pad 與 Mobile 轉為單欄，並透過 display: contents 與 order 排為：張醫師(1) -> 邱醫師(2) -> 許醫師(3) -> 黃醫師(4) */
+  .osf-doctor-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .osf-doctor-col {
+    display: contents;
+  }
+
+  .osf-doc-order-1 { order: 1; }
+  .osf-doc-order-2 { order: 2; }
+  .osf-doc-order-3 { order: 3; }
+  .osf-doc-order-4 { order: 4; }
+
+  .osf-doctor-card {
+    width: 100%;
+    padding: 36px 36px;
+  }
+}
+
+/* --- 醫師分享 RWD: Mobile (<= 768px) --- */
+@media (max-width: 768px) {
+  .osf-doctor-hero-section {
+    padding: 60px 0 64px;
+    min-height: 440px;
+  }
+
+  /* 手機端依設計稿改為上下單欄堆疊 + 中間水平漸層分隔線 */
+  .osf-doctor-stats-row {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+  }
+
+  .osf-doctor-stat-item {
+    padding: 4px 14px;
+  }
+
+  .osf-doctor-stat-tag {
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+
+  .osf-doctor-stat-num {
+    font-size: 40px;
+    margin-bottom: 14px;
+  }
+
+  .osf-doctor-stat-unit {
+    font-size: 14px;
+  }
+
+  .osf-doctor-stat-divider {
+    width: 100%;
+    max-width: 240px;
+    height: 1px;
+    margin: 28px auto;
+    background: linear-gradient(
+      90deg,
+      rgba(99, 179, 237, 0) 0%,
+      rgba(99, 179, 237, 0.52) 50%,
+      rgba(99, 179, 237, 0) 100%
+    );
+  }
+
+  .osf-doctor-feedback-section {
+    padding: 56px 0 68px;
+  }
+
+  .osf-doctor-section-title {
+    font-size: 24px;
+    margin-bottom: 32px;
+  }
+
+  .osf-doctor-grid {
+    gap: 20px;
+  }
+
+  .osf-doctor-card {
+    padding: 28px 24px;
+  }
+
+  .osf-doctor-quote-title {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .osf-doctor-quote-body p {
+    font-size: 14px;
+  }
+}
+
+/* 摺疊機窄外螢幕（<= 360px）防止雙數據指標擠壓 */
+@media (max-width: 360px) {
+  .osf-doctor-stat-num {
+    font-size: 28px;
+  }
+
+  .osf-doctor-stat-unit {
+    font-size: 12px;
+  }
+
+  .osf-doctor-card {
+    padding: 22px 18px;
+  }
+}
+
+/* ============================================================
+   【TAB 6: 衛教社群】樣式 (Community & Education Styles)
+   ============================================================ */
+
+/* 1. 身體條件比較表區（淺灰藍底 #F2F2F7） */
+.osf-edu-compare-section {
+  background: #F2F2F7;
+  padding: 100px 0 112px;
+  box-sizing: border-box;
+}
+
+.osf-edu-table-wrap {
+  width: 100%;
+  max-width: 1020px;
+  margin: 0 auto;
+}
+
+.osf-edu-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+/* 左側分類標題欄（Desktop 顯示於表格左方無底色區，靠右對齊） */
+.osf-edu-table .edu-col-category {
+  width: 140px;
+  padding: 16px 28px 16px 0;
+  text-align: right;
+  font-size: 15px;
+  font-weight: 500;
+  color: #454A50;
+  background: transparent;
+  border: none;
+  vertical-align: middle;
+  letter-spacing: 0.02em;
+}
+
+.osf-edu-table .edu-th-empty {
+  padding: 0;
+}
+
+/* 表頭雙欄：左欄品牌主藍 #125A92，右欄深海軍藍 #154265 */
+.osf-edu-table .edu-th-osseofuse,
+.osf-edu-table .edu-th-traditional {
+  padding: 18px 24px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #FFFFFF;
+  text-align: center;
+  letter-spacing: 0.03em;
+  line-height: 1.4;
+}
+
+.osf-edu-table .edu-th-osseofuse {
+  background: #125A92;
+}
+
+.osf-edu-table .edu-th-traditional {
+  background: #154265;
+}
+
+/* 資料列儲存格 */
+.osf-edu-table td.edu-col-osseofuse,
+.osf-edu-table td.edu-col-traditional {
+  padding: 17px 24px;
+  font-size: 15.5px;
+  line-height: 1.55;
+  text-align: left;
+  vertical-align: middle;
+  letter-spacing: 0.02em;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+/* 衛教社群表格 中文版文字置中對齊 */
+.osf-edu-table-wrap.osf-edu-lang-zh .osf-edu-table td.edu-col-osseofuse,
+.osf-edu-table-wrap.osf-edu-lang-zh .osf-edu-table td.edu-col-traditional {
+  text-align: center;
+}
+
+.osf-edu-table td.edu-col-osseofuse {
+  color: #125A92;
+  font-weight: 700;
+  border-right: 1px solid #DCE1EA;
+}
+
+.osf-edu-table td.edu-col-osseofuse strong {
+  font-weight: 700;
+}
+
+.osf-edu-table td.edu-col-traditional {
+  color: #454A50;
+  font-weight: 400;
+}
+
+/* 斑馬紋交錯底色：奇數列 #ECEEF4，偶數列與底部合併群組 #FFFFFF */
+.osf-edu-table .edu-row-tinted td.edu-col-osseofuse,
+.osf-edu-table .edu-row-tinted td.edu-col-traditional {
+  background: #ECEEF4;
+}
+
+.osf-edu-table .edu-row-white td.edu-col-osseofuse,
+.osf-edu-table .edu-row-white td.edu-col-traditional {
+  background: #FFFFFF;
+}
+
+/* 第 8~10 列左欄合併儲存格：垂直置中 + 底部柔和立體卡片浮起陰影 */
+.osf-edu-table td.edu-cell-merged {
+  background: #FFFFFF;
+  box-shadow: 0 12px 24px rgba(15, 38, 64, 0.07);
+  position: relative;
+  z-index: 1;
+}
+
+/* 手機端卡片預設於桌機/平板隱藏 */
+.osf-edu-mobile-cards {
+  display: none;
+}
+
+/* 2. 更多衛教社群區（純白底 #FFFFFF） */
+.osf-edu-community-section {
+  background: #FFFFFF;
+  padding: 100px 0 116px;
+  box-sizing: border-box;
+}
+
+.osf-edu-community-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1D1E22;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  text-align: center;
+  margin: 0 0 52px 0;
+}
+
+.osf-edu-community-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.osf-edu-community-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.osf-edu-community-card:hover {
+  transform: translateY(-4px);
+}
+
+.osf-edu-card-thumb {
+  width: 100%;
+  aspect-ratio: 1558 / 1039;
+  background: #ECEEF4;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.osf-edu-card-thumb .osf-img-slot.slot-edu-community {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  background: transparent;
+  border-radius: 0;
+}
+
+.osf-edu-card-thumb .osf-img-slot.slot-edu-community img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.osf-edu-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 8px 4px;
+  position: relative;
+}
+
+.osf-edu-card-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #125A92;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+  text-align: center;
+  transition: color 0.2s ease;
+}
+
+.osf-edu-community-card:hover .osf-edu-card-label {
+  color: #0D4470;
+}
+
+.osf-edu-ext-icon {
+  color: #125A92;
+  flex-shrink: 0;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.osf-edu-community-card:hover .osf-edu-ext-icon {
+  transform: translate(2px, -2px);
+  color: #0D4470;
+}
+
+/* 3. 衛教社群底部 CTA Bar（淺灰藍底 #F2F2F7，與上方白底社群區形成區塊層次） */
+.osf-edu-cta-bar {
+  background: #F2F2F7;
+}
+
+/* --- 衛教社群 RWD: Pad (<= 1024px) --- */
+@media (max-width: 1024px) {
+  .osf-edu-compare-section {
+    padding: 76px 0 88px;
+  }
+
+  .osf-edu-table-wrap {
+    max-width: 100%;
+  }
+
+  /* Pad 版依設計稿隱藏左側外部分類欄，讓雙欄比較表 50% / 50% 填滿版面 */
+  .osf-edu-table .edu-col-category {
+    display: none;
+  }
+
+  .osf-edu-table .edu-th-osseofuse,
+  .osf-edu-table .edu-th-traditional {
+    width: 50%;
+    font-size: 16px;
+    padding: 16px 18px;
+  }
+
+  .osf-edu-table td.edu-col-osseofuse,
+  .osf-edu-table td.edu-col-traditional {
+    font-size: 15px;
+    padding: 16px 18px;
+    text-align: left;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .osf-edu-table-wrap.osf-edu-lang-zh .osf-edu-table td.edu-col-osseofuse,
+  .osf-edu-table-wrap.osf-edu-lang-zh .osf-edu-table td.edu-col-traditional {
+    text-align: center;
+  }
+
+  /* Pad 版第 8 列傳統植牙文字分為上下兩行 */
+  .osf-edu-trad-p1,
+  .osf-edu-trad-p2 {
+    display: block;
+  }
+
+  .osf-edu-community-section {
+    padding: 76px 0 92px;
+  }
+
+  .osf-edu-community-title {
+    font-size: 32px;
+    margin-bottom: 44px;
+  }
+
+  /* Pad 版衛教社群卡片轉為 2 欄排列（2 + 1） */
+  .osf-edu-community-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 24px;
+  }
+
+  /* Pad 與 Mobile 第 3 張 IG 卡片標題分為上下兩行置中，外連 icon 居右 */
+  .osf-edu-card-ig .osf-edu-link-line1,
+  .osf-edu-card-ig .osf-edu-link-line2 {
+    display: block;
+  }
+
+  .osf-edu-card-ig .osf-edu-card-footer {
+    padding-right: 28px;
+    padding-left: 28px;
+  }
+
+  .osf-edu-card-ig .osf-edu-ext-icon {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .osf-edu-card-ig:hover .osf-edu-ext-icon {
+    transform: translate(2px, calc(-50% - 2px));
+  }
+}
+
+/* --- 衛教社群 RWD: Mobile (<= 768px) --- */
+@media (max-width: 768px) {
+  .osf-edu-compare-section {
+    padding: 52px 0 64px;
+  }
+
+  /* 手機端切換為 10 張獨立雙列比較卡片 */
+  .osf-edu-table-wrap {
+    display: none;
+  }
+
+  .osf-edu-mobile-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .osf-edu-m-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .osf-edu-m-category {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: #454A50;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    text-align: left;
+  }
+
+  .osf-edu-m-box {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .osf-edu-m-row {
+    display: grid;
+    grid-template-columns: 108px 1fr;
+    min-height: 48px;
+  }
+
+  .osf-edu-m-row-osf {
+    background: #FFFFFF;
+    box-shadow: 0 6px 16px rgba(15, 38, 64, 0.05);
+    position: relative;
+    z-index: 1;
+  }
+
+  .osf-edu-m-row-trad {
+    background: #ECEEF4;
+  }
+
+  .osf-edu-m-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.25;
+    padding: 10px 8px;
+    letter-spacing: 0.01em;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .osf-edu-m-badge.badge-osf {
+    background: #125A92;
+  }
+
+  .osf-edu-m-badge.badge-trad {
+    background: #154265;
+  }
+
+  .osf-edu-m-val {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    padding: 10px 14px;
+    min-width: 0;
+  }
+
+  .osf-edu-m-val-text {
+    display: block;
+    width: 100%;
+    font-size: 13.5px;
+    line-height: 1.45;
+    letter-spacing: 0.01em;
+    text-align: left;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .osf-edu-m-val-text .osf-edu-trad-p1,
+  .osf-edu-m-val-text .osf-edu-trad-p2 {
+    display: inline;
+  }
+
+  /* 衛教社群手機卡片 中文版文字置中對齊 */
+  .osf-edu-mobile-cards.osf-edu-lang-zh .osf-edu-m-val {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .osf-edu-mobile-cards.osf-edu-lang-zh .osf-edu-m-val-text {
+    text-align: center;
+  }
+
+  .osf-edu-m-val.val-osf {
+    color: #125A92;
+    font-weight: 700;
+  }
+
+  .osf-edu-m-val.val-osf strong {
+    font-weight: 700;
+  }
+
+  .osf-edu-m-val.val-trad {
+    color: #454A50;
+    font-weight: 400;
+  }
+
+  .osf-edu-community-section {
+    padding: 56px 0 68px;
+  }
+
+  .osf-edu-community-title {
+    font-size: 24px;
+    margin-bottom: 32px;
+  }
+
+  .osf-edu-community-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .osf-edu-card-label {
+    font-size: 14.5px;
+  }
+}
+
+/* 摺疊機窄外螢幕（<= 360px）防止比較卡片左欄擠壓 */
+@media (max-width: 360px) {
+  .osf-edu-m-row {
+    grid-template-columns: 94px 1fr;
+  }
+
+  .osf-edu-m-badge {
+    font-size: 12px;
+    padding: 10px 4px;
+    line-height: 1.2;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .osf-edu-m-val {
+    padding: 10px 8px;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .osf-edu-m-val-text {
+    font-size: 12.5px;
+    text-align: left;
+  }
+
+  .osf-edu-mobile-cards.osf-edu-lang-zh .osf-edu-m-val {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .osf-edu-mobile-cards.osf-edu-lang-zh .osf-edu-m-val-text {
+    text-align: center;
+  }
+}
