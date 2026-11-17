@@ -441,7 +441,7 @@
 /* --- Video Section (一套系統，迅速完成植牙 — 背景半圓穹頂 Dome + 柔和過渡色) --- */
 .osf-video-section {
   background: linear-gradient(180deg, #F5F8FC 0%, #EEF3F9 40%, #F7FAFD 78%, #FFFFFF 100%);
-  padding: 68px 0 96px;
+  padding: 128px 0;
   position: relative;
   overflow: hidden;
 }
@@ -507,7 +507,7 @@
 /* --- System Section (Light — 10步 vs 2步對比，依設計截圖 100% 還原) --- */
 .osf-system-section {
   background: linear-gradient(180deg, #E6EDF5 0%, #F4F7FB 32%, #F8F9FB 100%);
-  padding: 72px 0 80px;
+  padding: 128px 0;
   overflow: hidden;
 }
 
@@ -766,7 +766,7 @@
 /* --- Comparison Table Section (Light — 三種術式比較，依設計截圖 100% 還原) --- */
 .osf-compare-section {
   background: linear-gradient(180deg, #F8FAFD 0%, #FFFFFF 100%);
-  padding: 88px 0 96px;
+  padding: 128px 0;
 }
 
 .osf-compare-title {
@@ -886,7 +886,7 @@
 .osf-cert-section {
   background: #154265;
   color: #ffffff;
-  padding: 80px 0 88px;
+  padding: 128px 0;
   overflow: hidden;
 }
 
@@ -1940,7 +1940,7 @@
 /* 2. 核心 4 項技術優勢分區 (依設計稿還原) */
 .osf-tech-features-section {
   background: var(--color-bg-light, #F7F9FC);
-  padding: 88px 0 110px;
+  padding: 128px 0;
 }
 
 .osf-tech-advantages-header {
@@ -2235,7 +2235,7 @@
 /* 3. 核心技術解析 (獨立白底區塊 — 依設計稿三端還原) */
 .osf-tech-analysis-section {
   background: #ffffff;
-  padding: 120px 0 120px;
+  padding: 128px 0;
   text-align: center;
 }
 
@@ -2911,7 +2911,7 @@
 .osf-spec-hero-section {
   background: linear-gradient(180deg, #154265 0%, #143D5D 100%);
   color: #ffffff;
-  padding: 112px 0 112px;
+  padding: 128px 0;
   min-height: 424px;
   box-sizing: border-box;
   position: relative;
@@ -3031,7 +3031,7 @@
 
 /* 2~4. 三系列植體規格區塊 (SERIES 01 ~ 03) */
 .osf-spec-series-section {
-  padding: 112px 0;
+  padding: 128px 0;
   box-sizing: border-box;
 }
 
@@ -3745,7 +3745,7 @@
 /* 2. 專利證書展示區（淺灰藍漸層背景 #F2F2F7 -> #F1F6FC） */
 .osf-patent-gallery-section {
   background: linear-gradient(180deg, #F2F2F7 0%, #F1F6FC 100%);
-  padding: 88px 0 112px;
+  padding: 128px 0;
   box-sizing: border-box;
 }
 
@@ -4391,7 +4391,7 @@
 /* 2. 臨床現場的真實回饋（淺灰藍底 #F2F2F7） */
 .osf-doctor-feedback-section {
   background: #F2F2F7;
-  padding: 104px 0 116px;
+  padding: 128px 0;
   box-sizing: border-box;
 }
 
@@ -4615,7 +4615,7 @@
 /* 1. 身體條件比較表區（淺灰藍底 #F2F2F7） */
 .osf-edu-compare-section {
   background: #F2F2F7;
-  padding: 100px 0 112px;
+  padding: 128px 0;
   box-sizing: border-box;
 }
 
@@ -4731,7 +4731,7 @@
 /* 2. 更多衛教社群區（純白底 #FFFFFF） */
 .osf-edu-community-section {
   background: #FFFFFF;
-  padding: 100px 0 116px;
+  padding: 128px 0;
   box-sizing: border-box;
 }
 
