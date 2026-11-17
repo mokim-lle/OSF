@@ -778,10 +778,12 @@
   letter-spacing: -0.01em;
 }
 
-/* 桌面/平板 表格包裹 */
+/* 桌面/平板 表格包裹（Desktop 右側對稱留白 110px，使 3 欄比較圖表精準置中、左側類別標題偏左） */
 .osf-compare-table-wrap {
-  max-width: 960px;
+  max-width: 1070px;
   margin: 0 auto;
+  padding-right: 110px;
+  box-sizing: border-box;
   overflow-x: auto;
 }
 
@@ -1278,6 +1280,11 @@
   .osf-compare-section,
   .osf-cert-section {
     padding: 80px 0;
+  }
+
+  .osf-compare-table-wrap {
+    max-width: 960px;
+    padding-right: 0;
   }
 
   .osf-video-dome-wrapper {
