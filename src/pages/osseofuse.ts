@@ -1038,20 +1038,39 @@ export function osseofusePage(): string {
     </section>
 
     <!-- ============================================================
-         4. 影片區 — 一套系統，迅速完成植牙（背景半圓形穹頂 Dome）
+         4. 影片區 — 一套系統，迅速完成植牙（背景半圓形穹頂 Dome + 柔和羽化過渡）
          ============================================================ -->
     <section class="osf-video-section" id="osf-video">
-      <!-- 單一背景半圓形穹頂裝飾 (Dome) — 比例與高度嚴格對齊設計稿 -->
+      <!-- 單一背景半圓形穹頂裝飾 (Dome) — 含高斯羽化與底部淡出遮罩，比例對齊設計稿 -->
       <div class="osf-video-dome-wrapper" aria-hidden="true">
         <svg class="osf-video-dome-svg" viewBox="0 0 1440 820" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-          <path d="M1440 820C1440 705 1421.38 595 1385.19 495C1349.01 395 1295.98 305 1229.12 230C1162.26 155 1082.89 95 995.532 55C908.178 18.6 814.552 0 720 0C625.448 0 531.822 18.6 444.468 55C357.113 95 277.741 155 210.883 230C144.025 305 90.99 395 54.8067 495C18.6233 595 0 705 0 820L720 820H1440Z" fill="url(#osf_dome_grad)"/>
           <defs>
-            <radialGradient id="osf_dome_grad" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(720 0) rotate(90) scale(820 720)">
-              <stop stop-color="#E1ECF7" stop-opacity="0.95"/>
-              <stop offset="0.45" stop-color="#EEF4FA" stop-opacity="0.75"/>
-              <stop offset="1" stop-color="#F8FAFC" stop-opacity="0.15"/>
+            <filter id="osf_dome_blur" x="-15%" y="-15%" width="130%" height="130%">
+              <feGaussianBlur stdDeviation="20" />
+            </filter>
+            <filter id="osf_dome_rim_blur" x="-10%" y="-10%" width="120%" height="120%">
+              <feGaussianBlur stdDeviation="6" />
+            </filter>
+            <linearGradient id="osf_dome_fade_grad" x1="720" y1="0" x2="720" y2="820" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="white" stop-opacity="1" />
+              <stop offset="0.68" stop-color="white" stop-opacity="1" />
+              <stop offset="0.92" stop-color="white" stop-opacity="0.2" />
+              <stop offset="1" stop-color="white" stop-opacity="0" />
+            </linearGradient>
+            <mask id="osf_dome_fade_mask">
+              <rect x="0" y="0" width="1440" height="820" fill="url(#osf_dome_fade_grad)" />
+            </mask>
+            <radialGradient id="osf_dome_grad" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(720 110) rotate(90) scale(710 700)">
+              <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.96"/>
+              <stop offset="0.45" stop-color="#F6F9FC" stop-opacity="0.88"/>
+              <stop offset="0.82" stop-color="#E8F0F7" stop-opacity="0.72"/>
+              <stop offset="1" stop-color="#F2F6FA" stop-opacity="0"/>
             </radialGradient>
           </defs>
+          <g mask="url(#osf_dome_fade_mask)">
+            <path d="M1380 820C1380 705 1362 595 1327 495C1292 395 1241 305 1177 230C1113 155 1037 95 954 55C871 18.6 796 12 720 12C644 12 569 18.6 486 55C403 95 327 155 263 230C199 305 148 395 113 495C78 595 60 705 60 820H1380Z" fill="url(#osf_dome_grad)" filter="url(#osf_dome_blur)"/>
+            <path d="M1350 760C1350 650 1332 545 1299 450C1265 355 1217 270 1156 200C1095 130 1022 76 942 40C862 12 791 8 720 8C649 8 578 12 498 40C418 76 345 130 284 200C223 270 175 355 141 450C108 545 90 650 90 760" stroke="rgba(255,255,255,0.9)" stroke-width="10" fill="none" filter="url(#osf_dome_rim_blur)"/>
+          </g>
         </svg>
       </div>
 

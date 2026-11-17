@@ -438,9 +438,9 @@
   max-width: 280px;
 }
 
-/* --- Video Section (一套系統，迅速完成植牙 — 背景單一半圓穹頂 Dome) --- */
+/* --- Video Section (一套系統，迅速完成植牙 — 背景半圓穹頂 Dome + 柔和過渡色) --- */
 .osf-video-section {
-  background: #ffffff;
+  background: linear-gradient(180deg, #F5F8FC 0%, #EEF3F9 40%, #F7FAFD 78%, #FFFFFF 100%);
   padding: 68px 0 96px;
   position: relative;
   overflow: hidden;
@@ -449,12 +449,12 @@
 /* 半圓形穹頂背景容器 — 寬度與比例嚴格貼合設計稿 */
 .osf-video-dome-wrapper {
   position: absolute;
-  top: 20px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
   max-width: 1440px;
-  height: calc(100% - 20px);
+  height: 100%;
   pointer-events: none;
   z-index: 0;
 }
@@ -1278,10 +1278,10 @@
   }
 
   .osf-video-dome-wrapper {
-    top: 16px;
+    top: 0;
     width: 125%;
     max-width: none;
-    height: calc(100% - 16px);
+    height: 100%;
   }
 
   .osf-video-title {
@@ -1420,10 +1420,10 @@
   }
 
   .osf-video-dome-wrapper {
-    top: 12px;
+    top: 0;
     width: 160%;
     max-width: none;
-    height: calc(100% - 12px);
+    height: 100%;
   }
 
   .osf-video-title {
