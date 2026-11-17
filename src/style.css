@@ -1124,3 +1124,42 @@ body:has(.ezb-page) .site-footer .footer-legal-dot,
 .nowrap-tail {
   white-space: nowrap;
 }
+
+/* ============================================================
+   圖片載入骨架屏（搭配 src/utils/image-placeholder.ts）
+   圖片下載中：在 <img> 本身顯示中性色流光，深淺底色皆適用
+   下載完成：移除骨架並淡入（僅定義起點，終點沿用元件原本的 opacity）
+   新增類別，不影響任何既有元件
+   ============================================================ */
+img.img-loading {
+  background-color: rgba(130, 145, 160, 0.14) !important;
+  background-image: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 30%,
+    rgba(255, 255, 255, 0.22) 50%,
+    rgba(255, 255, 255, 0) 70%
+  ) !important;
+  background-size: 200% 100% !important;
+  background-repeat: no-repeat !important;
+  animation: osfImgShimmer 1.4s ease-in-out infinite;
+}
+
+img.img-loaded {
+  animation: osfImgFadeIn 0.42s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@keyframes osfImgShimmer {
+  0%   { background-position: 150% 0; }
+  100% { background-position: -50% 0; }
+}
+
+@keyframes osfImgFadeIn {
+  from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  img.img-loading,
+  img.img-loaded {
+    animation: none;
+  }
+}

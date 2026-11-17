@@ -1814,6 +1814,7 @@ export function osseofusePage(): string {
             class="osf-tech-dome-bg-img osf-spec-dome-bg-img"
             src="${OSSEOFUSE_IMAGES.techHeroDome}"
             alt=""
+            loading="lazy"
             onload="this.parentElement.classList.add('has-dome-img')"
             onerror="this.parentElement.classList.remove('has-dome-img'); this.style.display='none';"
           />
@@ -2047,6 +2048,7 @@ export function osseofusePage(): string {
             class="osf-tech-dome-bg-img osf-spec-dome-bg-img"
             src="${OSSEOFUSE_IMAGES.techHeroDome}"
             alt=""
+            loading="lazy"
             onload="this.parentElement.classList.add('has-dome-img')"
             onerror="this.parentElement.classList.remove('has-dome-img'); this.style.display='none';"
           />
@@ -2188,6 +2190,7 @@ export function osseofusePage(): string {
             class="osf-tech-dome-bg-img osf-spec-dome-bg-img"
             src="${OSSEOFUSE_IMAGES.techHeroDome}"
             alt=""
+            loading="lazy"
             onload="this.parentElement.classList.add('has-dome-img')"
             onerror="this.parentElement.classList.remove('has-dome-img'); this.style.display='none';"
           />

@@ -5,6 +5,7 @@ import './style.css';
 import { registerRoute, startRouter, onRouteChange } from './router';
 import { renderHeader, initHeader, updateHeaderStyle } from './components/header';
 import { renderFooter, initFooter } from './components/footer';
+import { initImagePlaceholders } from './utils/image-placeholder';
 
 // Pages
 import { homePage, initHomePage } from './pages/home';
@@ -119,6 +120,8 @@ onRouteChange((path) => {
 
 // 啟動
 const pageContent = document.getElementById('page-content')!;
+// 圖片載入骨架屏：需在路由渲染前啟動，才能接住首屏圖片
+initImagePlaceholders(pageContent);
 startRouter(pageContent);
 initHeader();
 initFooter();

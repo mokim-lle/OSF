@@ -113,7 +113,7 @@ export function homePage(): string {
       <!-- 雙層形象圖 (Dentist / Patient) -->
       <div class="hero-bg">
         <div class="hero-bg-layer hero-bg-dentist" id="hero-layer-dentist">
-          <img src="/images/hero.jpg" alt="[ 圖片: hero-dentist.jpg ] 醫療技術支援現場" onerror="this.style.display='none'" />
+          <img src="/images/hero.jpg" alt="[ 圖片: hero-dentist.jpg ] 醫療技術支援現場" fetchpriority="high" onerror="this.style.display='none'" />
         </div>
         <div class="hero-bg-layer hero-bg-patient" id="hero-layer-patient">
           <img src="/images/hero-patient.jpg" alt="[ 圖片: hero-patient.jpg ] 舒適植牙諮詢與微笑體驗" onerror="this.style.display='none'" />
@@ -166,7 +166,7 @@ export function homePage(): string {
     <section class="section-about" id="about-section">
       <!-- 藍色弧形背景光暈 (對照圖二，放置於畫面中下) -->
       <div class="about-bg-glow" aria-hidden="true">
-        <img src="/images/about-blue-glow.png" alt="" />
+        <img src="/images/about-blue-glow.png" alt="" loading="lazy" decoding="async" />
       </div>
 
       <div class="about-top-grid">
@@ -184,7 +184,7 @@ export function homePage(): string {
 
         <!-- 右側透明齒模照片相框 (486×423px) -->
         <div class="about-image-card">
-          <img src="/images/about-model.jpg" alt="透明牙科植體模型" onerror="this.src='/images/hero.jpg'" />
+          <img src="/images/about-model.jpg" alt="透明牙科植體模型" loading="lazy" decoding="async" onerror="this.src='/images/hero.jpg'" />
         </div>
       </div>
 
