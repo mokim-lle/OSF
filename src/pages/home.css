@@ -421,15 +421,6 @@
   border-radius: 0;
   padding: 36px 28px;
   position: relative;
-  transition: transform var(--transition-base),
-              border-color var(--transition-base),
-              box-shadow var(--transition-base);
-}
-
-.feature-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(29, 178, 160, 0.5);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
 }
 
 .feature-card h3 {
