@@ -1242,7 +1242,7 @@
   }
 
   .osf-overview-section {
-    padding: 88px 0 88px;
+    padding: 80px 0;
     min-height: 500px;
   }
 
@@ -1273,8 +1273,11 @@
     gap: 36px;
   }
 
-  .osf-video-section {
-    padding: 52px 0 76px;
+  .osf-video-section,
+  .osf-system-section,
+  .osf-compare-section,
+  .osf-cert-section {
+    padding: 80px 0;
   }
 
   .osf-video-dome-wrapper {
@@ -1372,7 +1375,7 @@
   }
 
   .osf-overview-section {
-    padding: 56px 0 64px;
+    padding: 56px 0;
     min-height: auto;
   }
 
@@ -1413,10 +1416,6 @@
 
   .osf-feature-card p {
     max-width: 100%;
-  }
-
-  .osf-video-section {
-    padding: 40px 0 56px;
   }
 
   .osf-video-dome-wrapper {
@@ -2487,8 +2486,12 @@
 /* 核心技術 RWD */
 @media (max-width: 1024px) {
   .osf-tech-hero-section {
-    padding: 82px 0 80px;
+    padding: 80px 0;
     min-height: 913px;
+  }
+
+  .osf-tech-features-section {
+    padding: 80px 0;
   }
 
   .osf-tech-hero-section .osf-tech-hero-inner {
@@ -2612,7 +2615,7 @@
   }
 
   .osf-tech-analysis-section {
-    padding: 88px 0 88px;
+    padding: 80px 0;
   }
 
   .osf-tech-analysis-title {
@@ -2674,8 +2677,12 @@
 
 @media (max-width: 768px) {
   .osf-tech-hero-section {
-    padding: 60px 0 60px;
+    padding: 56px 0;
     min-height: 744px;
+  }
+
+  .osf-tech-features-section {
+    padding: 56px 0;
   }
 
   .osf-tech-hero-section .osf-tech-hero-inner {
@@ -2775,7 +2782,7 @@
   }
 
   .osf-tech-analysis-section {
-    padding: 64px 0 64px;
+    padding: 56px 0;
   }
 
   .osf-tech-analysis-title {
@@ -3339,7 +3346,7 @@
 /* --- 產品規格 RWD: Pad (<= 1024px) --- */
 @media (max-width: 1024px) {
   .osf-spec-hero-section {
-    padding: 82px 0 82px;
+    padding: 80px 0;
     min-height: 328px;
   }
 
@@ -3456,7 +3463,7 @@
 /* --- 產品規格 RWD: Mobile (<= 768px) --- */
 @media (max-width: 768px) {
   .osf-spec-hero-section {
-    padding: 56px 0 56px;
+    padding: 56px 0;
     min-height: 266px;
   }
 
@@ -4180,7 +4187,7 @@
 /* --- 專利認證 RWD: Pad (<= 1024px) --- */
 @media (max-width: 1024px) {
   .osf-patent-gallery-section {
-    padding: 72px 0 88px;
+    padding: 80px 0;
   }
 
   .osf-patent-filter-bar {
@@ -4208,7 +4215,7 @@
   }
 
   .osf-patent-gallery-section {
-    padding: 52px 0 68px;
+    padding: 56px 0;
   }
 
   .osf-patent-filter-bar {
@@ -4492,7 +4499,7 @@
   }
 
   .osf-doctor-feedback-section {
-    padding: 80px 0 92px;
+    padding: 80px 0;
   }
 
   .osf-doctor-section-title {
@@ -4525,7 +4532,7 @@
 /* --- 醫師分享 RWD: Mobile (<= 768px) --- */
 @media (max-width: 768px) {
   .osf-doctor-hero-section {
-    padding: 60px 0 64px;
+    padding: 56px 0;
     min-height: 440px;
   }
 
@@ -4567,7 +4574,7 @@
   }
 
   .osf-doctor-feedback-section {
-    padding: 56px 0 68px;
+    padding: 56px 0;
   }
 
   .osf-doctor-section-title {
@@ -4833,7 +4840,7 @@
 /* --- 衛教社群 RWD: Pad (<= 1024px) --- */
 @media (max-width: 1024px) {
   .osf-edu-compare-section {
-    padding: 76px 0 88px;
+    padding: 80px 0;
   }
 
   .osf-edu-table-wrap {
@@ -4873,7 +4880,7 @@
   }
 
   .osf-edu-community-section {
-    padding: 76px 0 92px;
+    padding: 80px 0;
   }
 
   .osf-edu-community-title {
@@ -4913,7 +4920,7 @@
 /* --- 衛教社群 RWD: Mobile (<= 768px) --- */
 @media (max-width: 768px) {
   .osf-edu-compare-section {
-    padding: 52px 0 64px;
+    padding: 56px 0;
   }
 
   /* 手機端切換為 10 張獨立雙列比較卡片 */
@@ -5037,7 +5044,7 @@
   }
 
   .osf-edu-community-section {
-    padding: 56px 0 68px;
+    padding: 56px 0;
   }
 
   .osf-edu-community-title {
