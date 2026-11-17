@@ -79,7 +79,7 @@ export function loginPage(): string {
             </div>
 
             <div class="login-form-group" style="margin-bottom: 8px;">
-              <label class="login-label" for="login-password">
+              <label class="login-label" id="login-password-label" for="login-password">
                 ${currentLang === 'zh' ? '密碼' : 'Password'} <span class="login-req-star">*</span>
               </label>
               <input type="password" id="login-password" class="login-input" placeholder="${currentLang === 'zh' ? '請輸入密碼' : 'Enter password'}" required />
@@ -213,6 +213,10 @@ export function initLoginPage(): void {
       currentLang = customEvent.detail.lang;
       const titleEl = document.getElementById('login-title');
       const subtitleEl = document.getElementById('login-subtitle');
+      const passwordLabelEl = document.getElementById('login-password-label');
+      const passwordInputEl = document.getElementById('login-password') as HTMLInputElement | null;
+      const emailErrorEl = document.getElementById('login-email-error');
+      const passwordErrorEl = document.getElementById('login-password-error');
       const forgotEl = document.getElementById('login-forgot-link');
       const submitBtnEl = document.getElementById('login-submit-btn') as HTMLButtonElement | null;
       const footerTip = document.getElementById('login-footer-tip');
@@ -222,6 +226,18 @@ export function initLoginPage(): void {
         subtitleEl.innerHTML = currentLang === 'zh'
           ? '只需 30 秒填寫 4 個基本欄位，<br/>免上傳證件完成身分審核，即可參閱並下載臨床技術文件'
           : 'Takes only 30s to complete 4 basic fields.<br/>Access and download clinical technical documents upon verification.';
+      }
+      if (passwordLabelEl) {
+        passwordLabelEl.innerHTML = `${currentLang === 'zh' ? '密碼' : 'Password'} <span class="login-req-star">*</span>`;
+      }
+      if (passwordInputEl) {
+        passwordInputEl.placeholder = currentLang === 'zh' ? '請輸入密碼' : 'Enter password';
+      }
+      if (emailErrorEl) {
+        emailErrorEl.textContent = currentLang === 'zh' ? '請輸入有效的電子信箱' : 'Please enter a valid email address';
+      }
+      if (passwordErrorEl) {
+        passwordErrorEl.textContent = currentLang === 'zh' ? '請輸入密碼' : 'Please enter password';
       }
       if (forgotEl) forgotEl.textContent = currentLang === 'zh' ? '忘記密碼？' : 'Forgot Password?';
       if (submitBtnEl && !submitBtnEl.classList.contains('loading')) {
