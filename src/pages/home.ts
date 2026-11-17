@@ -240,12 +240,12 @@ export function homePage(): string {
 
           <!-- 切換區域：圖片 hover overlay + 規格矩陣，固定高度不影響上方 title -->
           <div class="product-media-zone">
-            <!-- 一鑽植牙產品圖 (Desktop hover 顯示，Pad/Mobile 常駐) -->
+            <!-- 一鑽植牙產品圖 (Desktop 預設顯示，Hover 隱藏；Pad/Mobile 常駐) -->
             <div class="product-centered-image-box" id="product-box-left">
               <img src="/images/product-osseofuse.jpg" alt="OsseoFuse 一鑽植牙" loading="lazy" class="product-img-layer" />
             </div>
 
-            <!-- 規格矩陣 (Desktop 預設顯示，Hover 隱藏) -->
+            <!-- 規格矩陣 (Desktop 預設隱藏，Hover 顯示) -->
             <div class="product-specs-matrix">
               <div class="spec-matrix-item item-drill">
                 <span class="spec-label" id="home-osf-s1-label">${t.osfSpec1Label}</span>
@@ -288,12 +288,12 @@ export function homePage(): string {
 
           <!-- 切換區域：圖片 hover overlay + 規格矩陣，固定高度不影響上方 title -->
           <div class="product-media-zone">
-            <!-- 甦骨粒產品圖 (Desktop hover 顯示，Pad/Mobile 常駐) -->
+            <!-- 甦骨粒產品圖 (Desktop 預設顯示，Hover 隱藏；Pad/Mobile 常駐) -->
             <div class="product-centered-image-box" id="product-box-right">
               <img src="/images/product-box.jpg" alt="Ezechbone 甦骨粒" onerror="this.src='/images/product-ezechbone.jpg'" loading="lazy" class="product-img-layer" />
             </div>
 
-            <!-- 規格矩陣 (Desktop 預設顯示，Hover 隱藏) -->
+            <!-- 規格矩陣 (Desktop 預設隱藏，Hover 顯示) -->
             <div class="product-specs-matrix">
               <div class="spec-matrix-item item-synth">
                 <span class="spec-label" id="home-ezb-s1-label">${t.ezbSpec1Label}</span>
@@ -484,32 +484,6 @@ export function initHomePage(): void {
   }
 
   startHeroTimer(true);
-
-  // ============================================================
-  // Products 自動切換：開頁 10 秒後單次切換 (左字➔圖，右圖➔字) 並維持狀態
-  // ============================================================
-  const boxLeft = document.getElementById('product-box-left');
-  const boxRight = document.getElementById('product-box-right');
-  const productsSection = document.getElementById('products-section');
-
-  if (boxLeft && boxRight && productsSection) {
-    let singleFlipTimer: number | null = window.setTimeout(() => {
-      boxLeft.classList.toggle('show-specs');
-      boxLeft.classList.toggle('show-image');
-
-      boxRight.classList.toggle('show-specs');
-      boxRight.classList.toggle('show-image');
-      singleFlipTimer = null;
-    }, 10000);
-
-    // 若使用者在 10 秒內先 hover 進入，則取消單次自動切換
-    productsSection.addEventListener('mouseenter', () => {
-      if (singleFlipTimer !== null) {
-        clearTimeout(singleFlipTimer);
-        singleFlipTimer = null;
-      }
-    });
-  }
 
   // ============================================================
   // Gallery Slider 初始化

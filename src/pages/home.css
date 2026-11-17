@@ -610,14 +610,15 @@
   perspective: 1000px;
 }
 
-/* 規格矩陣：預設顯示，支援平滑微位移與漸進淡入 */
+/* 規格矩陣：預設隱藏，Hover 後平滑微位移漸進淡入 */
 .product-specs-matrix {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px 32px;
   width: 100%;
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
   transition:
     opacity 480ms cubic-bezier(0.16, 1, 0.3, 1),
     transform 480ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -646,7 +647,7 @@
   transition-delay: 150ms;
 }
 
-/* 圖片容器：absolute 覆蓋，預設微縮放隱藏 */
+/* 圖片容器：absolute 覆蓋，預設顯示 */
 .product-centered-image-box {
   position: absolute;
   inset: 0;
@@ -654,9 +655,9 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  opacity: 0;
-  transform: scale(0.95);
-  pointer-events: none;
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
   transition:
     opacity 500ms cubic-bezier(0.16, 1, 0.3, 1),
     transform 560ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -681,13 +682,13 @@
 }
 
 /* ------------------------------------------------------------
-   Hover 狀態漸進切換：規格矩陣下沉淡出，圖片柔和放大浮現
+   Hover 狀態漸進切換：圖片柔和縮小淡出，規格矩陣浮現
    ------------------------------------------------------------ */
 .product-card:hover .product-specs-matrix {
-  opacity: 0;
-  transform: translateY(8px);
-  pointer-events: none;
-  transition-duration: 340ms;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition-duration: 420ms;
 }
 
 .product-card:hover .product-specs-matrix .spec-matrix-item {
@@ -695,38 +696,38 @@
 }
 
 .product-card:hover .product-centered-image-box {
-  opacity: 1;
-  transform: scale(1);
-  pointer-events: auto;
-}
-
-.product-card:hover .product-centered-image-box .product-img-layer {
-  transform: scale(1.03);
-}
-
-/* 支援 show-image 與 show-specs 單次翻轉狀態 */
-.product-centered-image-box.show-image {
-  opacity: 1;
-  transform: scale(1);
-  pointer-events: auto;
-}
-
-.product-card:has(.product-centered-image-box.show-image) .product-specs-matrix {
-  opacity: 0;
-  transform: translateY(8px);
-  pointer-events: none;
-}
-
-.product-card:hover:has(.product-centered-image-box.show-image) .product-centered-image-box {
   opacity: 0;
   transform: scale(0.95);
   pointer-events: none;
 }
 
-.product-card:hover:has(.product-centered-image-box.show-image) .product-specs-matrix {
+.product-card:hover .product-centered-image-box .product-img-layer {
+  transform: scale(1);
+}
+
+/* 支援 show-specs 狀態反轉（預設顯示字，Hover 顯示圖） */
+.product-centered-image-box.show-specs {
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;
+}
+
+.product-card:has(.product-centered-image-box.show-specs) .product-specs-matrix {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
+}
+
+.product-card:hover:has(.product-centered-image-box.show-specs) .product-centered-image-box {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.product-card:hover:has(.product-centered-image-box.show-specs) .product-specs-matrix {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
 }
 
 /* 2x2 規格矩陣 (圖一 Pad / Desktop 常駐 2 欄矩陣) */
@@ -1442,12 +1443,16 @@
   }
   .product-specs-matrix {
     opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
   }
   .product-card:hover .product-centered-image-box {
     opacity: 1 !important;
+    transform: none !important;
   }
   .product-card:hover .product-specs-matrix {
     opacity: 1 !important;
+    transform: none !important;
   }
 
   /* Pad: product-ezechbone.jpg 放大並調整位置，讓產品主體清楚呈現 */
