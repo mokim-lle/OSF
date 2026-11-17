@@ -35,7 +35,7 @@ export const OSSEOFUSE_IMAGES = {
   specBrandHexa: '/images/osseofuse/Hexa.jpg',
   specBrandOnebody: '/images/osseofuse/OneBody.jpg',
   specSinusImplant: '/images/osseofuse/spec-sinusfuse-implant.png',
-  specSinusMedia: '/images/osseofuse/spec-sinusfuse-media.png',
+  specSinusYoutubeUrl: 'https://www.youtube.com/embed/VIDEO_ID',
   specHexaImplant: '/images/osseofuse/spec-hexaplus-implant.png',
   specOnebodyImplant: '/images/osseofuse/spec-onebody-implant.png',
   // 專利認證分區證書圖片預留 (Patents & Certificates)
@@ -1645,10 +1645,17 @@ export function osseofusePage(): string {
             </div>
           </div>
 
-          <!-- (D) 下方滿寬視覺示意圖／影片框 -->
+          <!-- (D) 下方滿寬 YouTube 影片播放框 -->
           <div class="osf-spec-series-media">
-            <div class="osf-spec-media-box">
-              ${renderImageSlot(OSSEOFUSE_IMAGES.specSinusMedia, 'SinusFuse 碗型頂端與側切溝槽示意', 'slot-spec-sinus-media')}
+            <div class="osf-spec-media-box osf-spec-video-box">
+              <iframe
+                src="${OSSEOFUSE_IMAGES.specSinusYoutubeUrl || 'https://www.youtube.com/embed/VIDEO_ID'}"
+                title="SinusFuse 碗型頂端與側切溝槽示意影片"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy"
+              ></iframe>
             </div>
             <p class="osf-spec-media-caption" id="osf-spec-s1-caption">${noOrphan(t.specS1MediaCaption)}</p>
           </div>
