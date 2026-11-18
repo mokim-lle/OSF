@@ -19,6 +19,44 @@ let currentStepState: RegisterStep = 'step1-form';
 let registeredEmail = 'doctor@example.com';
 let countdownSeconds = 60;
 let countdownTimer: number | null = null;
+let activeLangChangeHandler: ((e: Event) => void) | null = null;
+
+// 暫存表單草稿，避免切換至隱私條款頁返回或切換語系重繪時遺失輸入資料
+interface RegisterDraft {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  privacyAgreed: boolean;
+  doctorName: string;
+  category: 'dentist' | 'other';
+  city: string;
+  clinicName: string;
+}
+
+const createEmptyDraft = (): RegisterDraft => ({
+  email: '',
+  password: '',
+  confirmPassword: '',
+  privacyAgreed: false,
+  doctorName: '',
+  category: 'dentist',
+  city: '',
+  clinicName: '',
+});
+
+let registerDraft: RegisterDraft = createEmptyDraft();
+
+/** 綁定輸入欄位與草稿狀態的雙向同步（先還原再監聽變更） */
+function syncTextInputWithDraft(
+  el: HTMLInputElement | HTMLSelectElement | null,
+  initialValue: string,
+  onUpdate: (val: string) => void
+): void {
+  if (!el) return;
+  el.value = initialValue;
+  const eventName = el.tagName === 'SELECT' ? 'change' : 'input';
+  el.addEventListener(eventName, () => onUpdate(el.value));
+}
 
 const TAIWAN_CITIES = [
   { zh: '台北市', en: 'Taipei City' },
@@ -455,6 +493,23 @@ export function initRegisterPage(): void {
       const privacyError = document.getElementById('reg-privacy-error');
       const submitBtn = document.getElementById('reg-step1-submit-btn') as HTMLButtonElement | null;
 
+      // 還原並即時保存 Step 1 表單草稿（含前往隱私條款後返回或切換語系）
+      syncTextInputWithDraft(emailInput, registerDraft.email, (val) => {
+        registerDraft.email = val;
+      });
+      syncTextInputWithDraft(passwordInput, registerDraft.password, (val) => {
+        registerDraft.password = val;
+      });
+      syncTextInputWithDraft(confirmInput, registerDraft.confirmPassword, (val) => {
+        registerDraft.confirmPassword = val;
+      });
+      if (privacyCheck) {
+        privacyCheck.checked = registerDraft.privacyAgreed;
+        privacyCheck.addEventListener('change', () => {
+          registerDraft.privacyAgreed = privacyCheck.checked;
+        });
+      }
+
       form?.addEventListener('submit', async (e) => {
         e.preventDefault();
         let valid = true;
@@ -520,6 +575,11 @@ export function initRegisterPage(): void {
 
         if (result.success) {
           registeredEmail = emailVal;
+          // 進入驗證信箱步驟後清除 Step 1 密碼與同意勾選暫存
+          registerDraft.email = '';
+          registerDraft.password = '';
+          registerDraft.confirmPassword = '';
+          registerDraft.privacyAgreed = false;
           updateView('step1-verify');
           startCountdown();
         } else if (result.errorMessage) {
@@ -599,6 +659,25 @@ export function initRegisterPage(): void {
       const cityError = document.getElementById('doctor-city-error');
       const clinicError = document.getElementById('clinic-name-error');
 
+      // 還原並即時保存 Step 2 表單草稿
+      syncTextInputWithDraft(doctorName, registerDraft.doctorName, (val) => {
+        registerDraft.doctorName = val;
+      });
+      syncTextInputWithDraft(doctorCity, registerDraft.city, (val) => {
+        registerDraft.city = val;
+      });
+      syncTextInputWithDraft(clinicName, registerDraft.clinicName, (val) => {
+        registerDraft.clinicName = val;
+      });
+      document.querySelectorAll<HTMLInputElement>('input[name="personnel-category"]').forEach((radio) => {
+        radio.checked = radio.value === registerDraft.category;
+        radio.addEventListener('change', () => {
+          if (radio.checked) {
+            registerDraft.category = radio.value === 'other' ? 'other' : 'dentist';
+          }
+        });
+      });
+
       form2?.addEventListener('submit', async (e) => {
         e.preventDefault();
         let valid = true;
@@ -653,6 +732,7 @@ export function initRegisterPage(): void {
         }
 
         if (result.success) {
+          registerDraft = createEmptyDraft();
           window.location.hash = '#/membership-status';
         } else if (result.errorMessage) {
           if (clinicError) {
@@ -664,8 +744,12 @@ export function initRegisterPage(): void {
     }
   }
 
-  // 全域語系切換監聽
-  window.addEventListener('langchange', (e: Event) => {
+  // 全域語系切換監聽（先移除舊監聽避免重複綁定）
+  if (activeLangChangeHandler) {
+    window.removeEventListener('langchange', activeLangChangeHandler);
+  }
+  activeLangChangeHandler = (e: Event) => {
+    if (!document.getElementById('register-card')) return;
     const customEvent = e as CustomEvent<{ lang: 'zh' | 'en' }>;
     if (customEvent.detail && customEvent.detail.lang) {
       currentLang = customEvent.detail.lang;
@@ -679,7 +763,8 @@ export function initRegisterPage(): void {
       }
       updateView(currentStepState);
     }
-  });
+  };
+  window.addEventListener('langchange', activeLangChangeHandler);
 
   bindCurrentStepEvents();
   if (currentStepState === 'step1-verify') {

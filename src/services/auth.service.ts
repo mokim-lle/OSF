@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
+  signOut,
   AuthError,
 } from 'firebase/auth';
 import {
@@ -478,6 +479,20 @@ export async function sendResetPasswordEmail(email: string): Promise<AuthActionR
   } catch (err) {
     const authErr = err as AuthError;
     return { success: false, errorMessage: mapAuthError(authErr.code) };
+  }
+}
+
+/**
+ * 8. 登出目前會員帳號並清除快取資料
+ */
+export async function logoutMember(): Promise<void> {
+  try {
+    sessionStorage.removeItem('osf_doctor_profile');
+  } catch (_e) {
+    // ignore
+  }
+  if (auth) {
+    await signOut(auth);
   }
 }
 

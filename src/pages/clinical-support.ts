@@ -5,6 +5,7 @@ import './clinical-support.css';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
 import { currentGlobalLang } from '../components/header';
+import { fetchCurrentMemberProfile, MemberStatus } from '../services/auth.service';
 
 interface BilingualText {
   zh: string;
@@ -436,17 +437,102 @@ const ITEMS_PER_PAGE = 10;
 /** 未登入前僅顯示前幾則文獻作為預覽（讓訪客能感受到文獻數量眾多） */
 const PREVIEW_ITEMS_COUNT = 5;
 
+type AccessState = 'guest' | MemberStatus;
+
 let currentPage = 1;
 let currentFilter: 'osseofuse' | 'ezechbone' = 'osseofuse';
 let currentLang: 'zh' | 'en' = 'zh';
-let isLoggedIn = false;
+/** 僅當會員已登入且審核狀態為 approved 時才授權參閱與下載 */
+let isAuthorized = false;
+let currentAccessState: AccessState = 'guest';
+
+const LOCK_PROMPT_I18N: Record<
+  AccessState,
+  { zh: { text: string; btn: string }; en: { text: string; btn: string }; href: string }
+> = {
+  guest: {
+    zh: {
+      text: '依醫療器材相關法規，<br/>以下文件僅供醫事人員參閱。<br/>註冊約 30 秒，通過審核後即可下載。',
+      btn: '前往會員登入',
+    },
+    en: {
+      text: 'According to medical device regulations,<br/>the following documents are restricted to medical professionals.<br/>Registration takes ~30s, download available upon approval.',
+      btn: 'Go to Member Login',
+    },
+    href: '#/login',
+  },
+  pending: {
+    zh: {
+      text: '您的會員資格目前仍在審核中，<br/>需通過審核（Approved）後方可參閱<br/>並下載完整臨床技術文件。',
+      btn: '查看審核進度',
+    },
+    en: {
+      text: 'Your membership is currently under review.<br/>Full access to view and download clinical documents<br/>will be unlocked once approved.',
+      btn: 'View Review Status',
+    },
+    href: '#/membership-status/pending',
+  },
+  rejected: {
+    zh: {
+      text: '您的會員審核未通過，<br/>請檢視原因並更新資料，<br/>通過審核後即可參閱並下載文件。',
+      btn: '前往修正資料',
+    },
+    en: {
+      text: 'Your membership application was not approved.<br/>Please review the reason and update your profile<br/>to unlock clinical documents.',
+      btn: 'Update Application',
+    },
+    href: '#/membership-status/rejected',
+  },
+  'not-found': {
+    zh: {
+      text: '您尚未完成醫師基本資料填寫，<br/>完成註冊並通過審核後，<br/>即可參閱並下載臨床技術文件。',
+      btn: '繼續完成註冊',
+    },
+    en: {
+      text: 'Your doctor profile is incomplete.<br/>Please finish registration and await approval<br/>to access clinical documents.',
+      btn: 'Complete Registration',
+    },
+    href: '#/register/step2',
+  },
+  unverified: {
+    zh: {
+      text: '您的電子信箱尚未完成驗證，<br/>請先完成信箱驗證與會員審核，<br/>通過後即可參閱並下載文件。',
+      btn: '前往驗證信箱',
+    },
+    en: {
+      text: 'Your email is not yet verified.<br/>Please complete email verification and approval<br/>to access clinical documents.',
+      btn: 'Verify Email',
+    },
+    href: '#/register/verify',
+  },
+  approved: {
+    zh: { text: '', btn: '' },
+    en: { text: '', btn: '' },
+    href: '#/clinical-support',
+  },
+};
+
+function getCachedAccessState(): AccessState {
+  if (!auth?.currentUser) return 'guest';
+  try {
+    const raw = sessionStorage.getItem('osf_doctor_profile');
+    if (!raw) return 'pending';
+    const parsed = JSON.parse(raw) as { status?: string };
+    if (parsed.status === 'approved' || parsed.status === 'pending' || parsed.status === 'rejected') {
+      return parsed.status;
+    }
+  } catch (_e) {
+    // ignore
+  }
+  return 'pending';
+}
 
 function getFilteredLiterature(): LiteratureItem[] {
   return ALL_LITERATURE.filter(item => item.type === currentFilter);
 }
 
 function getTotalPages(): number {
-  if (!isLoggedIn) {
+  if (!isAuthorized) {
     return 1;
   }
   const filtered = getFilteredLiterature();
@@ -455,14 +541,14 @@ function getTotalPages(): number {
 
 function renderCards(page: number, lang: 'zh' | 'en'): string {
   const filtered = getFilteredLiterature();
-  const pageItems = isLoggedIn
+  const pageItems = isAuthorized
     ? filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
     : filtered.slice(0, PREVIEW_ITEMS_COUNT);
 
   const downloadText = lang === 'zh' ? '下載' : 'Download';
 
   return pageItems.map((item) => {
-    const downloadActionHtml = isLoggedIn
+    const downloadActionHtml = isAuthorized
       ? `<button type="button" class="card-download-btn" data-id="${item.id}" aria-label="${downloadText}">
           <span>${downloadText}</span>
           <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -498,7 +584,7 @@ function renderCards(page: number, lang: 'zh' | 'en'): string {
 }
 
 function renderPagination(page: number): string {
-  if (!isLoggedIn) {
+  if (!isAuthorized) {
     return '';
   }
   const totalPages = getTotalPages();
@@ -525,14 +611,19 @@ export function clinicalSupportPage(): string {
   currentPage = 1;
   currentFilter = 'osseofuse';
   currentLang = currentGlobalLang;
-  isLoggedIn = Boolean(auth?.currentUser);
+  currentAccessState = getCachedAccessState();
+  isAuthorized = currentAccessState === 'approved';
   const totalPages = getTotalPages();
   const initialCards = renderCards(1, currentLang);
   const initialPagination = renderPagination(1);
-  const paginationStyle = !isLoggedIn || totalPages <= 1 ? 'style="display: none;"' : '';
-  const lockedClass = isLoggedIn ? '' : 'is-locked';
-  const inertAttr = isLoggedIn ? '' : 'inert aria-hidden="true"';
-  const overlayStyle = isLoggedIn ? 'style="display: none;"' : '';
+  const paginationStyle = !isAuthorized || totalPages <= 1 ? 'style="display: none;"' : '';
+  const lockedClass = isAuthorized ? '' : 'is-locked';
+  const inertAttr = isAuthorized ? '' : 'inert aria-hidden="true"';
+  const overlayStyle = isAuthorized ? 'style="display: none;"' : '';
+  const promptConfig = LOCK_PROMPT_I18N[currentAccessState];
+  const promptText = promptConfig[currentLang].text;
+  const promptBtnText = promptConfig[currentLang].btn;
+  const promptHref = promptConfig.href;
 
   const titleText = currentLang === 'zh' ? '臨床技術支持' : 'Clinical Technical Support';
   const subtitleText = currentLang === 'zh' ? '提供醫師完善的學術文獻與操作文件' : 'Providing clinicians with comprehensive academic literature and operating guides';
@@ -602,13 +693,10 @@ export function clinicalSupportPage(): string {
         <div class="clinical-login-prompt-wrapper" id="clinical-login-prompt-wrapper" ${overlayStyle}>
           <div class="clinical-login-card">
             <p class="clinical-login-text" id="clinical-login-text">
-              ${currentLang === 'zh'
-                ? `依醫療器材相關法規，<br/>以下文件僅供醫事人員參閱。<br/>註冊約 30 秒，通過審核後即可下載。`
-                : `According to medical device regulations,<br/>the following documents are restricted to medical professionals.<br/>Registration takes ~30s, download available upon approval.`
-              }
+              ${promptText}
             </p>
-            <a href="#/login" class="clinical-login-btn">
-              <span id="clinical-login-btn-text">${currentLang === 'zh' ? '前往會員登入' : 'Go to Member Login'}</span>
+            <a href="${promptHref}" class="clinical-login-btn" id="clinical-login-btn">
+              <span id="clinical-login-btn-text">${promptBtnText}</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12"/>
                 <polyline points="12 5 19 12 12 19"/>
@@ -638,10 +726,10 @@ export function initClinicalSupportPage(): void {
 
   function syncLockState() {
     if (listWrapper) {
-      listWrapper.classList.toggle('is-locked', !isLoggedIn);
+      listWrapper.classList.toggle('is-locked', !isAuthorized);
     }
     if (container) {
-      if (isLoggedIn) {
+      if (isAuthorized) {
         container.removeAttribute('inert');
         container.removeAttribute('aria-hidden');
       } else {
@@ -649,7 +737,7 @@ export function initClinicalSupportPage(): void {
         container.setAttribute('aria-hidden', 'true');
       }
     }
-    const overlayDisplay = isLoggedIn ? 'none' : '';
+    const overlayDisplay = isAuthorized ? 'none' : '';
     if (gradientBlur) gradientBlur.style.display = overlayDisplay;
     if (loginPromptWrapper) loginPromptWrapper.style.display = overlayDisplay;
   }
@@ -689,7 +777,7 @@ export function initClinicalSupportPage(): void {
     }
     if (paginationWrapper) {
       const totalPages = getTotalPages();
-      if (!isLoggedIn || totalPages <= 1) {
+      if (!isAuthorized || totalPages <= 1) {
         paginationWrapper.style.display = 'none';
         paginationWrapper.innerHTML = '';
       } else {
@@ -706,18 +794,24 @@ export function initClinicalSupportPage(): void {
     const tabOsseofuse = document.getElementById('tab-osseofuse');
     const tabEzechbone = document.getElementById('tab-ezechbone');
     const loginText = document.getElementById('clinical-login-text');
+    const loginBtn = document.getElementById('clinical-login-btn') as HTMLAnchorElement | null;
     const loginBtnText = document.getElementById('clinical-login-btn-text');
 
     if (titleEl) titleEl.textContent = currentLang === 'zh' ? '臨床技術支持' : 'Clinical Technical Support';
     if (subtitleEl) subtitleEl.textContent = currentLang === 'zh' ? '提供醫師完善的學術文獻與操作文件' : 'Providing clinicians with comprehensive academic literature and operating guides';
     if (tabOsseofuse) tabOsseofuse.textContent = currentLang === 'zh' ? '一鑽植牙' : 'OsseoFuse 1-Drill';
     if (tabEzechbone) tabEzechbone.textContent = currentLang === 'zh' ? '甦骨粒' : 'Ezechbone';
+
+    const promptConfig = LOCK_PROMPT_I18N[currentAccessState];
     if (loginText) {
-      loginText.innerHTML = currentLang === 'zh'
-        ? `依醫療器材相關法規，<br/>以下文件僅供醫事人員參閱。<br/>註冊約 30 秒，通過審核後即可下載。`
-        : `According to medical device regulations,<br/>the following documents are restricted to medical professionals.<br/>Registration takes ~30s, download available upon approval.`;
+      loginText.innerHTML = promptConfig[currentLang].text;
     }
-    if (loginBtnText) loginBtnText.textContent = currentLang === 'zh' ? '前往會員登入' : 'Go to Member Login';
+    if (loginBtn) {
+      loginBtn.setAttribute('href', promptConfig.href);
+    }
+    if (loginBtnText) {
+      loginBtnText.textContent = promptConfig[currentLang].btn;
+    }
   }
 
   filterBtns.forEach((btn) => {
@@ -744,19 +838,45 @@ export function initClinicalSupportPage(): void {
   };
   window.addEventListener('langchange', handleLangChange);
 
-  // 監聽登入狀態變化（未登入前鎖定並僅顯示預覽幾則）
+  function applyAccessState(nextState: AccessState) {
+    const nextAuthorized = nextState === 'approved';
+    const stateChanged = nextState !== currentAccessState || nextAuthorized !== isAuthorized;
+    currentAccessState = nextState;
+    isAuthorized = nextAuthorized;
+    if (stateChanged) {
+      syncLockState();
+      updateLanguageTexts();
+      updatePage(1);
+    }
+  }
+
+  // 監聽登入與會員審核狀態變化（未登入或未通過 approved 審核前，鎖定並僅顯示預覽）
   if (auth) {
-    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+    const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
       if (!container || !document.body.contains(container)) {
         unsubscribeAuth();
         return;
       }
-      const nextLoggedIn = Boolean(user);
-      if (nextLoggedIn !== isLoggedIn) {
-        isLoggedIn = nextLoggedIn;
-        syncLockState();
-        updatePage(1);
+
+      if (!user) {
+        applyAccessState('guest');
+        return;
       }
+
+      // 先以快取狀態更新，再向 Firestore 確認最新審核狀態
+      applyAccessState(getCachedAccessState());
+
+      const profile = await fetchCurrentMemberProfile();
+      if (!container || !document.body.contains(container) || auth?.currentUser?.uid !== user.uid) {
+        return;
+      }
+
+      const freshState: AccessState = profile
+        ? (profile.status === 'approved' || profile.status === 'pending' || profile.status === 'rejected'
+            ? profile.status
+            : 'pending')
+        : 'not-found';
+      applyAccessState(freshState);
     });
   }
 

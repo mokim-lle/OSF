@@ -283,6 +283,177 @@
 @keyframes login-spin {
   to { transform: rotate(360deg); }
 }
+
+.is-hidden {
+  display: none !important;
+}
+
+/* ============================================================
+   已登入狀態視圖 (Authenticated View)
+   ============================================================ */
+.login-auth-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.login-auth-icon {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: rgba(29, 178, 160, 0.12);
+  color: var(--color-accent, #1db2a0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-auth-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.login-auth-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background: rgba(29, 178, 160, 0.12);
+  color: var(--color-primary, #0a5e6c);
+  margin-bottom: 10px;
+}
+
+.login-auth-heading {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-dark, #121d28);
+  margin: 0 0 8px;
+  text-wrap: pretty;
+}
+
+.login-auth-desc {
+  font-size: 0.88rem;
+  color: var(--color-text-dark-muted, #5e6d7d);
+  line-height: 1.6;
+  margin: 0;
+  text-wrap: pretty;
+  word-break: break-word;
+}
+
+.login-auth-info-list {
+  background: var(--color-bg-light, #f7f9fc);
+  border: 1px solid #e2e8f0;
+  border-radius: 2px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+.login-auth-info-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.88rem;
+}
+
+.login-auth-info-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.login-auth-info-item:first-child {
+  padding-top: 0;
+}
+
+.login-auth-info-label {
+  color: var(--color-text-dark-muted, #5e6d7d);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.login-auth-info-value {
+  color: var(--color-text-dark, #121d28);
+  font-weight: 600;
+  text-align: right;
+  word-break: break-all;
+}
+
+.login-status-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.login-status-pill--approved {
+  background: rgba(29, 178, 160, 0.14);
+  color: var(--color-primary, #0a5e6c);
+}
+
+.login-status-pill--pending {
+  background: rgba(245, 158, 11, 0.14);
+  color: #b45309;
+}
+
+.login-status-pill--rejected {
+  background: rgba(225, 29, 72, 0.12);
+  color: #be123c;
+}
+
+.login-status-pill--not-found,
+.login-status-pill--unverified {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.login-auth-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.login-auth-cta {
+  margin-top: 0;
+  text-decoration: none;
+}
+
+.login-secondary-btn {
+  width: 100%;
+  height: 44px;
+  background: #ffffff;
+  color: var(--color-text-dark, #121d28);
+  border: 1px solid #cbd5e1;
+  border-radius: 2px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.login-secondary-btn:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.login-secondary-btn.loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.login-spinner--dark {
+  border-color: rgba(18, 29, 40, 0.2);
+  border-top-color: var(--color-text-dark, #121d28);
+}
 /* ============================================================
    RWD — 平板端 Pad 768px ~ 1024px
    ============================================================ */
