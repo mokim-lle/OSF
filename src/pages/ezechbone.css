@@ -371,8 +371,8 @@ body:has(.ezb-page),
   position: relative;
   padding: 136px 0 128px;
   background:
-    radial-gradient(ellipse 60% 70% at 50% 75%, var(--ezb-purple-100) 0%, rgba(227, 232, 252, 0) 70%),
-    linear-gradient(180deg, #ffffff 0%, var(--ezb-purple-50) 100%);
+    radial-gradient(ellipse 65% 65% at 50% 68%, rgba(218, 229, 255, 0.85) 0%, rgba(218, 229, 255, 0) 75%),
+    linear-gradient(180deg, #FFFFFF 0%, #EFF4FF 100%);
 }
 
 .ezb-intro-title {
@@ -447,22 +447,14 @@ body:has(.ezb-page),
   padding: 128px 0;
   text-align: center;
   background:
-    /* 底部淡紫染色（拱形內外皆有） */
-    linear-gradient(180deg, rgba(227, 232, 252, 0) 50%, rgba(227, 232, 252, 0.7) 100%),
-    /* 拱形白色主體（Dome） */
-    radial-gradient(ellipse 53.5% 99% at 50% 100%,
-      #FFFFFF 0%,
-      #FCFCFF 85%,
-      #F7F8FE 98.5%,
-      #FFFFFF 99.3%,
+    /* 置中正圓半圓弧光暈（固定半徑與頂點位置，RWD 不變形） */
+    radial-gradient(730px 730px at 50% 740px,
+      rgba(255, 255, 255, 0.96) 0%,
+      rgba(255, 255, 255, 0.9) 70%,
+      rgba(255, 255, 255, 0.7) 88%,
+      rgba(255, 255, 255, 0.45) 95%,
       rgba(255, 255, 255, 0) 100%),
-    /* 拱形外圍深色暈染（左右兩側最深） */
-    radial-gradient(ellipse 72% 135% at 50% 100%,
-      var(--ezb-purple-200) 0%,
-      var(--ezb-purple-200) 74%,
-      rgba(205, 213, 248, 0.55) 86%,
-      rgba(205, 213, 248, 0) 100%),
-    var(--ezb-purple-50);
+    linear-gradient(180deg, #EFF4FF 0%, #BED3FF 100%);
 }
 
 .ezb-structure-title {
@@ -561,22 +553,13 @@ body:has(.ezb-page),
   .ezb-structure {
     padding: 88px 0 80px;
     background:
-      /* 上方淡白弧形光暈（越靠弧線越亮） */
-      radial-gradient(ellipse 73% 100% at 50% 100%,
-        rgba(255, 255, 255, 0) 63%,
-        rgba(255, 255, 255, 0.32) 88%,
-        rgba(255, 255, 255, 0.5) 93%,
-        rgba(255, 255, 255, 0.75) 99%,
+      radial-gradient(580px 580px at 50% 590px,
+        rgba(255, 255, 255, 0.96) 0%,
+        rgba(255, 255, 255, 0.9) 70%,
+        rgba(255, 255, 255, 0.7) 88%,
+        rgba(255, 255, 255, 0.45) 95%,
         rgba(255, 255, 255, 0) 100%),
-      /* 主體：淺藍 → 藍（Jordy Blue 50 → 200），依截圖取色 */
-      linear-gradient(180deg,
-        var(--ezb-blue-50) 0%,
-        #EBF2FF 19%,
-        #E8EEFE 37%,
-        #DBE6FF 55%,
-        #CBDCFF 72%,
-        #C3D6FF 90%,
-        var(--ezb-blue-200) 100%);
+      linear-gradient(180deg, #EFF4FF 0%, #BED3FF 100%);
   }
   .ezb-structure-title { line-height: 1.45; }
   .ezb-features {
@@ -595,18 +578,13 @@ body:has(.ezb-page),
   .ezb-structure {
     padding: 96px 0 72px;
     background:
-      radial-gradient(ellipse 125% 100% at 50% 100%,
-        rgba(255, 255, 255, 0) 88%,
-        rgba(255, 255, 255, 0.4) 97%,
-        rgba(255, 255, 255, 0.75) 99.5%,
+      radial-gradient(420px 420px at 50% 430px,
+        rgba(255, 255, 255, 0.96) 0%,
+        rgba(255, 255, 255, 0.9) 65%,
+        rgba(255, 255, 255, 0.65) 85%,
+        rgba(255, 255, 255, 0.35) 94%,
         rgba(255, 255, 255, 0) 100%),
-      linear-gradient(180deg,
-        var(--ezb-blue-50) 0%,
-        #ECF0FD 12%,
-        #E1E9FE 25%,
-        #D7E4FF 50%,
-        #CBDBFF 75%,
-        var(--ezb-blue-200) 100%);
+      linear-gradient(180deg, #EFF4FF 0%, #BED3FF 100%);
   }
   .ezb-structure-title { font-size: 1.5rem; line-height: 1.35; }
   .ezb-structure-desc { margin-top: 24px; line-height: 1.2; }
