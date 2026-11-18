@@ -2,6 +2,8 @@
    臨床技術支持 (Clinical Technical Support) — 一鑽植牙學術論文 (雙語系)
    ============================================================ */
 import './clinical-support.css';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase';
 import { currentGlobalLang } from '../components/header';
 
 interface BilingualText {
@@ -317,6 +319,112 @@ const EZECHBONE_LITERATURE: LiteratureItem[] = [
     },
     type: 'ezechbone',
   },
+  /* TODO: 以下 ez-2 ~ ez-6 為依產品臨床特性建立之預覽文獻項目，待替換為實際論文標題與檔案 */
+  {
+    id: 'ez-2',
+    sourceOrYear: {
+      zh: '臨床驗證報告',
+      en: 'Clinical Validation',
+    },
+    category: {
+      zh: '甦骨粒',
+      en: 'Ezechbone',
+    },
+    format: 'PDF',
+    title: {
+      zh: 'Ezechbone® 顆粒 CBS-400 臨床應用成效分析：涵蓋胸骨、脊椎、骨科與牙科手術逾 1,000 例實證',
+      en: 'Clinical Outcomes of Ezechbone® Granule CBS-400: Over 1,000 Cases Across Sternotomy, Spine, Orthopedic, and Dental Surgeries',
+    },
+    author: {
+      zh: '成大 CBR × 喬醫 JMD • 臨床研究團隊',
+      en: 'NCKU CBR × JMD • Clinical Research Team',
+    },
+    type: 'ezechbone',
+  },
+  {
+    id: 'ez-3',
+    sourceOrYear: {
+      zh: '學術論文',
+      en: 'Research Publication',
+    },
+    category: {
+      zh: '甦骨粒',
+      en: 'Ezechbone',
+    },
+    format: 'PDF',
+    title: {
+      zh: '【臨床生物材料研究】CBS-400 全合成補骨材料之引導止血、溫和控炎與高效骨再生機制評估',
+      en: '【Biomaterials Research】Evaluation of Hemostatic Guidance, Mild Inflammatory Modulation, and Osteoconductive Regeneration of CBS-400',
+    },
+    author: {
+      zh: '成大骨科暨生醫材料研發團隊',
+      en: 'NCKU Orthopedics & Biomaterials Research Group',
+    },
+    type: 'ezechbone',
+  },
+  {
+    id: 'ez-4',
+    sourceOrYear: {
+      zh: '臨床操作指南',
+      en: 'Clinical Guide',
+    },
+    category: {
+      zh: '甦骨粒',
+      en: 'Ezechbone',
+    },
+    format: 'PDF',
+    title: {
+      zh: 'Ezechbone® Granule CBS-400 牙科補骨、拔牙窩洞保存與上顎竇增高術標準操作指引',
+      en: 'Standard Operating Protocol for Ezechbone® Granule CBS-400 in Dental Bone Grafting, Socket Preservation, and Sinus Augmentation',
+    },
+    author: {
+      zh: '喬醫 JMD • 歐舒福臨床技術團隊',
+      en: 'JMD • OsseoFuse Clinical Support Team',
+    },
+    type: 'ezechbone',
+  },
+  {
+    id: 'ez-5',
+    sourceOrYear: {
+      zh: 'TFDA 專案臨床研究',
+      en: 'TFDA Clinical Study',
+    },
+    category: {
+      zh: '甦骨粒',
+      en: 'Ezechbone',
+    },
+    format: 'PDF',
+    title: {
+      zh: 'CBS-400 應用於關節內與關節周圍困難骨折之骨癒合表現及術後沾黏風險評估',
+      en: 'Bone Healing Performance and Postoperative Adhesion Risk Assessment of CBS-400 in Complex Intra- and Peri-Articular Fractures',
+    },
+    author: {
+      zh: '成大 CBR × 喬醫 JMD • 骨科臨床專案',
+      en: 'NCKU CBR × JMD • Orthopedic Clinical Project',
+    },
+    type: 'ezechbone',
+  },
+  {
+    id: 'ez-6',
+    sourceOrYear: {
+      zh: '技術白皮書',
+      en: 'Technical Whitepaper',
+    },
+    category: {
+      zh: '甦骨粒',
+      en: 'Ezechbone',
+    },
+    format: 'PDF',
+    title: {
+      zh: 'CBS-400 與自體骨、異體骨及傳統人工骨粉之臨床特性與生物相容性比較解析',
+      en: 'Comparative Analysis of Clinical Properties and Biocompatibility: CBS-400 vs. Autograft, Allograft, and Conventional Synthetic Grafts',
+    },
+    author: {
+      zh: '喬醫 JMD • 材料研發部',
+      en: 'JMD • Materials R&D Department',
+    },
+    type: 'ezechbone',
+  },
 ];
 
 const ALL_LITERATURE: LiteratureItem[] = [
@@ -325,23 +433,54 @@ const ALL_LITERATURE: LiteratureItem[] = [
 ];
 
 const ITEMS_PER_PAGE = 10;
+/** 未登入前僅顯示前幾則文獻作為預覽（讓訪客能感受到文獻數量眾多） */
+const PREVIEW_ITEMS_COUNT = 5;
+
 let currentPage = 1;
 let currentFilter: 'osseofuse' | 'ezechbone' = 'osseofuse';
 let currentLang: 'zh' | 'en' = 'zh';
+let isLoggedIn = false;
+
+function getFilteredLiterature(): LiteratureItem[] {
+  return ALL_LITERATURE.filter(item => item.type === currentFilter);
+}
 
 function getTotalPages(): number {
-  const filtered = ALL_LITERATURE.filter(item => item.type === currentFilter);
+  if (!isLoggedIn) {
+    return 1;
+  }
+  const filtered = getFilteredLiterature();
   return Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
 }
 
 function renderCards(page: number, lang: 'zh' | 'en'): string {
-  const filtered = ALL_LITERATURE.filter(item => item.type === currentFilter);
-  const start = (page - 1) * ITEMS_PER_PAGE;
-  const pageItems = filtered.slice(start, start + ITEMS_PER_PAGE);
+  const filtered = getFilteredLiterature();
+  const pageItems = isLoggedIn
+    ? filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
+    : filtered.slice(0, PREVIEW_ITEMS_COUNT);
 
   const downloadText = lang === 'zh' ? '下載' : 'Download';
 
-  return pageItems.map((item) => `
+  return pageItems.map((item) => {
+    const downloadActionHtml = isLoggedIn
+      ? `<button type="button" class="card-download-btn" data-id="${item.id}" aria-label="${downloadText}">
+          <span>${downloadText}</span>
+          <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </button>`
+      : `<span class="card-download-btn is-disabled" aria-disabled="true">
+          <span>${downloadText}</span>
+          <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </span>`;
+
+    return `
     <div class="clinical-card" data-type="${item.type}">
       <div class="clinical-card-main">
         <div class="card-tags">
@@ -352,19 +491,16 @@ function renderCards(page: number, lang: 'zh' | 'en'): string {
         <h3 class="card-title">${item.title[lang]}</h3>
         <p class="card-meta">${item.author[lang]}</p>
       </div>
-      <a href="#/login" class="card-download-btn" aria-label="${downloadText}">
-        <span>${downloadText}</span>
-        <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="7 10 12 15 17 10"/>
-          <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
-      </a>
+      ${downloadActionHtml}
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 function renderPagination(page: number): string {
+  if (!isLoggedIn) {
+    return '';
+  }
   const totalPages = getTotalPages();
   if (totalPages <= 1) {
     return '';
@@ -389,10 +525,14 @@ export function clinicalSupportPage(): string {
   currentPage = 1;
   currentFilter = 'osseofuse';
   currentLang = currentGlobalLang;
+  isLoggedIn = Boolean(auth?.currentUser);
   const totalPages = getTotalPages();
   const initialCards = renderCards(1, currentLang);
   const initialPagination = renderPagination(1);
-  const paginationStyle = totalPages <= 1 ? 'style="display: none;"' : '';
+  const paginationStyle = !isLoggedIn || totalPages <= 1 ? 'style="display: none;"' : '';
+  const lockedClass = isLoggedIn ? '' : 'is-locked';
+  const inertAttr = isLoggedIn ? '' : 'inert aria-hidden="true"';
+  const overlayStyle = isLoggedIn ? 'style="display: none;"' : '';
 
   const titleText = currentLang === 'zh' ? '臨床技術支持' : 'Clinical Technical Support';
   const subtitleText = currentLang === 'zh' ? '提供醫師完善的學術文獻與操作文件' : 'Providing clinicians with comprehensive academic literature and operating guides';
@@ -411,7 +551,7 @@ export function clinicalSupportPage(): string {
 
       <!-- 背景裝飾弧形 -->
       <div class="clinical-bg-dome-wrapper">
-        <svg class="clinical-bg-dome" width="1440" height="920" viewBox="0 0 1440 920" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <svg class="clinical-bg-dome" width="1440" height="920" viewBox="0 0 1440 920" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin meet">
           <g opacity="0.5" filter="url(#filter0_dif_clinical)">
             <path d="M1440 820C1440 725.448 1421.38 631.822 1385.19 544.468C1349.01 457.113 1295.98 377.741 1229.12 310.883C1162.26 244.025 1082.89 190.99 995.532 154.807C908.178 118.623 814.552 100 720 100C625.448 100 531.822 118.623 444.468 154.807C357.113 190.99 277.741 244.025 210.883 310.883C144.025 377.741 90.9901 457.113 54.8067 544.468C18.6233 631.822 -8.26597e-06 725.448 0 820L720 820H1440Z" fill="#F2F2F7"/>
           </g>
@@ -450,16 +590,16 @@ export function clinicalSupportPage(): string {
       </div>
 
       <!-- 文獻清單列表區（外層包裝 + 漸層毛玻璃遮罩 + 懸浮登入卡片） -->
-      <div class="clinical-list-wrapper">
-        <div class="clinical-list-container" id="clinical-list-container">
+      <div class="clinical-list-wrapper ${lockedClass}" id="clinical-list-wrapper">
+        <div class="clinical-list-container" id="clinical-list-container" ${inertAttr}>
           ${initialCards}
         </div>
 
         <!-- 漸層漸進式毛玻璃遮罩（上半部清晰，向下越來越模糊） -->
-        <div class="clinical-gradient-blur"></div>
+        <div class="clinical-gradient-blur" id="clinical-gradient-blur" ${overlayStyle}></div>
 
         <!-- 懸浮登入提示卡片（位於可視中央，純白實體） -->
-        <div class="clinical-login-prompt-wrapper">
+        <div class="clinical-login-prompt-wrapper" id="clinical-login-prompt-wrapper" ${overlayStyle}>
           <div class="clinical-login-card">
             <p class="clinical-login-text" id="clinical-login-text">
               ${currentLang === 'zh'
@@ -489,9 +629,30 @@ export function clinicalSupportPage(): string {
 
 /** 初始化臨床技術支持頁面互動（Filter Tabs, Pagination & Lang Switch） */
 export function initClinicalSupportPage(): void {
+  const listWrapper = document.getElementById('clinical-list-wrapper');
   const container = document.getElementById('clinical-list-container');
+  const gradientBlur = document.getElementById('clinical-gradient-blur');
+  const loginPromptWrapper = document.getElementById('clinical-login-prompt-wrapper');
   const paginationWrapper = document.getElementById('clinical-pagination');
   const filterBtns = document.querySelectorAll<HTMLButtonElement>('.clinical-filter-btn');
+
+  function syncLockState() {
+    if (listWrapper) {
+      listWrapper.classList.toggle('is-locked', !isLoggedIn);
+    }
+    if (container) {
+      if (isLoggedIn) {
+        container.removeAttribute('inert');
+        container.removeAttribute('aria-hidden');
+      } else {
+        container.setAttribute('inert', '');
+        container.setAttribute('aria-hidden', 'true');
+      }
+    }
+    const overlayDisplay = isLoggedIn ? 'none' : '';
+    if (gradientBlur) gradientBlur.style.display = overlayDisplay;
+    if (loginPromptWrapper) loginPromptWrapper.style.display = overlayDisplay;
+  }
 
   function bindPaginationEvents() {
     const prevBtn = document.getElementById('prev-page-btn') as HTMLButtonElement | null;
@@ -528,7 +689,7 @@ export function initClinicalSupportPage(): void {
     }
     if (paginationWrapper) {
       const totalPages = getTotalPages();
-      if (totalPages <= 1) {
+      if (!isLoggedIn || totalPages <= 1) {
         paginationWrapper.style.display = 'none';
         paginationWrapper.innerHTML = '';
       } else {
@@ -569,14 +730,36 @@ export function initClinicalSupportPage(): void {
   });
 
   // 全域語系切換監聽
-  window.addEventListener('langchange', (e: Event) => {
+  const handleLangChange = (e: Event) => {
+    if (!container || !document.body.contains(container)) {
+      window.removeEventListener('langchange', handleLangChange);
+      return;
+    }
     const customEvent = e as CustomEvent<{ lang: 'zh' | 'en' }>;
     if (customEvent.detail && customEvent.detail.lang) {
       currentLang = customEvent.detail.lang;
       updateLanguageTexts();
       updatePage(currentPage);
     }
-  });
+  };
+  window.addEventListener('langchange', handleLangChange);
 
+  // 監聽登入狀態變化（未登入前鎖定並僅顯示預覽幾則）
+  if (auth) {
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      if (!container || !document.body.contains(container)) {
+        unsubscribeAuth();
+        return;
+      }
+      const nextLoggedIn = Boolean(user);
+      if (nextLoggedIn !== isLoggedIn) {
+        isLoggedIn = nextLoggedIn;
+        syncLockState();
+        updatePage(1);
+      }
+    });
+  }
+
+  syncLockState();
   bindPaginationEvents();
 }
