@@ -6,12 +6,12 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || 'AIzaSyAI8pOKwIAsCGlDn43r2rMupBDXt_hadmA',
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || 'osf-tec.firebaseapp.com',
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || 'osf-tec',
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || 'osf-tec.firebasestorage.app',
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '832374171810',
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || '1:832374171810:web:5e698a0d855a263e848ffb',
 };
 
 let app: ReturnType<typeof initializeApp> | null = null;
