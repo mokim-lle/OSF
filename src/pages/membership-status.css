@@ -36,6 +36,20 @@
   display: block;
 }
 
+@media (max-width: 1024px) {
+  .status-bg-dome-wrapper {
+    min-width: 960px;
+    top: 34px;
+  }
+}
+
+@media (max-width: 768px) {
+  .status-bg-dome-wrapper {
+    min-width: 680px;
+    top: 64px;
+  }
+}
+
 /* 麵包屑 Breadcrumb */
 .status-breadcrumb {
   padding: 20px 40px;

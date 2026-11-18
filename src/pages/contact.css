@@ -4,14 +4,14 @@
 
 .contact-page {
   min-height: 100vh;
-  background: var(--color-bg-light);
+  background: var(--main-bg-100, #F2F2F7);
   padding-bottom: 80px;
   padding-top: var(--header-height);
-  position: relative;        /* 弧形 SVG 的定位參照 */
+  position: relative;        /* 弧形背景的定位參照 */
   overflow: hidden;
 }
 
-/* 背景裝飾弧形（弧頂 Y=100 正好落在 contact-hero 標題後方） */
+/* 背景裝飾弧形 */
 .contact-bg-dome-wrapper {
   position: absolute;
   left: 50%;
@@ -30,7 +30,22 @@
   display: block;
 }
 
+@media (max-width: 1024px) {
+  .contact-bg-dome-wrapper {
+    min-width: 960px;
+    top: 34px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-bg-dome-wrapper {
+    min-width: 680px;
+    top: 64px;
+  }
+}
+
 /* 確保內容在弧形上方 */
+.contact-breadcrumb,
 .contact-hero,
 .contact-card-wrapper {
   position: relative;
@@ -39,7 +54,7 @@
 
 /* 消除 page-content-offset 的 margin-top */
 .page-content:has(.contact-page) {
-  background: var(--color-bg-light);
+  background: var(--main-bg-100, #F2F2F7);
   margin-top: 0 !important;
 }
 
