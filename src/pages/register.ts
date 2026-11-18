@@ -4,6 +4,12 @@
 import './register.css';
 import { currentGlobalLang } from '../components/header';
 import { getCurrentPath, getQueryParams } from '../router';
+import {
+  registerStep1WithEmail,
+  verifyEmailOtp,
+  resendVerificationOtp,
+  submitDoctorProfile,
+} from '../services/auth.service';
 
 let currentLang: 'zh' | 'en' = 'zh';
 
@@ -447,8 +453,9 @@ export function initRegisterPage(): void {
       const passwordError = document.getElementById('reg-password-error');
       const confirmError = document.getElementById('reg-confirm-error');
       const privacyError = document.getElementById('reg-privacy-error');
+      const submitBtn = document.getElementById('reg-step1-submit-btn') as HTMLButtonElement | null;
 
-      form?.addEventListener('submit', (e) => {
+      form?.addEventListener('submit', async (e) => {
         e.preventDefault();
         let valid = true;
 
@@ -457,7 +464,10 @@ export function initRegisterPage(): void {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(emailVal)) {
           emailInput?.classList.add('input-error');
-          emailError?.classList.add('show');
+          if (emailError) {
+            emailError.textContent = currentLang === 'zh' ? '請輸入有效的電子信箱' : 'Please enter a valid email address';
+            emailError.classList.add('show');
+          }
           valid = false;
         } else {
           emailInput?.classList.remove('input-error');
@@ -494,10 +504,30 @@ export function initRegisterPage(): void {
           privacyError?.classList.remove('show');
         }
 
-        if (valid) {
+        if (!valid) return;
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = currentLang === 'zh' ? '處理中...' : 'Processing...';
+        }
+
+        const result = await registerStep1WithEmail(emailVal, passVal);
+
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = currentLang === 'zh' ? '註冊並驗證信箱' : 'Register & Verify Email';
+        }
+
+        if (result.success) {
           registeredEmail = emailVal;
           updateView('step1-verify');
           startCountdown();
+        } else if (result.errorMessage) {
+          emailInput?.classList.add('input-error');
+          if (emailError) {
+            emailError.textContent = currentLang === 'zh' ? result.errorMessage.zh : result.errorMessage.en;
+            emailError.classList.add('show');
+          }
         }
       });
     }
@@ -508,24 +538,51 @@ export function initRegisterPage(): void {
       const codeInput = document.getElementById('reg-verify-code') as HTMLInputElement | null;
       const codeError = document.getElementById('reg-verify-error');
       const resendBtn = document.getElementById('verify-resend-btn') as HTMLButtonElement | null;
+      const verifySubmitBtn = document.getElementById('verify-submit-btn') as HTMLButtonElement | null;
 
-      resendBtn?.addEventListener('click', () => {
+      resendBtn?.addEventListener('click', async () => {
         if (countdownSeconds <= 0) {
           startCountdown();
+          await resendVerificationOtp(registeredEmail);
         }
       });
 
-      verifyForm?.addEventListener('submit', (e) => {
+      verifyForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const codeVal = codeInput?.value.trim() || '';
-        if (codeVal.length < 4) {
+        if (codeVal.length < 6) {
           codeInput?.classList.add('input-error');
-          codeError?.classList.add('show');
-        } else {
-          codeInput?.classList.remove('input-error');
-          codeError?.classList.remove('show');
+          if (codeError) {
+            codeError.textContent = currentLang === 'zh' ? '請輸入 6 位數驗證碼' : 'Please enter 6-digit code';
+            codeError.classList.add('show');
+          }
+          return;
+        }
+
+        codeInput?.classList.remove('input-error');
+        codeError?.classList.remove('show');
+
+        if (verifySubmitBtn) {
+          verifySubmitBtn.disabled = true;
+          verifySubmitBtn.textContent = currentLang === 'zh' ? '驗證中...' : 'Verifying...';
+        }
+
+        const result = await verifyEmailOtp(codeVal);
+
+        if (verifySubmitBtn) {
+          verifySubmitBtn.disabled = false;
+          verifySubmitBtn.textContent = currentLang === 'zh' ? '驗證信箱' : 'Verify Email';
+        }
+
+        if (result.success) {
           if (countdownTimer) clearInterval(countdownTimer);
           updateView('step2');
+        } else if (result.errorMessage) {
+          codeInput?.classList.add('input-error');
+          if (codeError) {
+            codeError.textContent = currentLang === 'zh' ? result.errorMessage.zh : result.errorMessage.en;
+            codeError.classList.add('show');
+          }
         }
       });
     }
@@ -536,12 +593,13 @@ export function initRegisterPage(): void {
       const doctorName = document.getElementById('doctor-name') as HTMLInputElement | null;
       const doctorCity = document.getElementById('doctor-city') as HTMLSelectElement | null;
       const clinicName = document.getElementById('clinic-name') as HTMLInputElement | null;
+      const step2SubmitBtn = document.getElementById('reg-step2-submit-btn') as HTMLButtonElement | null;
 
       const nameError = document.getElementById('doctor-name-error');
       const cityError = document.getElementById('doctor-city-error');
       const clinicError = document.getElementById('clinic-name-error');
 
-      form2?.addEventListener('submit', (e) => {
+      form2?.addEventListener('submit', async (e) => {
         e.preventDefault();
         let valid = true;
 
@@ -572,20 +630,35 @@ export function initRegisterPage(): void {
           clinicError?.classList.remove('show');
         }
 
-        if (valid) {
-          const categoryRadio = document.querySelector<HTMLInputElement>('input[name="personnel-category"]:checked');
-          const profile = {
-            name: doctorName?.value.trim() || '李曉明',
-            category: (categoryRadio?.value === 'other' ? 'other' : 'dentist') as 'dentist' | 'other',
-            city: doctorCity?.value || '新北市',
-            clinic: clinicName?.value.trim() || '康欣診所',
-          };
-          try {
-            sessionStorage.setItem('osf_doctor_profile', JSON.stringify(profile));
-          } catch (err) {
-            // ignore
-          }
+        if (!valid) return;
+
+        const categoryRadio = document.querySelector<HTMLInputElement>('input[name="personnel-category"]:checked');
+        const profile = {
+          name: doctorName?.value.trim() || '',
+          category: (categoryRadio?.value === 'other' ? 'other' : 'dentist') as 'dentist' | 'other',
+          city: doctorCity?.value || '',
+          clinic: clinicName?.value.trim() || '',
+        };
+
+        if (step2SubmitBtn) {
+          step2SubmitBtn.disabled = true;
+          step2SubmitBtn.textContent = currentLang === 'zh' ? '送出中...' : 'Submitting...';
+        }
+
+        const result = await submitDoctorProfile(profile);
+
+        if (step2SubmitBtn) {
+          step2SubmitBtn.disabled = false;
+          step2SubmitBtn.textContent = currentLang === 'zh' ? '送出審核' : 'Submit for Review';
+        }
+
+        if (result.success) {
           window.location.hash = '#/membership-status';
+        } else if (result.errorMessage) {
+          if (clinicError) {
+            clinicError.textContent = currentLang === 'zh' ? result.errorMessage.zh : result.errorMessage.en;
+            clinicError.classList.add('show');
+          }
         }
       });
     }

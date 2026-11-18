@@ -4,6 +4,7 @@
 import './membership-status.css';
 import { currentGlobalLang } from '../components/header';
 import { getCurrentPath, getQueryParams } from '../router';
+import { fetchCurrentMemberProfile, submitDoctorProfile } from '../services/auth.service';
 
 let currentLang: 'zh' | 'en' = 'zh';
 
@@ -317,8 +318,9 @@ export function initMembershipStatusPage(): void {
       const citySelect = document.getElementById('resubmit-city') as HTMLSelectElement | null;
       const clinicInput = document.getElementById('resubmit-clinic') as HTMLInputElement | null;
       const categoryRadios = document.querySelectorAll<HTMLInputElement>('input[name="resubmit-category"]');
+      const submitBtn = document.getElementById('status-submit-btn') as HTMLButtonElement | null;
 
-      form?.addEventListener('submit', (e) => {
+      form?.addEventListener('submit', async (e) => {
         e.preventDefault();
         let cat: 'dentist' | 'other' = 'dentist';
         categoryRadios.forEach(r => {
@@ -332,7 +334,19 @@ export function initMembershipStatusPage(): void {
           clinic: clinicInput?.value.trim() || '康欣診所',
         };
         saveStoredProfile(newProfile);
-        alert(currentLang === 'zh' ? '資料已重新送出審核！' : 'Details resubmitted for review!');
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = currentLang === 'zh' ? '送出中...' : 'Submitting...';
+        }
+
+        await submitDoctorProfile(newProfile);
+
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = currentLang === 'zh' ? '送出審核' : 'Submit for Review';
+        }
+
         updateMode('pending');
       });
     }
@@ -340,6 +354,17 @@ export function initMembershipStatusPage(): void {
 
   btnPending?.addEventListener('click', () => updateMode('pending'));
   btnRejected?.addEventListener('click', () => updateMode('rejected'));
+
+  // 從 Firestore 同步最新會員資料與狀態
+  fetchCurrentMemberProfile().then((remoteProfile) => {
+    if (remoteProfile) {
+      if (remoteProfile.status === 'rejected') {
+        updateMode('rejected');
+      } else {
+        updateMode(currentMode);
+      }
+    }
+  });
 
   // 全域語系切換監聽
   window.addEventListener('langchange', (e: Event) => {

@@ -4,6 +4,7 @@
 import './forgot-password.css';
 import { currentGlobalLang } from '../components/header';
 import { getCurrentPath, getQueryParams } from '../router';
+import { sendResetPasswordEmail } from '../services/auth.service';
 
 let currentLang: 'zh' | 'en' = 'zh';
 
@@ -86,10 +87,10 @@ export function forgotPasswordPage(): string {
   const params = getQueryParams();
   const stepParam = params.get('step');
 
-  if (path.endsWith('/input') || stepParam === 'input' || stepParam === '1') {
-    currentState = 'input-email';
-  } else {
+  if (path.endsWith('/sent') || stepParam === 'sent' || stepParam === '2') {
     currentState = 'sent-success';
+  } else {
+    currentState = 'input-email';
   }
 
   countdownSeconds = 60;
@@ -190,18 +191,38 @@ export function initForgotPasswordPage(): void {
       const form = document.getElementById('forgot-pwd-form') as HTMLFormElement | null;
       const emailInput = document.getElementById('reset-email-input') as HTMLInputElement | null;
       const emailError = document.getElementById('reset-email-error');
+      const sendBtn = document.getElementById('reset-send-btn') as HTMLButtonElement | null;
 
-      form?.addEventListener('submit', (e) => {
+      form?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const emailVal = emailInput?.value.trim() || '';
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!emailRegex.test(emailVal)) {
           emailInput?.classList.add('input-error');
-          emailError?.classList.add('show');
-        } else {
-          emailInput?.classList.remove('input-error');
-          emailError?.classList.remove('show');
+          if (emailError) {
+            emailError.textContent = currentLang === 'zh' ? '請輸入有效的電子信箱' : 'Please enter a valid email address';
+            emailError.classList.add('show');
+          }
+          return;
+        }
+
+        emailInput?.classList.remove('input-error');
+        emailError?.classList.remove('show');
+
+        if (sendBtn) {
+          sendBtn.disabled = true;
+          sendBtn.textContent = currentLang === 'zh' ? '發送中...' : 'Sending...';
+        }
+
+        const result = await sendResetPasswordEmail(emailVal);
+
+        if (sendBtn) {
+          sendBtn.disabled = false;
+          sendBtn.textContent = currentLang === 'zh' ? '發送重設密碼信' : 'Send Reset Link';
+        }
+
+        if (result.success) {
           resetEmail = emailVal;
           currentState = 'sent-success';
           if (cardContainer) {
@@ -209,15 +230,22 @@ export function initForgotPasswordPage(): void {
             bindEvents();
             startCountdown();
           }
+        } else if (result.errorMessage) {
+          emailInput?.classList.add('input-error');
+          if (emailError) {
+            emailError.textContent = currentLang === 'zh' ? result.errorMessage.zh : result.errorMessage.en;
+            emailError.classList.add('show');
+          }
         }
       });
     }
 
     if (currentState === 'sent-success') {
       const btn = document.getElementById('reset-countdown-btn') as HTMLButtonElement | null;
-      btn?.addEventListener('click', () => {
+      btn?.addEventListener('click', async () => {
         if (countdownSeconds <= 0) {
           startCountdown();
+          await sendResetPasswordEmail(resetEmail);
         }
       });
     }
