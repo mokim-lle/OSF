@@ -111,9 +111,9 @@ export const OSSEOFUSE_I18N = {
     compareColTrad: '傳統植牙',
     compareColTradMob: '傳統植牙',
     compareColOsf: '歐舒福一鑽植牙',
-    compareColOsfMob: '歐舒福一鑽植牙',
+    compareColOsfMob: '歐舒福<br />一鑽植牙',
     compareColAllOn4: 'All-on-4 全口重建',
-    compareColAllOn4Mob: 'All-on-4 全口重建',
+    compareColAllOn4Mob: 'All-on-4<br />全口重建',
     compareItems: [
       {
         category: '療程時間',
@@ -813,21 +813,26 @@ function renderCompareTable(lang: 'zh' | 'en' = 'zh'): string {
     </tr>
   `).join('');
 
+  const formatBadgeText = (raw: string): string => {
+    const parts = raw.split(/<br\s*\/?>/i);
+    return parts.map((part) => noOrphan(part, 2)).join('<br />');
+  };
+
   const mobileCards = items.map((item) => `
     <div class="osf-compare-m-card">
       <div class="osf-compare-m-title">${noOrphan(item.category)}</div>
       <div class="osf-compare-m-rows">
         <div class="osf-compare-m-row">
-          <div class="osf-compare-m-badge">${t.compareColTradMob || t.compareColTrad}</div>
-          <div class="osf-compare-m-content">${noOrphan(item.traditional)}</div>
+          <div class="osf-compare-m-badge"><span>${formatBadgeText(t.compareColTradMob || t.compareColTrad)}</span></div>
+          <div class="osf-compare-m-content"><span>${noOrphan(item.traditional)}</span></div>
         </div>
         <div class="osf-compare-m-row osf-compare-m-highlight">
-          <div class="osf-compare-m-badge">${t.compareColOsfMob || t.compareColOsf}</div>
+          <div class="osf-compare-m-badge"><span>${formatBadgeText(t.compareColOsfMob || t.compareColOsf)}</span></div>
           <div class="osf-compare-m-content"><strong>${noOrphan(item.osseofuse)}</strong></div>
         </div>
         <div class="osf-compare-m-row">
-          <div class="osf-compare-m-badge">${t.compareColAllOn4Mob || t.compareColAllOn4}</div>
-          <div class="osf-compare-m-content">${noOrphan(item.allOn4)}</div>
+          <div class="osf-compare-m-badge"><span>${formatBadgeText(t.compareColAllOn4Mob || t.compareColAllOn4)}</span></div>
+          <div class="osf-compare-m-content"><span>${noOrphan(item.allOn4)}</span></div>
         </div>
       </div>
     </div>
@@ -1049,7 +1054,7 @@ export function osseofusePage(): string {
               <feGaussianBlur stdDeviation="20" />
             </filter>
             <filter id="osf_dome_rim_blur" x="-10%" y="-10%" width="120%" height="120%">
-              <feGaussianBlur stdDeviation="6" />
+              <feGaussianBlur stdDeviation="2" />
             </filter>
             <linearGradient id="osf_dome_fade_grad" x1="720" y1="0" x2="720" y2="820" gradientUnits="userSpaceOnUse">
               <stop offset="0" stop-color="white" stop-opacity="1" />
@@ -1069,7 +1074,7 @@ export function osseofusePage(): string {
           </defs>
           <g mask="url(#osf_dome_fade_mask)">
             <path d="M1380 820C1380 705 1362 595 1327 495C1292 395 1241 305 1177 230C1113 155 1037 95 954 55C871 18.6 796 12 720 12C644 12 569 18.6 486 55C403 95 327 155 263 230C199 305 148 395 113 495C78 595 60 705 60 820H1380Z" fill="url(#osf_dome_grad)" filter="url(#osf_dome_blur)"/>
-            <path d="M1350 760C1350 650 1332 545 1299 450C1265 355 1217 270 1156 200C1095 130 1022 76 942 40C862 12 791 8 720 8C649 8 578 12 498 40C418 76 345 130 284 200C223 270 175 355 141 450C108 545 90 650 90 760" stroke="rgba(255,255,255,0.9)" stroke-width="10" fill="none" filter="url(#osf_dome_rim_blur)"/>
+            <path d="M1350 760C1350 650 1332 545 1299 450C1265 355 1217 270 1156 200C1095 130 1022 76 942 40C862 12 791 8 720 8C649 8 578 12 498 40C418 76 345 130 284 200C223 270 175 355 141 450C108 545 90 650 90 760" stroke="rgba(255,255,255,0.55)" stroke-width="2" fill="none" filter="url(#osf_dome_rim_blur)"/>
           </g>
         </svg>
       </div>
