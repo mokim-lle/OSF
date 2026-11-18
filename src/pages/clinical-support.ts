@@ -3,6 +3,7 @@
    ============================================================ */
 import './clinical-support.css';
 import { currentGlobalLang } from '../components/header';
+import { renderPageBgDome } from '../utils/dome';
 
 interface BilingualText {
   zh: string;
@@ -411,30 +412,7 @@ export function clinicalSupportPage(): string {
 
       <!-- 背景裝飾弧形 -->
       <div class="clinical-bg-dome-wrapper">
-        <svg class="clinical-bg-dome" width="1440" height="920" viewBox="0 0 1440 920" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-          <g opacity="0.5" filter="url(#filter0_dif_clinical)">
-            <path d="M1440 820C1440 725.448 1421.38 631.822 1385.19 544.468C1349.01 457.113 1295.98 377.741 1229.12 310.883C1162.26 244.025 1082.89 190.99 995.532 154.807C908.178 118.623 814.552 100 720 100C625.448 100 531.822 118.623 444.468 154.807C357.113 190.99 277.741 244.025 210.883 310.883C144.025 377.741 90.9901 457.113 54.8067 544.468C18.6233 631.822 -8.26597e-06 725.448 0 820L720 820H1440Z" fill="#F2F2F7"/>
-          </g>
-          <defs>
-            <filter id="filter0_dif_clinical" x="-100" y="0" width="1640" height="920" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-              <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-              <feOffset dy="-10"/>
-              <feGaussianBlur stdDeviation="10"/>
-              <feComposite in2="hardAlpha" operator="out"/>
-              <feColorMatrix type="matrix" values="0 0 0 0 0.866667 0 0 0 0 0.905882 0 0 0 0 0.933333 0 0 0 0.1 0"/>
-              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_clinical"/>
-              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_clinical" result="shape"/>
-              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-              <feOffset dy="4"/>
-              <feGaussianBlur stdDeviation="5"/>
-              <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
-              <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0"/>
-              <feBlend mode="normal" in2="shape" result="effect2_innerShadow_clinical"/>
-              <feGaussianBlur stdDeviation="0" result="effect3_foregroundBlur_clinical"/>
-            </filter>
-          </defs>
-        </svg>
+        ${renderPageBgDome('clinical', 'clinical-bg-dome')}
       </div>
 
       <!-- 頁面標題區 (Hero) -->

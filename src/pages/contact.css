@@ -4,7 +4,7 @@
 
 .contact-page {
   min-height: 100vh;
-  background: var(--color-bg-light);
+  background: linear-gradient(180deg, #E4EBF4 0%, #EEF3F9 360px, #F9FBFD 680px, #FFFFFF 920px);
   padding-bottom: 80px;
   padding-top: var(--header-height);
   position: relative;        /* 弧形 SVG 的定位參照 */
@@ -16,7 +16,7 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 0;
+  top: 32px;
   width: 100%;
   max-width: 1440px;
   min-width: 1200px;
@@ -39,7 +39,7 @@
 
 /* 消除 page-content-offset 的 margin-top */
 .page-content:has(.contact-page) {
-  background: var(--color-bg-light);
+  background: #FFFFFF;
   margin-top: 0 !important;
 }
 
