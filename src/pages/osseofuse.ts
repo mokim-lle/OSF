@@ -29,7 +29,7 @@ export const OSSEOFUSE_IMAGES = {
   tech02YoutubeUrl: 'https://www.youtube.com/embed/VIDEO_ID',
   tech03Penetration: 'https://www.youtube.com/embed/VIDEO_ID',
   tech03YoutubeUrl: 'https://www.youtube.com/embed/VIDEO_ID',
-  tech04OsteotomyDiff: '/images/osseofuse/tech-04-osteotomy-diff.png',
+  tech04YoutubeUrl: 'https://www.youtube.com/embed/VIDEO_ID',
   // 產品規格分區圖片與影片預留 (Specifications)
   specBrandSinus: '/images/osseofuse/SinusFuse.png',
   specBrandHexa: '/images/osseofuse/Hexa.jpg',
@@ -1527,15 +1527,14 @@ export function osseofusePage(): string {
             ${t.tech04VideoCaption}
           </p>
           <div class="osf-tech-analysis-video-box">
-            ${renderImageSlot(OSSEOFUSE_IMAGES.tech04OsteotomyDiff, '一鑽牙窩動畫影片', 'slot-tech-04-diff')}
-            <div class="osf-tech-video-overlay">
-              <span class="osf-tech-video-badge" id="osf-tech-04-vid-badge">${t.tech04VideoBadge}</span>
-              <button type="button" class="osf-tech-video-play-btn" aria-label="播放影片">
-                <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M13 8L1 15L1 1L13 8Z" fill="currentColor"/>
-                </svg>
-              </button>
-            </div>
+            <iframe
+              src="${OSSEOFUSE_IMAGES.tech04YoutubeUrl || 'https://www.youtube.com/embed/VIDEO_ID'}"
+              title="一鑽牙窩動畫影片"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+            ></iframe>
           </div>
         </div>
       </section>
